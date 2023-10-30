@@ -6,28 +6,40 @@ class m130524_201442_init extends Migration
 {
     public function up()
     {
-        $tableOptions = null;
-        if ($this->db->driverName === 'mysql') {
-            // https://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
-            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
-        }
+        $auth = Yii::$app->authManager;
 
-        $this->createTable('{{%user}}', [
-            'id' => $this->primaryKey(),
-            'username' => $this->string()->notNull()->unique(),
-            'auth_key' => $this->string(32)->notNull(),
-            'password_hash' => $this->string()->notNull(),
-            'password_reset_token' => $this->string()->unique(),
-            'email' => $this->string()->notNull()->unique(),
+        //Create roles
+        $role_admin = $auth->createRole('admin');
+        $auth->add($role_admin);
+        $role_employee = $auth->createRole('employee');
+        $auth->add($role_employee);
+        $role_chef = $auth->createRole('chef');
+        $auth->add($role_chef);
+        $role_client = $auth->createRole('client');
+        $auth->add($role_client);
+        $role_manager = $auth->createRole('manager');
+        $auth->add($role_manager);
 
-            'status' => $this->smallInteger()->notNull()->defaultValue(10),
-            'created_at' => $this->integer()->notNull(),
-            'updated_at' => $this->integer()->notNull(),
-        ], $tableOptions);
+       // $auth->addChild();
+       
+        $permRestaurantManagement = $auth->createPermission('RestaurantManagement');
+        $permStockManagement = $auth->createPermission('StockManagement'); //duvida
+        $permOrderManagement = $auth->createPermission('OrderManagement');
+        $permUserManagement = $auth->createPermission('UserManagement');
+        $permReservationManagement = $auth->createPermission('ReservationManagement');
+
+
+
+        $auth->assign($role_admin, 1);
+        
+        
+        //create permitions
     }
 
     public function down()
     {
-        $this->dropTable('{{%user}}');
+        $auth = Yii::$app->authManager;
+
+        $auth->removeAll();
     }
 }
