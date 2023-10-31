@@ -15,6 +15,7 @@ class m231031_204450_init_rbac extends Migration
         $auth = Yii::$app->authManager;
         #region roles
         //Create roles
+
         $role_admin = $auth->createRole('admin');
         $auth->add($role_admin);
         $role_employee = $auth->createRole('employee');
@@ -25,15 +26,23 @@ class m231031_204450_init_rbac extends Migration
         $auth->add($role_client);
         $role_manager = $auth->createRole('manager');
         $auth->add($role_manager);
+
+
         #endregion
         #region permissions
         // permissions
         $permRestaurantManagement = $auth->createPermission('RestaurantManagement'); //perm admin
+        $auth->add($permRestaurantManagement);
         $permStockManagement = $auth->createPermission('StockManagement'); //perm chef
+        $auth->add($permStockManagement);
         $permOrderManagement = $auth->createPermission('OrderManagement'); //perm employee
+        $auth->add($permOrderManagement);
         $permUserManagement = $auth->createPermission('UserManagement'); // perm manager
+        $auth->add($permUserManagement);
         $permReservationManagement = $auth->createPermission('ReservationManagement'); // perm client
+        $auth->add($permReservationManagement);
         $permTablesZones = $auth->createPermission('TablesZones'); // perm manager
+        $auth->add($permTablesZones);
         #endregion        
         #region child role->perm
         // add childs role --> permission
@@ -45,7 +54,7 @@ class m231031_204450_init_rbac extends Migration
         $auth->addChild($role_manager, $permTablesZones);
         #endregion       
         #region inherits
-    
+
         // add childs inherits role --> role
         $auth->addChild($role_admin, $role_manager);
         $auth->addChild($role_manager, $role_chef);
