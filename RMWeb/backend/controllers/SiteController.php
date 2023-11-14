@@ -22,16 +22,17 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
+                
                 'rules' => [
-                    [
-                        'actions' => ['login', 'error'],
-                        'allow' => true,
-                    ],
-                    [
-                        'actions' => ['logout', 'index'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
+                        [
+                            'actions' => ['login', 'error'],
+                            'allow' => true,
+                        ],
+                        [
+                            'actions' => ['logout', 'index'],
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
                 ],
             ],
             'verbs' => [
@@ -65,6 +66,9 @@ class SiteController extends Controller
         return $this->render('index');
     }
 
+    public function actionLoginFront(){
+        
+    }
     /**
      * Login action.
      *
@@ -72,22 +76,32 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
-        if (!Yii::$app->user->isGuest) {
+        if (!\Yii::$app->user->isGuest) {
             return $this->goHome();
         }
-
-        $this->layout = 'blank';
-
+    
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            //check user roles, is user is Admin? 
+            if (\Yii::$app->user->can('employee'))
+            {
+                // yes he is Admin, so redirect page 
+                return $this->goBack();
+            }
+            else // if he is not an Admin then what :P
+            {   // put him out :P Automatically logout. 
+                Yii::$app->user->logout();
+                // set error on login page. 
+                \Yii::$app->getSession()->setFlash('error', 'You are not authorized to login Admin\'s penal.<br /> Please use valid Username & Password.<br />Please contact Administrator for details.');
+                //redirect again page to login form.
+                return $this->redirect(['site/login']);
+            }
+    
+        } else {
+            return $this->render('login', [
+                'model' => $model,
+            ]);
         }
-
-        $model->password = '';
-
-        return $this->render('login', [
-            'model' => $model,
-        ]);
     }
 
     /**
