@@ -43,6 +43,10 @@ class m231031_204450_init_rbac extends Migration
         $auth->add($permReservationManagement);
         $permTablesZones = $auth->createPermission('TablesZones'); // perm manager
         $auth->add($permTablesZones);
+
+        $permLogin = $auth->createPermission('loginFront');
+        $auth->add($permLogin);
+        $auth->addChild($role_employee, $permLogin);
         #endregion        
         #region child role->perm
         // add childs role --> permission
@@ -56,6 +60,8 @@ class m231031_204450_init_rbac extends Migration
         #region inherits
 
         // add childs inherits role --> role
+        
+        // add chef -> employee
         $auth->addChild($role_admin, $role_manager);
         $auth->addChild($role_manager, $role_chef);
         $auth->addChild($role_manager, $role_employee);

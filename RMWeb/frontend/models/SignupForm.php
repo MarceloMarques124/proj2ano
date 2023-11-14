@@ -5,6 +5,7 @@ namespace frontend\models;
 use Yii;
 use yii\base\Model;
 use common\models\User;
+use common\models\UserInfo;
 
 /**
  * Signup form
@@ -15,6 +16,11 @@ class SignupForm extends Model
     public $email;
     public $password;
 
+    public $name;
+    public $address;
+    public $door_number;
+    public $postal_code;
+    public $nif;
 
     /**
      * {@inheritdoc}
@@ -35,6 +41,30 @@ class SignupForm extends Model
 
             ['password', 'required'],
             ['password', 'string', 'min' => Yii::$app->params['user.passwordMinLength']],
+
+            // for user_info
+            ['name', 'trim'],
+            ['name', 'required'],
+            ['name', 'string', 'min' => 2, 'max' => 80],
+
+            ['address', 'trim'],
+            ['address', 'required'],
+            ['address', 'string', 'max' => 255],
+
+            ['door_number', 'trim'],
+            ['door_number', 'required'],
+            ['door_number', 'string' ,'max' => 5],
+
+            ['postal_code', 'trim'],
+            ['postal_code', 'required'],
+            ['postal_code', 'string' ,'max' => 10],
+            ['postal_code', 'match', 'pattern' => '/\b\d{4}\b-\b\d{3}\b/'],
+
+            ['nif', 'trim'],
+            ['nif', 'required'],
+            ['nif', 'integer'],
+            ['nif', 'unique', 'targetClass' => '\common\models\UserInfo', 'message' => 'This nif address has already been taken.'],
+            ['nif', 'match', 'pattern' => '/\b\d{9}\b/'],
         ];
     }
 
@@ -55,8 +85,18 @@ class SignupForm extends Model
         $user->setPassword($this->password);
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
+        $user->save() && $this->sendEmail($user);
 
-        return $user->save() && $this->sendEmail($user);
+        $user_info = new UserInfo();
+        $user_info->user_id = $user->id;
+        $user_info->name = $this->name;
+        $user_info->address = $this->address;
+        $user_info->door_number = $this->door_number;
+        $user_info->postal_code = $this->postal_code;
+        $user_info->nif = $this->nif;
+        $user_info->save();
+
+        return $user;
     }
 
     /**
