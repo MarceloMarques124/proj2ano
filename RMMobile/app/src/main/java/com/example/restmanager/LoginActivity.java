@@ -22,6 +22,9 @@ public class LoginActivity extends AppCompatActivity {
 
         etEmail = findViewById(R.id.etEmailUsername);
         etPassword = findViewById(R.id.etPassword);
+
+        etEmail.setText("z@z.x");
+        etPassword.setText("1234");
     }
 
     public void onClickLogin(View view){

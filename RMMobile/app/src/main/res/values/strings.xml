@@ -14,4 +14,7 @@
     <string name="etRePassword">Confirm Password</string>
     <string name="etEmailError">Invalid Email/Username</string>
     <string name="etPasswordError">Invalid Password</string>
+    <string name="tvPort">Port</string>
+    <string name="tvIP">IP Addrress</string>
+    <string name="btnConnect">Connect</string>>
 </resources>
