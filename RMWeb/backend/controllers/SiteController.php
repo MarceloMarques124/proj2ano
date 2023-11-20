@@ -29,7 +29,7 @@ class SiteController extends Controller
                             'allow' => true,
                         ],
                         [
-                            'actions' => ['logout'],
+                            'actions' => ['logout', 'index'],
                             'allow' => true,
                             'roles' => ['@'],
                         ],
@@ -103,6 +103,7 @@ class SiteController extends Controller
             }
     
         } else {
+            $this->layout = 'main-login.php';
             return $this->render('login', [
                 'model' => $model,
             ]);
