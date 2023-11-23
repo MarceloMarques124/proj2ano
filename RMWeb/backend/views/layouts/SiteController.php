@@ -2,19 +2,21 @@
 
 namespace frontend\controllers;
 
+use common\models\LoginForm;
+use common\models\SignupForm;
+use frontend\models\ContactForm;
+use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResendVerificationEmailForm;
+use frontend\models\ResetPasswordForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
 use yii\base\InvalidArgumentException;
+use yii\captcha\CaptchaAction;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-use common\models\LoginForm;
-use frontend\models\PasswordResetRequestForm;
-use frontend\models\ResetPasswordForm;
-use frontend\models\SignupForm;
-use frontend\models\ContactForm;
+use yii\web\ErrorAction;
 
 /**
  * Site controller
@@ -59,10 +61,10 @@ class SiteController extends Controller
     {
         return [
             'error' => [
-                'class' => \yii\web\ErrorAction::class,
+                'class' => ErrorAction::class,
             ],
             'captcha' => [
-                'class' => \yii\captcha\CaptchaAction::class,
+                'class' => CaptchaAction::class,
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
@@ -217,8 +219,8 @@ class SiteController extends Controller
      * Verify email address
      *
      * @param string $token
-     * @throws BadRequestHttpException
      * @return yii\web\Response
+     * @throws BadRequestHttpException
      */
     public function actionVerifyEmail($token)
     {
