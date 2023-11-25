@@ -26,14 +26,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'user_id',
+            'user.username',
             'name',
             'address',
             'door_number',
-            //'postal_code',
-            //'nif',
+            'postal_code',
+            'nif',
+            'user.email',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, UserInfo $model, $key, $index, $column) {

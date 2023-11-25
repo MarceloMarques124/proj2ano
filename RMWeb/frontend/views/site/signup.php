@@ -5,7 +5,7 @@
 
 /** @var SignupForm $model */
 
-use common\models\SignupForm;
+use frontend\models\SignupForm;
 use yii\bootstrap5\ActiveForm;
 use yii\bootstrap5\Html;
 

@@ -60,7 +60,7 @@ class m231031_204450_init_rbac extends Migration
         #region inherits
 
         // add childs inherits role --> role
-        
+
         // add chef -> employee
         $auth->addChild($role_admin, $role_manager);
         $auth->addChild($role_manager, $role_chef);

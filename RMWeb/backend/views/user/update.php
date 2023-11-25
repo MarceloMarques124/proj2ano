@@ -1,13 +1,15 @@
 <?php
 
+use common\models\UserForm;
 use yii\helpers\Html;
 
 /** @var yii\web\View $this */
-/** @var common\models\UserInfo $model */
+/** @var UserForm $userForm */
+/** @var  $roles */
 
-$this->title = 'Update User Info: ' . $model->name;
+$this->title = 'Update User Info: ' . $userForm->name;
 $this->params['breadcrumbs'][] = ['label' => 'User Infos', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => $userForm->name, 'url' => ['view', 'id' => $userForm->userId]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="user-info-update">
@@ -15,7 +17,8 @@ $this->params['breadcrumbs'][] = 'Update';
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
-        'model' => $model,
+        'userForm' => $userForm,
+        'roles' => $roles
     ]) ?>
 
 </div>

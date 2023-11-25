@@ -1,31 +1,43 @@
 <?php
 
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use common\models\UserForm;
+use yii\bootstrap5\ActiveForm;
+use yii\bootstrap5\Html;
+use yii\helpers\ArrayHelper;
+
 
 /** @var yii\web\View $this */
-/** @var common\models\UserInfo $model */
+/** @var UserForm $userForm */
 /** @var yii\widgets\ActiveForm $form */
+/** @var $roles */
 ?>
 
 <div class="user-info-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
 
-    <?= $form->field($model, 'user_id')->textInput() ?>
+    <?= $form->field($userForm, 'username')->textInput(['autofocus' => true]) ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($userForm, 'email') ?>
 
-    <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($userForm, 'password')->passwordInput() ?>
 
-    <?= $form->field($model, 'door_number')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($userForm, 'name')->textInput() ?>
 
-    <?= $form->field($model, 'postal_code')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($userForm, 'address')->textInput() ?>
 
-    <?= $form->field($model, 'nif')->textInput() ?>
+    <?= $form->field($userForm, 'door_number')->textInput() ?>
+
+    <?= $form->field($userForm, 'postal_code')->textInput() ?>
+
+    <?= $form->field($userForm, 'nif')->textInput() ?>
+
+    <?= $form->field($userForm, 'role')->dropDownList(ArrayHelper::map($roles, 'name', 'name'),
+        ['prompt' => 'Select Role'] // Optional prompt
+    )->label('Select Role'); ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
