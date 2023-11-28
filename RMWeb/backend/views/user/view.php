@@ -30,8 +30,7 @@ YiiAsset::register($this);
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
-            'user_id',
+            'user.username',
             'name',
             'address',
             'door_number',

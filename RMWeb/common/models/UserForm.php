@@ -151,7 +151,7 @@ class UserForm extends Model
             return null;
         }
 
-        $user = new User();
+        $user = User::findOne($this->userId);
         $user->id = $this->userId;
         $user->username = $this->username;
         $user->email = $this->email;
