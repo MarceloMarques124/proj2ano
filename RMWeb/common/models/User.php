@@ -22,6 +22,8 @@ use yii\web\IdentityInterface;
  * @property integer $created_at
  * @property integer $updated_at
  * @property string $password write-only password
+ *
+ * @property UserInfo $userInfo
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -145,7 +147,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function getUserInfo()
     {
-        return $this->hasOne(UserInfo::class, ['id' => 'user_id']);
+        return $this->hasOne(UserInfo::class, ['user_id' => 'id']);
     }
 
     /**

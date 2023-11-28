@@ -132,8 +132,11 @@ class UserController extends Controller
 
         $roles = $authManager->getRoles();
 
-        if ($userForm->load(Yii::$app->request->post()) && $userForm->updateUser()) {
-            return $this->redirect(['view', 'id' => $userForm->userId]);
+        if ($userForm->load(Yii::$app->request->post())) {
+            $user = $userForm->updateUser();
+            $userInfo = $user->userInfo;
+
+            return $this->redirect(['view', 'id' => $userInfo->id]);
         }
 
         return $this->render('update', [

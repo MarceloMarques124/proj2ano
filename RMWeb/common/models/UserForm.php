@@ -39,7 +39,9 @@ class UserForm extends Model
             ['username', 'string', 'min' => 2, 'max' => 255],
             ['username', 'unique', 'targetClass' => '\common\models\User',
                 'when' => function ($model) {
-                    return $model->username != $this->getPreviousUser($model->userId)->username;
+                    if ($model->userId)
+                        return $model->username != $this->getPreviousUser($model->userId)->username;
+                    return true;
                 }],
 
             ['email', 'trim'],
@@ -48,7 +50,9 @@ class UserForm extends Model
             ['email', 'string', 'max' => 255],
             ['email', 'unique', 'targetClass' => '\common\models\User',
                 'when' => function ($model) {
-                    return $model->email != $this->getPreviousUser($model->userId)->email;
+                    if ($model->userId)
+                        return $model->email != $this->getPreviousUser($model->userId)->email;
+                    return true;
                 }],
 
             ['password', 'required'],
@@ -75,7 +79,7 @@ class UserForm extends Model
             ['nif', 'trim'],
             ['nif', 'required'],
             ['nif', 'integer'],
-//            ['nif', 'unique', 'targetClass' => '\common\models\UserInfo', 'message' => 'This nif address has already been taken.'],
+//          ['nif', 'unique', 'targetClass' => '\common\models\UserInfo', 'message' => 'This nif address has already been taken.'],
             ['nif', 'match', 'pattern' => '/\b\d{9}\b/'],
 
             ['role', 'required'],
