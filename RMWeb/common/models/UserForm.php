@@ -179,15 +179,14 @@ class UserForm extends Model
 
         $user->update();
 
-        $user_info = new UserInfo();
-        $user_info->id = $this->userInfoId;
-        $user_info->user_id = $user->id;
-        $user_info->name = $this->name;
-        $user_info->address = $this->address;
-        $user_info->door_number = $this->door_number;
-        $user_info->postal_code = $this->postal_code;
-        $user_info->nif = $this->nif;
-        $user_info->update();
+        $userInfo = $user->userInfo;
+        $userInfo->name = $this->name;
+        $userInfo->address = $this->address;
+        $userInfo->door_number = $this->door_number;
+        $userInfo->postal_code = $this->postal_code;
+        $userInfo->nif = $this->nif;
+
+        $userInfo->save();
 
         return $user;
     }
