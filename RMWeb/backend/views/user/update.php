@@ -1,7 +1,6 @@
 <?php
 
 use common\models\UserForm;
-use yii\helpers\Html;
 
 /** @var yii\web\View $this */
 /** @var UserForm $userForm */
@@ -14,7 +13,6 @@ $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="user-info-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
         'userForm' => $userForm,

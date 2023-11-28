@@ -10,6 +10,10 @@ use yii\base\Model;
  */
 class UserForm extends Model
 {
+    const STATUS_DELETED = 0;
+    const STATUS_INACTIVE = 9;
+    const STATUS_ACTIVE = 10;
+
     public $userId;
     public $userInfoId;
     public $username;
@@ -32,14 +36,20 @@ class UserForm extends Model
         return [
             ['username', 'trim'],
             ['username', 'required'],
-            ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.'],
             ['username', 'string', 'min' => 2, 'max' => 255],
+            ['username', 'unique', 'targetClass' => '\common\models\User',
+                'when' => function ($model) {
+                    return $model->username != $this->getPreviousUser($model->userId)->username;
+                }],
 
             ['email', 'trim'],
             ['email', 'required'],
             ['email', 'email'],
             ['email', 'string', 'max' => 255],
-            ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.'],
+            ['email', 'unique', 'targetClass' => '\common\models\User',
+                'when' => function ($model) {
+                    return $model->email != $this->getPreviousUser($model->userId)->email;
+                }],
 
             ['password', 'required'],
             ['password', 'string', 'min' => Yii::$app->params['user.passwordMinLength']],
@@ -70,6 +80,11 @@ class UserForm extends Model
 
             ['role', 'required'],
         ];
+    }
+
+    public static function getPreviousUser($id)
+    {
+        return User::findIdentity($id);
     }
 
     /**
@@ -136,7 +151,8 @@ class UserForm extends Model
             return null;
         }
 
-        $user = new User();
+        $user = User::findOne($this->userId);
+        $user->id = $this->userId;
         $user->username = $this->username;
         $user->email = $this->email;
 
@@ -148,12 +164,16 @@ class UserForm extends Model
         $user->generateEmailVerificationToken();
 
         $auth = Yii::$app->authManager;
-        $role = $auth->getRole($this->role);
-        if ($role)
-            $auth->assign($role, $user->id);
 
-        $user->status = 10;
-        $user->update() && $this->sendEmail($user);
+
+        if (!$auth->checkAccess($user->id, $this->role)) {
+            $role = $auth->getRole($this->role);
+
+            if ($role)
+                $auth->assign($role, $user->id);
+        }
+
+        $user->update();
 
         $user_info = new UserInfo();
         $user_info->id = $this->userInfoId;
