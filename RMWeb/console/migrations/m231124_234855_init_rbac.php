@@ -46,7 +46,6 @@ class m231124_234855_init_rbac extends Migration
         $user->status = 10;
         $user->save();
 
-        print_r($user->id);
         $userInfo = new UserInfo();
         $userInfo->user_id = $user->id;
         $userInfo->name = $roleName;
