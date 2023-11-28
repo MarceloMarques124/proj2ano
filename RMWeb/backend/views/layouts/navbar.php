@@ -22,6 +22,7 @@ use yii\helpers\Url;
             <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
                 <a href="<?= Url::to(['/restaurant/index']) ?>" class="nav-link">Restaurant</a>
                 <a href="<?= Url::to(['/zone/index']) ?>" class="nav-link">Zones</a>
+                <a href="<?= Url::to(['/table/index']) ?>" class="nav-link">Tables</a>
                 <li><?= Html::a('Sign out', ['site/logout'], ['data-method' => 'post', 'class' => 'dropdown-item']) ?></li>
 
                 <li class="dropdown-divider"></li>

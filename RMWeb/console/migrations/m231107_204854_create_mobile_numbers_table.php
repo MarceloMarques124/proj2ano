@@ -20,7 +20,7 @@ class m231107_204854_create_mobile_numbers_table extends Migration
             'user_id' => $this->integer()->notNull(),
             'mobile_number' => $this->string(20)->notNull(),
             'description' => $this->string(50),
-        ]);
+        ],'ENGINE=InnoDB');
 
         // creates index for column `user_id`
         $this->createIndex(

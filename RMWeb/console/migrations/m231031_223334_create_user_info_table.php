@@ -23,7 +23,7 @@ class m231031_223334_create_user_info_table extends Migration
             'door_number' => $this->string(50),
             'postal_code' => $this->string(20),
             'nif' => $this->integer(),
-        ]);
+        ],'ENGINE=InnoDB');
 
         // creates index for column `user_id`
         $this->createIndex(

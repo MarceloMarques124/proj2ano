@@ -20,7 +20,7 @@ class m231102_205028_create_menus_table extends Migration
             'name' => $this->string(100)->notNull(),
             'price' => $this->decimal(4,2)->notNull(),
             'restaurant_id' => $this->integer()->notNull(),
-        ]);
+        ],'ENGINE=InnoDB');
 
         // creates index for column `restaurant_id`
         $this->createIndex(

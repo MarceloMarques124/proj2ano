@@ -20,7 +20,7 @@ class m231102_205529_create_food_items_table extends Migration
             'name' => $this->string(100)->notNull(),
             'menu_id' => $this->integer(),
             'price' => $this->decimal(4,2),
-        ]);
+        ],'ENGINE=InnoDB');
 
         // creates index for column `menu_id`
         $this->createIndex(
