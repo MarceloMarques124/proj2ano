@@ -25,7 +25,7 @@ class m231107_212922_create_ordered_items_table extends Migration
             'menu_id' => $this->integer(),
             'quantity' => $this->integer()->notNull(),
             'state' => $this->integer()->notNull(),
-        ]);
+        ],'ENGINE=InnoDB');
 
         // creates index for column `food_order_id`
         $this->createIndex(

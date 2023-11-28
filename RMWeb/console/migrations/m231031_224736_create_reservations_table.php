@@ -23,7 +23,7 @@ class m231031_224736_create_reservations_table extends Migration
             'date_time' => $this->datetime()->notNull(),
             'people_number' => $this->integer()->notNull(),
             'remarks' => $this->text(),
-        ]);
+        ],'ENGINE=InnoDB');
 
         // creates index for column `table_id`
         $this->createIndex(

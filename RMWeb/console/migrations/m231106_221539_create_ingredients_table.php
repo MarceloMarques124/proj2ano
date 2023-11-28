@@ -16,7 +16,7 @@ class m231106_221539_create_ingredients_table extends Migration
             'id' => $this->primaryKey(),
             'stock_quantity' => $this->integer()->notNull(),
             'name' => $this->string(100)->notNull(),
-        ]);
+        ],'ENGINE=InnoDB');
     }
 
     /**

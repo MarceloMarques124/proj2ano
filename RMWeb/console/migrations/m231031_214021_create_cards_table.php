@@ -20,7 +20,7 @@ class m231031_214021_create_cards_table extends Migration
             'date_time' => $this->datetime(),
             'day_week' => $this->integer(),
             'restaurant_id' => $this->integer()->notNull(),
-        ]);
+        ],'ENGINE=InnoDB');
 
         // creates index for column `restaurant_id`
         $this->createIndex(

@@ -19,7 +19,7 @@ class m231031_191231_create_restaurants_table extends Migration
             'nif' => $this->integer()->notNull(),
             'email' => $this->string(100)->notNull(),
             'mobile_number' => $this->string(20)->notNull(),
-        ]);
+        ],'ENGINE=InnoDB');
     }
 
     /**

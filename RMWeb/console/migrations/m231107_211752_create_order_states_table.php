@@ -15,7 +15,7 @@ class m231107_211752_create_order_states_table extends Migration
         $this->createTable('{{%order_states}}', [
             'id' => $this->primaryKey(),
             'Name' => $this->string(50)->notNull(),
-        ]);
+        ],'ENGINE=InnoDB');
     }
 
     /**
