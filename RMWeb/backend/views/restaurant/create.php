@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /** @var yii\web\View $this */
-/** @var common\models\Restaurants $model */
+/** @var common\models\Restaurant $model */
 
 $this->title = 'Create Restaurants';
 $this->params['breadcrumbs'][] = ['label' => 'Restaurants', 'url' => ['index']];

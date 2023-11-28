@@ -1,10 +1,10 @@
 <?php
 
-use common\models\Restaurants;
-use yii\helpers\Html;
-use yii\helpers\Url;
+use common\models\Restaurant;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 /** @var yii\web\View $this */
 /** @var backend\models\RestaurantSearch $searchModel */
@@ -37,9 +37,9 @@ $this->params['breadcrumbs'][] = $this->title;
             //'mobile_number',
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Restaurants $model, $key, $index, $column) {
+                'urlCreator' => function ($action, Restaurant $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                }
             ],
         ],
     ]); ?>

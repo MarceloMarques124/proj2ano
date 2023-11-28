@@ -2,14 +2,14 @@
 
 namespace backend\models;
 
+use common\models\Restaurant;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Restaurants;
 
 /**
  * RestaurantSearch represents the model behind the search form of `common\models\Restaurants`.
  */
-class RestaurantSearch extends Restaurants
+class RestaurantSearch extends Restaurant
 {
     /**
      * {@inheritdoc}
@@ -40,7 +40,7 @@ class RestaurantSearch extends Restaurants
      */
     public function search($params)
     {
-        $query = Restaurants::find();
+        $query = Restaurant::find();
 
         // add conditions that should always apply here
 

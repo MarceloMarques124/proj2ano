@@ -2,7 +2,7 @@
 
 namespace common\models;
 
-use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "restaurants".
@@ -14,7 +14,7 @@ use Yii;
  * @property string $email
  * @property string $mobile_number
  */
-class Restaurants extends \yii\db\ActiveRecord
+class Restaurant extends ActiveRecord
 {
     /**
      * {@inheritdoc}

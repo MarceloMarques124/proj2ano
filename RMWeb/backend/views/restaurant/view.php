@@ -1,15 +1,16 @@
 <?php
 
 use yii\helpers\Html;
+use yii\web\YiiAsset;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
-/** @var common\models\Restaurants $model */
+/** @var common\models\Restaurant $model */
 
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Restaurants', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
+YiiAsset::register($this);
 ?>
 <div class="restaurants-view">
 
