@@ -70,5 +70,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="onClickConnect"
-        android:text="@string/btnConnect" />
+        android:text="@string/btnConnect"
+        android:textColor="@color/white"
+        android:textColorHighlight="@color/white"
+        android:textColorHint="@color/white"
+        android:textColorLink="@color/white"/>
 </LinearLayout>

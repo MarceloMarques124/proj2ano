@@ -2,6 +2,7 @@ package com.example.restmanager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -11,11 +12,12 @@ import android.widget.EditText;
 
 public class ServerConnectionActivity extends AppCompatActivity {
 
+
+    private EditText port;
     private EditText first;
     private EditText second;
     private EditText third;
     private EditText fourth;
-    private EditText port;
     private String IP;
 
     @Override
@@ -32,6 +34,13 @@ public class ServerConnectionActivity extends AppCompatActivity {
         addTextWatcher(first, second);
         addTextWatcher(second, third);
         addTextWatcher(third, fourth);
+
+        port.setText("8080");
+        first .setText("555");
+        second.setText("55");
+        third .setText("55");
+        fourth.setText("555");
+
     }
 
     public void onClickConnect(View view){
@@ -40,7 +49,7 @@ public class ServerConnectionActivity extends AppCompatActivity {
                 if (isValid(third, 2)){
                     if (isValid(fourth, 3)){
                         IP = first.getText().toString() + "." + second.getText().toString() + "." + third.getText().toString() + "." + fourth.getText().toString();
-                        System.out.println("---->" + IP);
+                        System.out.println("---->" + IP + ": " + port.getText().toString());
                         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(intent);
                         onStop();
