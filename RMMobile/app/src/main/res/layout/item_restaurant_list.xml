@@ -37,6 +37,10 @@
 
         </LinearLayout>
 
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="15dp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,6 +54,7 @@
                 android:layout_weight=".5"
                 android:backgroundTint="@color/green"
                 android:text="@string/btnAskTakeAway"
+                android:onClick="onClickTakeAway"
                 android:textColor="@color/white"
                 android:textColorHighlight="@color/white"
                 android:textColorHint="@color/white"
@@ -62,10 +67,13 @@
                 android:layout_weight=".4"
                 android:backgroundTint="@color/green"
                 android:text="@string/btnReserve"
+                android:onClick="onClickReserve"
                 android:textColor="@color/white"
                 android:textColorHighlight="@color/white"
                 android:textColorHint="@color/white"
                 android:textColorLink="@color/white" />
         </LinearLayout>
+
     </LinearLayout>
+
 </LinearLayout>

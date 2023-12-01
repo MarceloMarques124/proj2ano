@@ -1,5 +1,7 @@
 package com.example.restmanager.Model;
 
+import android.widget.Toast;
+
 import com.example.restmanager.Adapters.RestaurantsAdapter;
 import com.example.restmanager.R;
 
@@ -30,12 +32,17 @@ public class SingletonRestaurantManager {
         return new ArrayList<>(restaurants);
     }
 
-    /*public Restaurant getRestaurant(int id){
+    public Restaurant getRestaurant(int id){
         for (Restaurant r : restaurants) {
             if (r.getId() == id){
                 return r;
             }
         }
         return null;
+    }
+
+    /*public ArrayList<Orders> getOrders(int userId){
+        //return de orders daquele user.
     }*/
 }
+

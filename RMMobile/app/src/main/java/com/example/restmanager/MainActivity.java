@@ -12,7 +12,7 @@ import androidx.fragment.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Switch;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
@@ -60,13 +60,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             setTitle(item.getTitle());
         }
         else if(item.getItemId()== R.id.navOrders){
+            fragment = new OrdersFragment();
+            setTitle(item.getTitle());
+        }
+        else if(item.getItemId()== R.id.navServerConnection){
             intent = new Intent(getApplicationContext(), ServerConnectionActivity.class);
             startActivity(intent);
+        }
+        else if(item.getItemId()== R.id.navProfile){
+            fragment = new ProfileFragment();
+            setTitle(item.getTitle());
         }
         if (fragment != null)
             fragmentManager.beginTransaction().replace(R.id.contentFragment, fragment).commit();
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void onClickReserve(View view){
+        Toast.makeText(this, "Reservation", Toast.LENGTH_SHORT).show();
+    }
+
+    public void onClickTakeAway(View view){
+        Toast.makeText(this, "Take-Away", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getApplicationContext(), OrdersActivity.class);
+        startActivity(intent);
     }
 }
