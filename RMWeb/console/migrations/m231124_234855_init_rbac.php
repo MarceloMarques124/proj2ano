@@ -1,7 +1,10 @@
 <?php
 
+use common\models\Restaurant;
+use common\models\Table;
 use common\models\User;
 use common\models\UserInfo;
+use common\models\Zone;
 use yii\db\Migration;
 
 /**
@@ -28,11 +31,13 @@ class m231124_234855_init_rbac extends Migration
         $auth->assign($roleClient, 4);
         $auth->assign($roleManager, 5);
 
-        $this->createUser('admin');
-        $this->createUser('employee');
-        $this->createUser('chef');
-        $this->createUser('client');
-        $this->createUser('manager');
+        foreach (array('admin', 'employee', 'chef', 'client', 'manager') as $role) {
+            $this->createUser($role);
+        }
+
+        foreach (array('Restaurante Muito Bom', 'Restaurante Bom', 'Restaurante Mais ou Menos', 'Restaurante Mau', 'Restaurante Muito Mau') as $restaurantName) {
+            $this->createRestaurant($restaurantName);
+        }
     }
 
     public function createUser($roleName)
@@ -44,9 +49,7 @@ class m231124_234855_init_rbac extends Migration
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
         $user->status = 10;
-
-        $success = $user->save();
-        echo $success;
+        $user->save();
 
         $userInfo = new UserInfo();
         $userInfo->user_id = $user->id;
@@ -56,6 +59,38 @@ class m231124_234855_init_rbac extends Migration
         $userInfo->postal_code = '9999-999';
         $userInfo->nif = '999999999';
         $userInfo->save();
+    }
+
+    public function createRestaurant($restaurantName)
+    {
+        $restaurant = new Restaurant();
+
+        $restaurant->name = $restaurantName;
+        $restaurant->address = 'Rua do ' . $restaurantName;
+        $restaurant->nif = '999999999';
+        $restaurant->email = $restaurantName . '@' . $restaurantName . '.test';
+        $restaurant->mobile_number = '981234567';
+        $restaurant->save();
+
+
+        foreach (array('Esplanada', 'Dentro', 'Fora', 'Café', 'Restaurante') as $zoneName) {
+            $zone = new Zone();
+
+            $zone->name = $restaurantName . ' - ' . $zoneName;
+            $zone->description = $restaurantName . ' - ' . $zoneName;
+            $zone->restaurant_id = $restaurant->id;
+            $zone->save();
+
+            foreach (array('Mesa Muito Boa', 'Mesa Boa', 'Mesa Mais ou Menos', 'Mesa Má', 'Mesa Muito Má') as $tableDescription) {
+                $table = new Table();
+
+                $table->zone_id = $zone->id;
+                $table->description = $restaurantName . ' - ' . $zoneName . ' - ' . $tableDescription;
+                $table->save();
+            }
+        }
+
+
     }
 
     /**
