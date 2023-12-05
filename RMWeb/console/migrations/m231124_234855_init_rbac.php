@@ -44,7 +44,9 @@ class m231124_234855_init_rbac extends Migration
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
         $user->status = 10;
-        $user->save();
+
+        $success = $user->save();
+        echo $success;
 
         $userInfo = new UserInfo();
         $userInfo->user_id = $user->id;

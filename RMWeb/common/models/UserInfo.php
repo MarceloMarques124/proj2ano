@@ -40,7 +40,6 @@ class UserInfo extends ActiveRecord
             [['door_number'], 'string', 'max' => 50],
             [['postal_code'], 'string', 'max' => 20],
             [['user_id'], 'unique'],
-            [['nif'], 'unique'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
