@@ -26,7 +26,7 @@ class m231107_211956_create_food_orders_table extends Migration
             'price' => $this->decimal(4, 2)->notNull(),
             'take_away' => $this->boolean()->notNull(),
             'state' => $this->integer()->notNull(),
-        ]);
+        ],'ENGINE=InnoDB');
 
         // creates index for column `user_id`
         $this->createIndex(

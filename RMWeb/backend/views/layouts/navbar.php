@@ -18,19 +18,18 @@ use yii\helpers\Url;
             <a href="<?= Url::to(['/user/index']) ?>" class="nav-link">User Management</a>
         </li>
         <li class="nav-item dropdown">
-            <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-               class="nav-link dropdown-toggle">Dropdown</a>
+            <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">More options</a>
             <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
-                <li><a href="#" class="dropdown-item">Some action </a></li>
-                <li><a href="#" class="dropdown-item">Some other action</a></li>
+                <a href="<?= Url::to(['/restaurant/index']) ?>" class="nav-link">Restaurant</a>
+                <a href="<?= Url::to(['/zone/index']) ?>" class="nav-link">Zones</a>
+                <a href="<?= Url::to(['/table/index']) ?>" class="nav-link">Tables</a>
                 <li><?= Html::a('Sign out', ['site/logout'], ['data-method' => 'post', 'class' => 'dropdown-item']) ?></li>
 
                 <li class="dropdown-divider"></li>
 
                 <!-- Level two dropdown-->
                 <li class="dropdown-submenu dropdown-hover">
-                    <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
-                       aria-expanded="false" class="dropdown-item dropdown-toggle">Hover for action</a>
+                    <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">Hover for action</a>
                     <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
                         <li>
                             <a tabindex="-1" href="#" class="dropdown-item">level 2</a>
@@ -38,8 +37,7 @@ use yii\helpers\Url;
 
                         <!-- Level three dropdown-->
                         <li class="dropdown-submenu">
-                            <a id="dropdownSubMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
-                               aria-expanded="false" class="dropdown-item dropdown-toggle">level 2</a>
+                            <a id="dropdownSubMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">level 2</a>
                             <ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow">
                                 <li><a href="#" class="dropdown-item">3rd level</a></li>
                                 <li><a href="#" class="dropdown-item">3rd level</a></li>
@@ -78,8 +76,7 @@ use yii\helpers\Url;
             <div class="navbar-search-block">
                 <form class="form-inline">
                     <div class="input-group input-group-sm">
-                        <input class="form-control form-control-navbar" type="search" placeholder="Search"
-                               aria-label="Search">
+                        <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
                         <div class="input-group-append">
                             <button class="btn btn-navbar" type="submit">
                                 <i class="fas fa-search"></i>
@@ -103,8 +100,7 @@ use yii\helpers\Url;
                 <a href="#" class="dropdown-item">
                     <!-- Message Start -->
                     <div class="media">
-                        <img src="<?= $assetDir ?>/img/user1-128x128.jpg" alt="User Avatar"
-                             class="img-size-50 mr-3 img-circle">
+                        <img src="<?= $assetDir ?>/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
                         <div class="media-body">
                             <h3 class="dropdown-item-title">
                                 Brad Diesel
@@ -120,8 +116,7 @@ use yii\helpers\Url;
                 <a href="#" class="dropdown-item">
                     <!-- Message Start -->
                     <div class="media">
-                        <img src="<?= $assetDir ?>/img/user8-128x128.jpg" alt="User Avatar"
-                             class="img-size-50 img-circle mr-3">
+                        <img src="<?= $assetDir ?>/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
                         <div class="media-body">
                             <h3 class="dropdown-item-title">
                                 John Pierce
@@ -137,8 +132,7 @@ use yii\helpers\Url;
                 <a href="#" class="dropdown-item">
                     <!-- Message Start -->
                     <div class="media">
-                        <img src="<?= $assetDir ?>/img/user3-128x128.jpg" alt="User Avatar"
-                             class="img-size-50 img-circle mr-3">
+                        <img src="<?= $assetDir ?>/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
                         <div class="media-body">
                             <h3 class="dropdown-item-title">
                                 Nora Silvester

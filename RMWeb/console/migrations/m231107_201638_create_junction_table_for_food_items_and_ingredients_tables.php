@@ -21,7 +21,7 @@ class m231107_201638_create_junction_table_for_food_items_and_ingredients_tables
             'ingredients_id' => $this->integer(),
             'used_quantity' => $this->decimal(4,2)->notNull(),
             'PRIMARY KEY(food_items_id, ingredients_id)',
-        ]);
+        ],'ENGINE=InnoDB');
 
         // creates index for column `food_items_id`
         $this->createIndex(

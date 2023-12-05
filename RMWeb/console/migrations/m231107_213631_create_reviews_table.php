@@ -24,7 +24,7 @@ class m231107_213631_create_reviews_table extends Migration
             'restaurant_id' => $this->integer()->notNull(),
             'stars' => $this->decimal(1,1)->notNull(),
             'description' => $this->text(),
-        ]);
+        ],'ENGINE=InnoDB');
 
         // creates index for column `food_order_id`
         $this->createIndex(
