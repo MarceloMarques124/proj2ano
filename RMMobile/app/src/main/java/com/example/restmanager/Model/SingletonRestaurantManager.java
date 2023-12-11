@@ -6,6 +6,7 @@ import com.example.restmanager.Adapters.RestaurantsAdapter;
 import com.example.restmanager.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SingletonRestaurantManager {
     private ArrayList<Restaurant> restaurants;
@@ -40,6 +41,7 @@ public class SingletonRestaurantManager {
         }
         return null;
     }
+
 
     /*public ArrayList<Orders> getOrders(int userId){
         //return de orders daquele user.

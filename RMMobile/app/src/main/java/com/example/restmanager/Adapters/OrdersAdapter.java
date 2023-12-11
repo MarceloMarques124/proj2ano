@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.example.restmanager.Model.Orders;
+import com.example.restmanager.Model.Order;
 
 import java.util.ArrayList;
 
@@ -14,9 +14,9 @@ public class OrdersAdapter extends BaseAdapter {
 
     private Context context;
     private LayoutInflater inflater;
-    private ArrayList<Orders> orders;
+    private ArrayList<Order> orders;
 
-    public OrdersAdapter(Context context, ArrayList<Orders> orders) {
+    public OrdersAdapter(Context context, ArrayList<Order> orders) {
         this.context = context;
         this.orders = orders;
     }

@@ -18,6 +18,7 @@ public class RestaurantsAdapter extends BaseAdapter {
     private ArrayList<Restaurant> restaurants;
 
     public RestaurantsAdapter(Context context, ArrayList<Restaurant> restaurants) {
+        super();
         this.context = context;
         this.restaurants = restaurants;
     }
@@ -57,14 +58,20 @@ public class RestaurantsAdapter extends BaseAdapter {
     private class ViewHolderList{
         private TextView tvRestName;
         private ImageView imgCover;
+        private TextView tvLocal;
+        private TextView tvPhone;
 
         public ViewHolderList(View view){
             tvRestName = view.findViewById(R.id.tvRestName);
             imgCover = view.findViewById(R.id.imgCover);
+            tvLocal = view.findViewById(R.id.tvLocal);
+            tvPhone = view.findViewById(R.id.tvPhone);
         }
         public void update(Restaurant restaurant){
             tvRestName.setText(restaurant.getName());
-          //  imgCover.setImageResource(restaurant.getCover());
+            tvLocal.setText(restaurant.getAddress());
+            tvPhone.setText(restaurant.getMobileNumber());
+           // imgCover.setImageResource(restaurant.getCover());
         }
     }
 }

@@ -4,26 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="15dp"
     android:orientation="vertical"
     tools:context=".RestaurantDetailsActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight=".1"
         android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/imgCover"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight=".4"
             tools:ignore="ImageContrastCheck" />
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight=".6"
             android:orientation="vertical">
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="19dp" />
 
             <TextView
                 android:id="@+id/tvRestName"
@@ -33,96 +39,77 @@
                 android:text="TextView"
                 android:textSize="20sp" />
 
-            <Button
-                android:id="@+id/btnAskTakeAway"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:backgroundTint="@color/green"
-                android:text="@string/btnAskTakeAway"
-                android:textColor="@color/white"
-                android:textColorHighlight="@color/white"
-                android:textColorHint="@color/white"
-                android:textColorLink="@color/white" />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="19dp" />
 
-            <Button
-                android:id="@+id/btnReserve"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="right"
-                android:backgroundTint="@color/green"
-                android:text="@string/btnReserve"
-                android:textColor="@color/white"
-                android:textColorHighlight="@color/white"
-                android:textColorHint="@color/white"
-                android:textColorLink="@color/white" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imgLocal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="3dp"
+                    app:srcCompat="@drawable/ic_localization"
+                    app:tint="@color/black" />
+
+                <TextView
+                    android:id="@+id/tvLocal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="TextView" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imgPhone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_phone"
+                    app:tint="@color/black" />
+
+                <TextView
+                    android:id="@+id/tvPhone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="3dp"
+                    android:layout_weight="1"
+                    android:text="TextView" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imgEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="3dp"
+                    app:srcCompat="@drawable/ic_email"
+                    app:tint="@color/black" />
+
+                <TextView
+                    android:id="@+id/tvEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="TextView" />
+
+            </LinearLayout>
 
         </LinearLayout>
-
-    </LinearLayout>
-
-    <View
-        android:id="@+id/view3"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/imgLocal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_localization" />
-
-        <TextView
-            android:id="@+id/tvLocal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="TextView" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/imgPhone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_phone" />
-
-        <TextView
-            android:id="@+id/tvPhone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="TextView" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/imgEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_email" />
-
-        <TextView
-            android:id="@+id/tvEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="TextView" />
 
     </LinearLayout>
 
@@ -132,14 +119,63 @@
         android:layout_height="1dp"
         android:background="?android:attr/listDivider" />
 
-    <FrameLayout
+    <Space
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="25dp" />
 
-        <ListView
-            android:id="@+id/lvReviews"
+    <ListView
+        android:id="@+id/lvReviews"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".3" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </FrameLayout>
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/btnReserve"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="fill_horizontal"
+                android:layout_marginEnd="60dp"
+                android:backgroundTint="@color/green"
+                android:onClick="onClickReserve"
+                android:text="@string/btnReserve"
+                android:textColor="@color/white"
+                android:textColorHighlight="@color/white"
+                android:textColorHint="@color/white"
+                android:textColorLink="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <Button
+                android:id="@+id/btnAskTakeAway"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="44dp"
+                android:backgroundTint="@color/green"
+                android:gravity="center_horizontal|left"
+                android:onClick="onClickTakeAway"
+                android:text="@string/btnAskTakeAway"
+                android:textColor="@color/white"
+                android:textColorHighlight="@color/white"
+                android:textColorHint="@color/white"
+                android:textColorLink="@color/white"
+                app:iconGravity="start"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="TouchTargetSizeCheck" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
 
 </LinearLayout>

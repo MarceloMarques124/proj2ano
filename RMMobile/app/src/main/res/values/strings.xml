@@ -30,4 +30,9 @@
     <string name="navServerConnection">Server Connection</string>
     <string name="navProfile">Profile</string>
     <string name="strEmpty" />
+    <string name="tvPeopleNumber">People Number</string>
+    <string name="tvZones">Zone</string>
+    <string name="tvTable">Table</string>
+    <string name="tvDate">Date</string>
+    <string name="tvTime">Time</string>
 </resources>

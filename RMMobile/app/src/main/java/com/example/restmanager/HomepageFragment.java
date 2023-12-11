@@ -36,15 +36,18 @@ public class HomepageFragment extends Fragment {
         restaurants = SingletonRestaurantManager.getInstance().getRestaurants();
         binding.lvRestaurants.setAdapter(new RestaurantsAdapter(getContext(), restaurants));
 
+
         binding.lvRestaurants.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(getContext(), "ikpojfed", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getContext(), RestaurantDetailsActivity.class); //Details de Restaurant
-                intent.putExtra(String.valueOf(ID_RESTAURANT), (int)id);
+                intent.putExtra(ID_RESTAURANT, (int)id);
                 startActivity(intent);
+
             }
         });
         return view;
     }
+
 }

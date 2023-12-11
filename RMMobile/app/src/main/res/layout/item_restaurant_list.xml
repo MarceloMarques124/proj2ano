@@ -4,8 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    tools:context=".item_restaurant_list">
+    android:layout_marginTop="15dp"
+    android:layout_marginEnd="15dp"
+    android:layout_marginStart="15dp"
+    android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/imgCover"
@@ -23,7 +25,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="1dp"
             android:orientation="horizontal">
 
             <TextView
@@ -32,16 +34,21 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Test"
+                android:padding="0dp"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="18sp"
+                android:gravity="center"/>
 
         </LinearLayout>
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="15dp" />
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            android:backgroundTint="@color/green"/>
 
-        <LinearLayout
+        <!--<LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
@@ -49,6 +56,7 @@
 
             <Button
                 android:id="@+id/btnAskTakeAway"
+                android:focusable="false"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".5"
@@ -62,6 +70,7 @@
 
             <Button
                 android:id="@+id/btnReserve"
+                android:focusable="false"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".4"
@@ -72,7 +81,53 @@
                 android:textColorHighlight="@color/white"
                 android:textColorHint="@color/white"
                 android:textColorLink="@color/white" />
+        </LinearLayout>-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp">
+
+            <ImageView
+                android:id="@+id/imgLocal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="3dp"
+                app:srcCompat="@drawable/ic_localization"
+                app:tint="@color/black" />
+
+            <TextView
+                android:id="@+id/tvLocal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="TextView" />
+
         </LinearLayout>
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+            android:layout_marginBottom="5dp">
+
+        <ImageView
+            android:id="@+id/imgPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_phone"
+            app:tint="@color/black" />
+
+        <TextView
+            android:id="@+id/tvPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="3dp"
+            android:layout_weight="1"
+            android:text="TextView"/>
+
+    </LinearLayout>
 
     </LinearLayout>
 

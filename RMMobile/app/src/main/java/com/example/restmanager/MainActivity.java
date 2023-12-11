@@ -78,13 +78,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    public void onClickReserve(View view){
+    /*public void onClickReserve(View view){
         Toast.makeText(this, "Reservation", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getApplicationContext(), ReserveActivity.class);
+        startActivity(intent);
     }
 
     public void onClickTakeAway(View view){
         Toast.makeText(this, "Take-Away", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getApplicationContext(), OrdersActivity.class);
         startActivity(intent);
-    }
+    }*/
 }

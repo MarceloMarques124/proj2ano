@@ -1,23 +1,21 @@
 package com.example.restmanager;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
-import android.app.Activity;
 import android.os.Bundle;
 
-import com.example.restmanager.Adapters.RestaurantsAdapter;
-import com.example.restmanager.Model.Orders;
-import com.example.restmanager.Model.SingletonRestaurantManager;
-import com.example.restmanager.databinding.ActivityLoginBinding;
+import com.example.restmanager.Model.Order;
+import com.example.restmanager.Model.Order;
 import com.example.restmanager.databinding.ActivityOrdersBinding;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class OrdersActivity extends AppCompatActivity {
 
     private ActivityOrdersBinding binding;
-    private ArrayList<Orders> orders;
+    private ArrayList<Order> orders;
+    private List<String> zones;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,11 +25,8 @@ public class OrdersActivity extends AppCompatActivity {
         binding = ActivityOrdersBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-      //  orders = SingletonRestaurantManager.getInstance().getOrders(4);
 
-  //      binding.lvOrders.setAdapter(new RestaurantsAdapter(getContext(), orders));
-
-
+        //binding.spinnerZones;
         //get dos menus do restaurante
     }
 }

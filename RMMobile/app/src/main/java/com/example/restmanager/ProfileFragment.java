@@ -29,6 +29,14 @@ public class ProfileFragment extends Fragment {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
+        binding.etName.setText("Teste");
+        binding.etAddress.setText("Rua da de teste de leiria");
+        binding.etDoorNumber.setText("7.ªE");
+        binding.etEmail.setText("teste@teste.com");
+        binding.etNif.setText("256365966");
+        binding.etPostalCode.setText("2425-963");
+        binding.etUsername.setText("Teste");
+
 
 
         return view;
