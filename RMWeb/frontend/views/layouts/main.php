@@ -64,21 +64,26 @@ AppAsset::register($this);
 
         <nav class="navbar navbar-expand-lg navbar-light py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
             <a href="index.php" class="navbar-brand ms-4 ms-lg-0">
-                <img src="assets/img/png/logo-no-background.png" width="180" height="61,74">
+                <img src="images/png/mainlogo.png" width="180" height="61,74">
             </a>
             <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto p-4 p-lg-0">
-                    <?= Html::a('Home', ['site/index'], ['data-method' => 'post', 'class' => 'nav-item nav-link'])?>
-                    <?= Html::a('About', ['site/about'], ['data-method' => 'post', 'class' => 'nav-item nav-link'])?>
-                    <?= Html::a('Contact', ['site/contact'], ['data-method' => 'post', 'class' => 'nav-item nav-link'])?>
+                    <?php /*= Html::a('Contact', ['site/contact'], ['data-method' => 'post', 'class' => 'nav-item nav-link'])*/?><!--
+                    <?php /*= Html::a('Contact', ['site/contact'], ['data-method' => 'post', 'class' => 'nav-item nav-link'])*/?>
+                    <?php /*= Html::a('Contact', ['site/contact'], ['data-method' => 'post', 'class' => 'nav-item nav-link'])*/?>
+                    --><?php /*= Html::a('Contact', ['site/contact'], ['data-method' => 'post', 'class' => 'nav-item nav-link'])*/?>
 
                     <?php
                         if (Yii::$app->user->isGuest){
-                           echo Html::a('Login', ['site/login'], ['data-method' => 'post', 'class' => 'nav-item nav-link']);
+                            echo Html::a('Login', ['site/login'], ['data-method' => 'post', 'class' => 'nav-item nav-link']);
                         }else {
+                            echo Html::a('Home', ['site/index'], ['data-method' => 'post', 'class' => 'nav-item nav-link']);
+                            echo Html::a('Reserves', ['reservations/index'], ['data-method' => 'post', 'class' => 'nav-item nav-link']); //este ve so as realizadas
+                            echo Html::a('Orders', ['orders/index'], ['data-method' => 'post', 'class' => 'nav-item nav-link']); //este ve so as concluidas
+                            echo Html::a('Home', ['site/index'], ['data-method' => 'post', 'class' => 'nav-item nav-link']);
                             echo Html::a('Logout', ['site/logout'], ['data-method' => 'post', 'class' => 'nav-item nav-link']);
 
                         }
