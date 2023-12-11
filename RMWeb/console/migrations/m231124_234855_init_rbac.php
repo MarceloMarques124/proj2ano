@@ -86,6 +86,7 @@ class m231124_234855_init_rbac extends Migration
 
                 $table->zone_id = $zone->id;
                 $table->description = $restaurantName . ' - ' . $zoneName . ' - ' . $tableDescription;
+                $table->capacity = 4;
                 $table->save();
             }
         }

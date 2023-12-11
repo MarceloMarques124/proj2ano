@@ -20,7 +20,7 @@
         "yiisoft/yii2-symfonymailer": "~2.0.3",
         "hail812/yii2-adminlte3": "~1.1",
         "rmrevin/yii2-fontawesome": "2.10.*",
-        "codeception/module-webdriver": "*"
+        "2amigos/yii2-date-time-picker-widget": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
