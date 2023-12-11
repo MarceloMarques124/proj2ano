@@ -2,6 +2,7 @@ package com.example.restmanager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
@@ -10,30 +11,34 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.restmanager.databinding.ActivityLoginBinding;
+
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText etEmail;
-    private EditText etPassword;
+    private ActivityLoginBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        etEmail = findViewById(R.id.etEmailUsername);
-        etPassword = findViewById(R.id.etPassword);
+        binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        binding.etEmailUsername.setText("z@z.x");
+        binding.etPassword.setText("1234");
     }
 
     public void onClickLogin(View view){
         Toast.makeText(this, "Login clicked", Toast.LENGTH_SHORT).show();
-        String email = etEmail.getText() + "";
-        String pass = etPassword.getText() + "";
+        String email = binding.etEmailUsername.getText() + "";
+        String pass = binding.etPassword.getText() + "";
         if (!isEmailValid(email) || !isUsernameValid(email)){
-                etEmail.setError(getString(R.string.etEmailError));
+            binding.etEmailUsername.setError(getString(R.string.etEmailError));
                 return;
         }
         if (!isPasswordValid(pass)){
-            etPassword.setError(getString(R.string.etPasswordError));
+            binding.etPassword.setError(getString(R.string.etPasswordError));
             return;
         }
 
