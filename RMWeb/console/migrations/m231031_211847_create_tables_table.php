@@ -19,6 +19,7 @@ class m231031_211847_create_tables_table extends Migration
             'id' => $this->primaryKey(),
             'zone_id' => $this->integer()->notNull(),
             'description' => $this->string(200),
+            'capacity' => $this->integer()->notNull()
         ],'ENGINE=InnoDB');
 
         // creates index for column `zone_id`
