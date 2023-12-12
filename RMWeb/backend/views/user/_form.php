@@ -20,8 +20,6 @@ use yii\helpers\ArrayHelper;
 
     <?= $form->field($userForm, 'email') ?>
 
-    <?= $form->field($userForm, 'password')->passwordInput() ?>
-
     <?= $form->field($userForm, 'name')->textInput() ?>
 
     <?= $form->field($userForm, 'address')->textInput() ?>
@@ -32,9 +30,12 @@ use yii\helpers\ArrayHelper;
 
     <?= $form->field($userForm, 'nif')->textInput() ?>
 
-    <?= $form->field($userForm, 'role')->dropDownList(ArrayHelper::map($roles, 'name', 'name'),
+    <?= $form->field($userForm, 'role')->dropDownList(
+        array_diff_assoc(ArrayHelper::map($roles, 'name', 'name'), ['client' => 'client']),
         ['prompt' => 'Select Role'] // Optional prompt
-    )->label('Select Role'); ?>
+    )->label('Select Role');
+?>
+
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success', 'name' => 'signup-button']) ?>

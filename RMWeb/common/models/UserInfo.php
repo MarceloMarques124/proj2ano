@@ -15,8 +15,12 @@ use yii\db\ActiveRecord;
  * @property string|null $door_number
  * @property string|null $postal_code
  * @property int|null $nif
+ * @property int $restaurant_id
+ * 
  *
  * @property User $user
+ * @property Restaurant $restaurant
+ * 
  */
 class UserInfo extends ActiveRecord
 {
@@ -44,6 +48,7 @@ class UserInfo extends ActiveRecord
         ];
     }
 
+
     /**
      * {@inheritdoc}
      */
@@ -68,5 +73,10 @@ class UserInfo extends ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+    public function getRestaurant()
+    {
+        return $this->hasOne(Restaurant::class, ['id' => 'user_id']);
     }
 }

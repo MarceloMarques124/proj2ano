@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use common\models\Zone;
 
 /**
  * This is the model class for table "tables".
