@@ -9,7 +9,9 @@ use common\models\Table;
 use yii\filters\VerbFilter;
 use common\models\Reservation;
 use yii\web\NotFoundHttpException;
+use yii\web\ForbiddenHttpException;
 use backend\models\ReservationSearch;
+use yii\filters\AccessControl;
 
 /**
  * ReservationController implements the CRUD actions for Reservation model.
@@ -28,6 +30,19 @@ class ReservationController extends Controller
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
+                    ],
+                ],
+                'access' => [
+                    'class' => AccessControl::className(),
+                    'rules' => [
+                        [
+                            'actions' => ['update', 'index', 'delete', 'view', 'create'],
+                            'allow' => true,
+                            'roles' => ['ReservationManagement'],
+                            'denyCallback' => function ($rule, $action) {
+                                throw new ForbiddenHttpException('You are not allowed to perform this action.');
+                            },
+                        ],
                     ],
                 ],
             ]
@@ -74,7 +89,7 @@ class ReservationController extends Controller
         $tables = Table::find()->all();
 
         $auth = Yii::$app->authManager;
-        $userIds = $auth->getUserIdsByRole('admin');
+        $userIds = $auth->getUserIdsByRole('client');
         $users = User::find()
             ->where(['in', 'id', $userIds])
             ->all();
@@ -89,8 +104,8 @@ class ReservationController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'tables' => $tables,    
-            'users' => $users, 
+            'tables' => $tables,
+            'users' => $users,
         ]);
     }
 

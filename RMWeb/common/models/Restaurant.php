@@ -51,4 +51,5 @@ class Restaurant extends ActiveRecord
             'mobile_number' => 'Mobile Number',
         ];
     }
+
 }

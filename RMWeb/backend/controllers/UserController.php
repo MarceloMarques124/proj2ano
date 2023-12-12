@@ -2,16 +2,17 @@
 
 namespace backend\controllers;
 
+use Yii;
+use yii\web\Response;
+use common\models\User;
+use yii\web\Controller;
 use common\models\UserForm;
 use common\models\UserInfo;
-use common\models\UserInfoSearch;
-use Yii;
-use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
-use yii\web\Controller;
-use yii\web\ForbiddenHttpException;
+use yii\filters\AccessControl;
+use common\models\UserInfoSearch;
 use yii\web\NotFoundHttpException;
-use yii\web\Response;
+use yii\web\ForbiddenHttpException;
 
 /**
  * UserController implements the CRUD actions for UserInfo model.
@@ -38,7 +39,7 @@ class UserController extends Controller
                         [
                             'actions' => ['update', 'index', 'delete', 'view', 'create'],
                             'allow' => true,
-                            'roles' => ['admin'],
+                            'roles' => ['UserManagement'],
                             'denyCallback' => function ($rule, $action) {
                                 throw new ForbiddenHttpException('You are not allowed to perform this action.');
                             },
@@ -56,7 +57,16 @@ class UserController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new UserInfoSearch();
+        if (\Yii::$app->user->can('admin')) {
+            $searchModel = new UserInfoSearch();
+        }
+
+        if (\Yii::$app->user->can('manager')) {
+            $idUserLogged = Yii::$app->user->getId();
+            $userInfo = UserInfo::findOne(['user_id' => $idUserLogged]);
+            $searchModel = new UserInfoSearch(['restaurant_id' => $userInfo->restaurant_id]);
+        }
+
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
