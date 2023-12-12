@@ -4,8 +4,6 @@ use yii\helpers\Html;
 
 /** @var yii\web\View $this */
 /** @var common\models\Table $model */
-/** @var common\models\Zones[] $zones */
-
 
 $this->title = 'Update Table: ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Tables', 'url' => ['index']];
@@ -18,7 +16,6 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <?= $this->render('_form', [
         'model' => $model,
-        'zones' => $zones,
     ]) ?>
 
 </div>

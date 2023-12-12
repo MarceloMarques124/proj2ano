@@ -4,7 +4,6 @@ namespace backend\controllers;
 
 use common\models\Table;
 use backend\models\TableSearch;
-use common\models\Zone;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -69,7 +68,6 @@ class TableController extends Controller
     public function actionCreate()
     {
         $model = new Table();
-        $zones = Zone::find()->all();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -81,7 +79,6 @@ class TableController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'zones' => $zones,
         ]);
     }
 
@@ -95,7 +92,6 @@ class TableController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $zones = Zone::find()->all();
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -103,7 +99,6 @@ class TableController extends Controller
 
         return $this->render('update', [
             'model' => $model,
-            'zones' => $zones,
         ]);
     }
 

@@ -2,9 +2,6 @@
 
 namespace common\models;
 
-use common\models\Zone;
-
-
 use Yii;
 
 /**
@@ -13,6 +10,11 @@ use Yii;
  * @property int $id
  * @property int $zone_id
  * @property string|null $description
+ * @property int $capacity
+ *
+ * @property FoodOrder[] $foodOrders
+ * @property Reservation $reservation
+ * @property Zone $zone
  */
 class Table extends \yii\db\ActiveRecord
 {
@@ -30,10 +32,10 @@ class Table extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['zone_id'], 'required'],
-            [['zone_id'], 'integer'],
-            [['zone_id'], 'exist', 'targetClass' => Zone::className(), 'targetAttribute' => ['zone_id' => 'id']],
+            [['zone_id', 'capacity'], 'required'],
+            [['zone_id', 'capacity'], 'integer'],
             [['description'], 'string', 'max' => 200],
+            [['zone_id'], 'exist', 'skipOnError' => true, 'targetClass' => Zone::class, 'targetAttribute' => ['zone_id' => 'id']],
         ];
     }
 
@@ -46,6 +48,37 @@ class Table extends \yii\db\ActiveRecord
             'id' => 'ID',
             'zone_id' => 'Zone ID',
             'description' => 'Description',
+            'capacity' => 'Capacity',
         ];
+    }
+
+    /**
+     * Gets query for [[FoodOrders]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFoodOrders()
+    {
+        return $this->hasMany(FoodOrder::class, ['table_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Reservation]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getReservation()
+    {
+        return $this->hasOne(Reservation::class, ['table_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Zone]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getZone()
+    {
+        return $this->hasOne(Zone::class, ['id' => 'zone_id']);
     }
 }

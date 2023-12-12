@@ -18,8 +18,8 @@ class m231031_224736_create_reservations_table extends Migration
     {
         $this->createTable('{{%reservations}}', [
             'id' => $this->primaryKey(),
-            'table_id' => $this->integer()->unique()->notNull(),
-            'user_id' => $this->integer()->unique()->notNull(),
+            'table_id' => $this->integer()->notNull(),
+            'user_id' => $this->integer()->notNull(),
             'date_time' => $this->datetime()->notNull(),
             'people_number' => $this->integer()->notNull(),
             'remarks' => $this->text(),

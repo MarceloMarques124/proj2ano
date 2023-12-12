@@ -23,7 +23,8 @@ class m231031_223334_create_user_info_table extends Migration
             'door_number' => $this->string(50),
             'postal_code' => $this->string(20),
             'nif' => $this->integer(),
-        ],'ENGINE=InnoDB');
+            'restaurant_id' => $this->integer()
+        ], 'ENGINE=InnoDB');
 
         // creates index for column `user_id`
         $this->createIndex(
@@ -38,6 +39,23 @@ class m231031_223334_create_user_info_table extends Migration
             '{{%user_info}}',
             'user_id',
             '{{%user}}',
+            'id',
+            'CASCADE'
+        );
+
+        // creates index for column `restaurant_id`
+        $this->createIndex(
+            '{{%idx-user_info-restaurant_id}}',
+            '{{%user_info}}',
+            'restaurant_id'
+        );
+
+        // add foreign key for table `{{%restaurant}}`
+        $this->addForeignKey(
+            '{{%fk-user_info-restaurant_id}}',
+            '{{%user_info}}',
+            'restaurant_id',
+            '{{%restaurants}}',
             'id',
             'CASCADE'
         );
@@ -57,6 +75,18 @@ class m231031_223334_create_user_info_table extends Migration
         // drops index for column `user_id`
         $this->dropIndex(
             '{{%idx-user_info-user_id}}',
+            '{{%user_info}}'
+        );
+
+        // drops foreign key for table `{{%restaurant}}`
+        $this->dropForeignKey(
+            '{{%fk-user_info-restaurant_id}}',
+            '{{%user_info}}'
+        );
+
+        // drops index for column `restaurant_id`
+        $this->dropIndex(
+            '{{%idx-user_info-restaurant_id}}',
             '{{%user_info}}'
         );
 
