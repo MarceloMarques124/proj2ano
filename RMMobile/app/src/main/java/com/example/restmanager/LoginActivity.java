@@ -53,6 +53,15 @@ public class LoginActivity extends AppCompatActivity {
         onPause();
 
     }
+
+    public void onClickServer(View view){
+        Intent intent = new Intent(getApplicationContext(), ServerConnectionActivity.class);
+        startActivity(intent);
+        onPause();
+
+    }
+
+
     public boolean isEmailValid(String email){
         System.out.println("--->çjk");
         if (email.isEmpty())

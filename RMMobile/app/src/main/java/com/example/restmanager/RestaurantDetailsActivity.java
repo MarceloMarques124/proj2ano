@@ -22,12 +22,14 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_details);
+
+
         
         binding = ActivityRestaurantDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         int id = getIntent().getIntExtra(String.valueOf(ID_RESTAURANT), 0);
-        restaurant = SingletonRestaurantManager.getInstance().getRestaurant(id);
+        restaurant = SingletonRestaurantManager.getInstance(getApplicationContext()).getRestaurant(id);
         binding.imgCover.setImageResource(restaurant.getCover());
         binding.tvEmail.setText(restaurant.getEmail());
         binding.tvRestName.setText(restaurant.getName());

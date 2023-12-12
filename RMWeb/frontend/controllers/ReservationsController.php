@@ -3,10 +3,12 @@
 namespace frontend\controllers;
 
 use common\models\Reservation;
+use Yii;
 use yii\data\ActiveDataProvider;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * ReservationsController implements the CRUD actions for Reservation model.
@@ -38,8 +40,9 @@ class ReservationsController extends Controller
      */
     public function actionIndex()
     {
+        $id = Yii::$app->user->getIdentity()->getId();
         $dataProvider = new ActiveDataProvider([
-            'query' => Reservation::find(),
+            'query' => Reservation::findByUserId($id),
             /*
             'pagination' => [
                 'pageSize' => 50
@@ -51,7 +54,6 @@ class ReservationsController extends Controller
             ],
             */
         ]);
-
         return $this->render('index', [
             'dataProvider' => $dataProvider,
         ]);
@@ -71,9 +73,25 @@ class ReservationsController extends Controller
     }
 
     /**
+     * Finds the Reservation model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param int $id ID
+     * @return Reservation the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id)
+    {
+        if (($model = Reservation::findOne(['id' => $id])) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    /**
      * Creates a new Reservation model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
+     * @return string|Response
      */
     public function actionCreate()
     {
@@ -96,7 +114,7 @@ class ReservationsController extends Controller
      * Updates an existing Reservation model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
-     * @return string|\yii\web\Response
+     * @return string|Response
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
@@ -116,7 +134,7 @@ class ReservationsController extends Controller
      * Deletes an existing Reservation model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
-     * @return \yii\web\Response
+     * @return Response
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
@@ -124,21 +142,5 @@ class ReservationsController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
-    }
-
-    /**
-     * Finds the Reservation model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id ID
-     * @return Reservation the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    {
-        if (($model = Reservation::findOne(['id' => $id])) !== null) {
-            return $model;
-        }
-
-        throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

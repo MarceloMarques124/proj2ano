@@ -1,24 +1,22 @@
 package com.example.restmanager.Model;
 
-import android.widget.Toast;
+import android.content.Context;
 
-import com.example.restmanager.Adapters.RestaurantsAdapter;
 import com.example.restmanager.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class SingletonRestaurantManager {
     private ArrayList<Restaurant> restaurants;
     private static SingletonRestaurantManager instance = null;
 
-    public static synchronized SingletonRestaurantManager getInstance(){
+    public static synchronized SingletonRestaurantManager getInstance(Context context){
         if (instance == null)
-            instance = new SingletonRestaurantManager();
+            instance = new SingletonRestaurantManager(context);
         return instance;
     }
 
-    private SingletonRestaurantManager() {
+    private SingletonRestaurantManager(Context context) {
         generateDinamicData();
     }
 

@@ -2,7 +2,8 @@
 
 namespace common\models;
 
-use Yii;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "tables".
@@ -16,7 +17,7 @@ use Yii;
  * @property Reservation $reservation
  * @property Zone $zone
  */
-class Table extends \yii\db\ActiveRecord
+class Table extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -45,7 +46,7 @@ class Table extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
+            'id' => 'Table Number',
             'zone_id' => 'Zone ID',
             'description' => 'Description',
             'capacity' => 'Capacity',
@@ -55,7 +56,7 @@ class Table extends \yii\db\ActiveRecord
     /**
      * Gets query for [[FoodOrders]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getFoodOrders()
     {
@@ -65,7 +66,7 @@ class Table extends \yii\db\ActiveRecord
     /**
      * Gets query for [[Reservation]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getReservation()
     {
@@ -75,7 +76,7 @@ class Table extends \yii\db\ActiveRecord
     /**
      * Gets query for [[Zone]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getZone()
     {

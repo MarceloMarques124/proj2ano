@@ -2,7 +2,8 @@
 
 namespace common\models;
 
-use Yii;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "reservations".
@@ -17,8 +18,12 @@ use Yii;
  * @property Table $table
  * @property User $user
  */
-class Reservation extends \yii\db\ActiveRecord
+class Reservation extends ActiveRecord
 {
+    const STATUS_DELETED = 0;
+    const STATUS_INACTIVE = 9;
+    const STATUS_ACTIVE = 10;
+
     /**
      * {@inheritdoc}
      */
@@ -28,8 +33,21 @@ class Reservation extends \yii\db\ActiveRecord
     }
 
     /**
+     * Gets query for [[Table]].
+     *
+     * @return Reservation
+     */
+
+
+    /**
      * {@inheritdoc}
      */
+
+    public static function findByUserId($id)
+    {
+        return self::find()->where(['user_id' => $id]);
+    }
+
     public function rules()
     {
         return [
@@ -59,11 +77,6 @@ class Reservation extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * Gets query for [[Table]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
     public function getTable()
     {
         return $this->hasOne(Table::class, ['id' => 'table_id']);
@@ -72,7 +85,7 @@ class Reservation extends \yii\db\ActiveRecord
     /**
      * Gets query for [[User]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getUser()
     {
