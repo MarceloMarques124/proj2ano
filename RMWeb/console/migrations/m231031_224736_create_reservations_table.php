@@ -8,6 +8,8 @@ use yii\db\Migration;
  *
  * - `{{%tables}}`
  * - `{{%user}}`
+ * - `{{%restaurants}}`
+ * 
  */
 class m231031_224736_create_reservations_table extends Migration
 {
@@ -23,7 +25,8 @@ class m231031_224736_create_reservations_table extends Migration
             'date_time' => $this->datetime()->notNull(),
             'people_number' => $this->integer()->notNull(),
             'remarks' => $this->text(),
-        ],'ENGINE=InnoDB');
+            'restaurant_id' => $this->integer()->notNull(),
+        ], 'ENGINE=InnoDB');
 
         // creates index for column `table_id`
         $this->createIndex(
@@ -58,6 +61,23 @@ class m231031_224736_create_reservations_table extends Migration
             'id',
             'CASCADE'
         );
+
+        // creates index for column `restaurant_id`
+        $this->createIndex(
+            '{{%idx-reservations-restaurant_id}}',
+            '{{%reservations}}',
+            'restaurant_id'
+        );
+
+        // add foreign key for table `{{%restaurant}}`
+        $this->addForeignKey(
+            '{{%fk-reservations-restaurant_id}}',
+            '{{%reservations}}',
+            'restaurant_id',
+            '{{%restaurants}}',
+            'id',
+            'CASCADE'
+        );
     }
 
     /**
@@ -86,6 +106,18 @@ class m231031_224736_create_reservations_table extends Migration
         // drops index for column `user_id`
         $this->dropIndex(
             '{{%idx-reservations-user_id}}',
+            '{{%reservations}}'
+        );
+
+        // drops foreign key for table `{{%restaurant}}`
+        $this->dropForeignKey(
+            '{{%fk-reservations-restaurant_id}}',
+            '{{%reservations}}'
+        );
+
+        // drops index for column `restaurant_id`
+        $this->dropIndex(
+            '{{%idx-reservations-restaurant_id}}',
             '{{%reservations}}'
         );
 
