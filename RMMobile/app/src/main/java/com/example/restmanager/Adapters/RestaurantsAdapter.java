@@ -55,7 +55,7 @@ public class RestaurantsAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private class ViewHolderList{
+    class ViewHolderList{
         private TextView tvRestName;
         private ImageView imgCover;
         private TextView tvLocal;

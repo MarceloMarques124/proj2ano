@@ -8,8 +8,8 @@
 
     <style name="Theme.RestManager" parent="Base.Theme.RestManager" />
 
-    <!--<style name="Theme.RestManager.NoActionBar">
+    <style name="Theme.RestManager.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-    </style>-->
+    </style>
 </resources>

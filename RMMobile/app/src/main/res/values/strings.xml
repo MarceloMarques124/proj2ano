@@ -35,4 +35,9 @@
     <string name="tvTable">Table</string>
     <string name="tvDate">Date</string>
     <string name="tvTime">Time</string>
+    <string name="tvNotes">Notes</string>
+    <string name="tvFinishOrder">Finish</string>
+    <string name="txtPlus">+</string>
+    <string name="txtMinus">-</string>
+    <string name="btnAddChart">Add to chart</string>
 </resources>
