@@ -2,7 +2,9 @@
 
 namespace backend\controllers;
 
+use backend\models\FoodItemSearch;
 use backend\models\MenuSearch;
+use common\models\FoodItem;
 use common\models\Menu;
 use common\models\Restaurant;
 use yii\filters\VerbFilter;
@@ -87,8 +89,6 @@ class MenuController extends Controller
     {
         $model = new Menu();
 
-        $restaurants = Restaurant::find()->all();
-
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
@@ -99,7 +99,7 @@ class MenuController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'restaurants' => $restaurants,
+            'restaurants' => Restaurant::find()->all()
         ]);
     }
 
@@ -114,15 +114,43 @@ class MenuController extends Controller
     {
         $model = $this->findModel($id);
 
-        $restaurants = Restaurant::find()->all();
+        $searchModel = new FoodItemSearch(['menu_id' => $id]);
+
+        $dataProvider = $searchModel->search($this->request->queryParams);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
+        $foodItemModel = new FoodItem();
+        $foodItemModel->menu_id = $model->id;
+
         return $this->render('update', [
             'model' => $model,
-            'restaurants' => $restaurants
+            'foodItemModel' => $foodItemModel,
+            'restaurants' => Restaurant::find()->all(),
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionUpdateFoodItem($id)
+    {
+        $model = $this->findModel($id);
+        $foodItemModel = FoodItem::findOne(['id' => $id]);
+
+        $searchModel = new FoodItemSearch(['menu_id' => $id]);
+
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        if ($this->request->isPost && $model->load($this->request->post()) && $foodItemModel->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('update', [
+            'model' => $model,
+            'foodItemModel' => $foodItemModel,
+            'restaurants' => Restaurant::find()->all(),
+            'dataProvider' => $dataProvider,
         ]);
     }
 

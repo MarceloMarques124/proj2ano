@@ -2,7 +2,8 @@
 
 namespace common\models;
 
-use Yii;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "food_items".
@@ -14,10 +15,10 @@ use Yii;
  *
  * @property FoodItemsIngredients[] $foodItemsIngredients
  * @property Ingredients[] $ingredients
- * @property Menus $menu
+ * @property Menu $menu
  * @property OrderedItems[] $orderedItems
  */
-class FoodItem extends \yii\db\ActiveRecord
+class FoodItem extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -37,7 +38,7 @@ class FoodItem extends \yii\db\ActiveRecord
             [['menu_id'], 'integer'],
             [['price'], 'number'],
             [['name'], 'string', 'max' => 100],
-            [['menu_id'], 'exist', 'skipOnError' => true, 'targetClass' => Menus::class, 'targetAttribute' => ['menu_id' => 'id']],
+            [['menu_id'], 'exist', 'skipOnError' => true, 'targetClass' => Menu::class, 'targetAttribute' => ['menu_id' => 'id']],
         ];
     }
 
@@ -57,7 +58,7 @@ class FoodItem extends \yii\db\ActiveRecord
     /**
      * Gets query for [[FoodItemsIngredients]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getFoodItemsIngredients()
     {
@@ -67,7 +68,7 @@ class FoodItem extends \yii\db\ActiveRecord
     /**
      * Gets query for [[Ingredients]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getIngredients()
     {
@@ -77,7 +78,7 @@ class FoodItem extends \yii\db\ActiveRecord
     /**
      * Gets query for [[Menu]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getMenu()
     {
@@ -87,7 +88,7 @@ class FoodItem extends \yii\db\ActiveRecord
     /**
      * Gets query for [[OrderedItems]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getOrderedItems()
     {

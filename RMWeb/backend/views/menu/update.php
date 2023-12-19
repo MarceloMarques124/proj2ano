@@ -1,10 +1,16 @@
 <?php
 
+use common\models\FoodItem;
+use common\models\Menu;
 use common\models\Restaurant;
+use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
+use yii\web\View;
 
-/** @var yii\web\View $this */
-/** @var common\models\Menu $model */
+/** @var View $this */
+/** @var Menu $model */
+/** @var FoodItem $foodItemModel */
+/** @var ActiveDataProvider $dataProvider */
 /** @var Restaurant[] $restaurants */
 
 $this->title = 'Update Menu: ' . $model->name;
@@ -18,7 +24,9 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <?= $this->render('_form', [
         'model' => $model,
+        'foodItemModel' => $foodItemModel,
         'restaurants' => $restaurants,
+        'dataProvider' => $dataProvider,
     ]) ?>
 
 </div>

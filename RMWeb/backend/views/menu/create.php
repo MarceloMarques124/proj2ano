@@ -1,10 +1,12 @@
 <?php
 
+use common\models\Menu;
 use common\models\Restaurant;
 use yii\helpers\Html;
+use yii\web\View;
 
-/** @var yii\web\View $this */
-/** @var common\models\Menu $model */
+/** @var View $this */
+/** @var Menu $model */
 /** @var Restaurant[] $restaurants */
 
 $this->title = 'Create Menu';

@@ -1,13 +1,17 @@
 <?php
 
+use common\models\Table;
+use common\models\User;
+use dosamigos\datetimepicker\DateTimePicker;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use yii\helpers\ArrayHelper;
-use dosamigos\datetimepicker\DateTimePicker;
 
 /** @var yii\web\View $this */
 /** @var common\models\Reservation $model */
 /** @var yii\widgets\ActiveForm $form */
+/** @var User[] $users */
+/** @var Table[] $tables */
 ?>
 
 <div class="reservation-form">

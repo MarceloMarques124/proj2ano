@@ -1,10 +1,8 @@
 <?php
 
-use common\models\FoodItem;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use yii\helpers\Html;
-use yii\helpers\Url;
 
 /** @var yii\web\View $this */
 /** @var backend\models\FoodItemSearch $searchModel */
@@ -14,27 +12,21 @@ $this->title = 'Food Items';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="food-item-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Create Food Item', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'name',
             'price',
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, FoodItem $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                }
+                'template' => '{update-food-item} {delete-food-item}',
+                'buttons' => [
+                    'update-food-item' => function ($url, $model, $key) {
+                        print_r($url);
+                        return Html::a('Update', $url, ['class' => 'btn btn-primary']);
+                    }
+                ]
             ],
         ],
     ]); ?>

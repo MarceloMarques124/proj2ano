@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-use yii\web\YiiAsset;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
@@ -10,7 +9,7 @@ use yii\widgets\DetailView;
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Menus', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-YiiAsset::register($this);
+\yii\web\YiiAsset::register($this);
 ?>
 <div class="menu-view">
 
@@ -33,7 +32,7 @@ YiiAsset::register($this);
             'id',
             'name',
             'price',
-            'restaurant.name',
+            'restaurant_id',
         ],
     ]) ?>
 
