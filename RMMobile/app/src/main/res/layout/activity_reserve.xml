@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_margin="15dp"
     android:orientation="vertical"
     tools:context=".ReserveActivity">
@@ -11,7 +11,12 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,14 +36,15 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
+            android:hint="@string/tvPeopleNumber"
             android:inputType="numberSigned"
             android:textSize="14sp" />
 
     </LinearLayout>
 
     <Space
-        android:layout_width="wrap_content"
-        android:layout_height="5dp" />
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -81,11 +87,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
+
     </LinearLayout>
 
     <Space
-        android:layout_width="match_parent"
-        android:layout_height="10dp" />
+        android:layout_width="wrap_content"
+        android:layout_height="5dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -99,13 +106,14 @@
             android:layout_weight="1"
             android:text="@string/tvDate" />
 
-        <EditText
-            android:id="@+id/etDate"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/pickDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:ems="10"
-            android:inputType="date" />
+            android:hint="@string/tvDate"
+            android:textSize="14sp" />
+
     </LinearLayout>
 
     <Space
@@ -114,7 +122,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <TextView
@@ -125,27 +133,55 @@
             android:text="@string/tvTime" />
 
         <EditText
-            android:id="@+id/etTime"
+            android:id="@+id/pickTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
-            android:inputType="time" />
+            android:hint="@string/tvTime"
+            android:inputType="time"
+            android:textSize="14sp" />
+
     </LinearLayout>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <Space
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="10dp" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fabFinish"
-            android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="16dp"
-            android:backgroundTint="@color/green"
-            android:contentDescription="@string/strEmpty"
-            android:focusable="true"
-            android:src="@drawable/ic_check" />
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-</LinearLayout>
+            android:layout_weight="1"
+            android:ems="10"
+            android:text="@string/tvNotes" />
+
+        <EditText
+            android:id="@+id/etNotes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/tvNotes"
+            android:inputType="textMultiLine"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabFinish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/green"
+        android:contentDescription="@string/strEmpty"
+        android:focusable="true"
+        android:src="@drawable/ic_check" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
