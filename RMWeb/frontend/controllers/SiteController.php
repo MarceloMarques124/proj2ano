@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use common\models\LoginForm;
+use common\models\Restaurant;
 use common\models\SignupForm;
 use frontend\models\ContactForm;
 use frontend\models\PasswordResetRequestForm;
@@ -21,6 +22,8 @@ use yii\web\ErrorAction;
 /**
  * Site controller
  */
+/** @var common\models\Restaurant[] $restaurants */
+
 class SiteController extends Controller
 {
     /**
@@ -77,7 +80,10 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $restaurants = Restaurant::find()->all();
+        return $this->render('index',[
+            'restaurants' => $restaurants,
+        ]);
     }
 
     /**

@@ -4,56 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "11602601e142a4d1947736bac7dc1779",
+    "content-hash": "5f1d3fed1d347cab77e846fb17171d8a",
     "packages": [
-        {
-            "name": "2amigos/yii2-date-time-picker-widget",
-            "version": "0.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/2amigos/yii2-date-time-picker-widget.git",
-                "reference": "572e2448ba1cd207b339dd5d117e3d1d23f0bbc3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/2amigos/yii2-date-time-picker-widget/zipball/572e2448ba1cd207b339dd5d117e3d1d23f0bbc3",
-                "reference": "572e2448ba1cd207b339dd5d117e3d1d23f0bbc3",
-                "shasum": ""
-            },
-            "require": {
-                "yiisoft/yii2": "*"
-            },
-            "type": "yii2-extension",
-            "autoload": {
-                "psr-4": {
-                    "dosamigos\\datetimepicker\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Antonio Ramirez",
-                    "email": "ramirez.cobos@gmail.com",
-                    "homepage": "http://2amigos.us"
-                }
-            ],
-            "description": "Bootstrap DateTimePicker widget for Yii2.",
-            "keywords": [
-                "datepicker",
-                "extension",
-                "widget",
-                "yii"
-            ],
-            "support": {
-                "issues": "https://github.com/2amigos/yii2-date-time-picker-widget/issues",
-                "source": "https://github.com/2amigos/yii2-date-time-picker-widget/tree/master"
-            },
-            "abandoned": true,
-            "time": "2014-06-24T14:28:07+00:00"
-        },
         {
             "name": "almasaeed2010/adminlte",
             "version": "v3.2.0",
@@ -6102,5 +6054,5 @@
         "php": ">=7.4.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }

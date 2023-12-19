@@ -15,7 +15,10 @@ use yii\filters\AccessControl;
 
 /**
  * ReservationController implements the CRUD actions for Reservation model.
+ * 
  */
+/** @var common\models\Restaurant[] $restaurants */
+
 class ReservationController extends Controller
 {
     /**

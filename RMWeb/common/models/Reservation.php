@@ -2,28 +2,24 @@
 
 namespace common\models;
 
-use yii\db\ActiveQuery;
-use yii\db\ActiveRecord;
+use Yii;
 
 /**
  * This is the model class for table "reservations".
  *
  * @property int $id
- * @property int $table_id
+ * @property int $tables_number
  * @property int $user_id
  * @property string $date_time
  * @property int $people_number
  * @property string|null $remarks
+ * @property int $restaurant_id
  *
- * @property Table $table
+ * @property Restaurant $restaurant
  * @property User $user
  */
-class Reservation extends ActiveRecord
+class Reservation extends \yii\db\ActiveRecord
 {
-    const STATUS_DELETED = 0;
-    const STATUS_INACTIVE = 9;
-    const STATUS_ACTIVE = 10;
-
     /**
      * {@inheritdoc}
      */
@@ -33,31 +29,16 @@ class Reservation extends ActiveRecord
     }
 
     /**
-     * Gets query for [[Table]].
-     *
-     * @return Reservation
-     */
-
-
-    /**
      * {@inheritdoc}
      */
-
-    public static function findByUserId($id)
-    {
-        return self::find()->where(['user_id' => $id]);
-    }
-
     public function rules()
     {
         return [
-            [['table_id', 'user_id', 'date_time', 'people_number'], 'required'],
-            [['table_id', 'user_id', 'people_number'], 'integer'],
+            [['tables_number', 'user_id', 'date_time', 'people_number', 'restaurant_id'], 'required'],
+            [['tables_number', 'user_id', 'people_number', 'restaurant_id'], 'integer'],
             [['date_time'], 'safe'],
             [['remarks'], 'string'],
-            [['table_id'], 'unique'],
-            [['user_id'], 'unique'],
-            [['table_id'], 'exist', 'skipOnError' => true, 'targetClass' => Table::class, 'targetAttribute' => ['table_id' => 'id']],
+            [['restaurant_id'], 'exist', 'skipOnError' => true, 'targetClass' => Restaurant::class, 'targetAttribute' => ['restaurant_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
@@ -69,23 +50,29 @@ class Reservation extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'table_id' => 'Table ID',
+            'tables_number' => 'Tables Number',
             'user_id' => 'User ID',
             'date_time' => 'Date Time',
             'people_number' => 'People Number',
             'remarks' => 'Remarks',
+            'restaurant_id' => 'Restaurant ID',
         ];
     }
 
-    public function getTable()
+    /**
+     * Gets query for [[Restaurant]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRestaurant()
     {
-        return $this->hasOne(Table::class, ['id' => 'table_id']);
+        return $this->hasOne(Restaurant::class, ['id' => 'restaurant_id']);
     }
 
     /**
      * Gets query for [[User]].
      *
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getUser()
     {
