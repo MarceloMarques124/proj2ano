@@ -1,5 +1,7 @@
 <?php
 
+use yii\helpers\Url;
+
 /** @var yii\web\View $this */
 
 $this->title = 'My Yii Application';
@@ -16,9 +18,15 @@ $this->title = 'My Yii Application';
     <div class="body-content">
 
         <div class="row">
-            <div class="col-lg-4">
-                //Add dos restaurants por div "externa"
-            </div>
+            <?php foreach ($restaurants as $restaurant) : ?>
+                <div class="col-lg-4">
+                    <?= $restaurant['name']; ?>
+                    <br>
+                    <?= $restaurant['address']; ?>
+                    <br>
+                    <button type="button" style="margin-bottom: 20px;"><a href="<?= Url::to(['reservation/create', 'restaurant_id' => $restaurant['id']]) ?>" class="nav-link">Reserve</a></button>
+                </div>
+            <?php endforeach; ?>
         </div>
 
     </div>

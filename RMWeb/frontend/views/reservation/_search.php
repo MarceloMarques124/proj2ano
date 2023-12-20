@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
-/** @var backend\models\ZoneSearch $model */
+/** @var frontend\models\ReservationSearch $model */
 /** @var yii\widgets\ActiveForm $form */
 ?>
 
-<div class="zone-search">
+<div class="reservation-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -17,13 +17,17 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'name') ?>
+    <?= $form->field($model, 'tables_number') ?>
 
-    <?= $form->field($model, 'description') ?>
+    <?= $form->field($model, 'user_id') ?>
 
-    <?= $form->field($model, 'restaurant_id') ?>
+    <?= $form->field($model, 'date_time') ?>
 
-    <?= $form->field($model, 'capacity') ?>
+    <?= $form->field($model, 'people_number') ?>
+
+    <?php // echo $form->field($model, 'remarks') ?>
+
+    <?php // echo $form->field($model, 'restaurant_id') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

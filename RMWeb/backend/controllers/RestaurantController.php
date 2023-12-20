@@ -2,15 +2,14 @@
 
 namespace backend\controllers;
 
-use backend\models\RestaurantSearch;
 use common\models\Restaurant;
-use yii\filters\VerbFilter;
+use backend\models\RestaurantSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\web\Response;
+use yii\filters\VerbFilter;
 
 /**
- * RestaurantController implements the CRUD actions for Restaurants model.
+ * RestaurantController implements the CRUD actions for Restaurant model.
  */
 class RestaurantController extends Controller
 {
@@ -33,7 +32,7 @@ class RestaurantController extends Controller
     }
 
     /**
-     * Lists all Restaurants models.
+     * Lists all Restaurant models.
      *
      * @return string
      */
@@ -49,7 +48,7 @@ class RestaurantController extends Controller
     }
 
     /**
-     * Displays a single Restaurants model.
+     * Displays a single Restaurant model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -62,25 +61,9 @@ class RestaurantController extends Controller
     }
 
     /**
-     * Finds the Restaurants model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id ID
-     * @return Restaurant the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    {
-        if (($model = Restaurant::findOne(['id' => $id])) !== null) {
-            return $model;
-        }
-
-        throw new NotFoundHttpException('The requested page does not exist.');
-    }
-
-    /**
-     * Creates a new Restaurants model.
+     * Creates a new Restaurant model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|Response
+     * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
@@ -100,10 +83,10 @@ class RestaurantController extends Controller
     }
 
     /**
-     * Updates an existing Restaurants model.
+     * Updates an existing Restaurant model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
-     * @return string|Response
+     * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
@@ -120,10 +103,10 @@ class RestaurantController extends Controller
     }
 
     /**
-     * Deletes an existing Restaurants model.
+     * Deletes an existing Restaurant model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
-     * @return Response
+     * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
@@ -131,5 +114,21 @@ class RestaurantController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    /**
+     * Finds the Restaurant model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param int $id ID
+     * @return Restaurant the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id)
+    {
+        if (($model = Restaurant::findOne(['id' => $id])) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

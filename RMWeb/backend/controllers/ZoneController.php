@@ -4,7 +4,6 @@ namespace backend\controllers;
 
 use common\models\Zone;
 use backend\models\ZoneSearch;
-use common\models\Restaurant;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -69,8 +68,6 @@ class ZoneController extends Controller
     public function actionCreate()
     {
         $model = new Zone();
-        $restaurants = Restaurant::find()->all();
-
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -82,7 +79,6 @@ class ZoneController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'restaurants' => $restaurants,
         ]);
     }
 
@@ -96,7 +92,6 @@ class ZoneController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $restaurants = Restaurant::find()->all();
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -104,7 +99,6 @@ class ZoneController extends Controller
 
         return $this->render('update', [
             'model' => $model,
-            'restaurants' => $restaurants,
         ]);
     }
 

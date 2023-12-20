@@ -5,23 +5,24 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "food_items".
+ * This is the model class for table "ordered_menus".
  *
  * @property int $id
- * @property string $name
- * @property int|null $menu_id
- * @property float|null $price
+ * @property int $menu_id
+ * @property int $quantity
+ * @property int $order_id
  *
  * @property Menu $menu
+ * @property Order $order
  */
-class FoodItem extends \yii\db\ActiveRecord
+class OrderedMenu extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'food_items';
+        return 'ordered_menus';
     }
 
     /**
@@ -30,11 +31,10 @@ class FoodItem extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
-            [['menu_id'], 'integer'],
-            [['price'], 'number'],
-            [['name'], 'string', 'max' => 100],
+            [['menu_id', 'quantity', 'order_id'], 'required'],
+            [['menu_id', 'quantity', 'order_id'], 'integer'],
             [['menu_id'], 'exist', 'skipOnError' => true, 'targetClass' => Menu::class, 'targetAttribute' => ['menu_id' => 'id']],
+            [['order_id'], 'exist', 'skipOnError' => true, 'targetClass' => Order::class, 'targetAttribute' => ['order_id' => 'id']],
         ];
     }
 
@@ -45,9 +45,9 @@ class FoodItem extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
             'menu_id' => 'Menu ID',
-            'price' => 'Price',
+            'quantity' => 'Quantity',
+            'order_id' => 'Order ID',
         ];
     }
 
@@ -59,5 +59,15 @@ class FoodItem extends \yii\db\ActiveRecord
     public function getMenu()
     {
         return $this->hasOne(Menu::class, ['id' => 'menu_id']);
+    }
+
+    /**
+     * Gets query for [[Order]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrder()
+    {
+        return $this->hasOne(Order::class, ['id' => 'order_id']);
     }
 }
