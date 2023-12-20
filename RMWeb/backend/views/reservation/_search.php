@@ -17,7 +17,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'table_id') ?>
+    <?= $form->field($model, 'tables_number') ?>
 
     <?= $form->field($model, 'user_id') ?>
 
@@ -26,6 +26,10 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'people_number') ?>
 
     <?php // echo $form->field($model, 'remarks') ?>
+
+    <?php // echo $form->field($model, 'restaurant_id') ?>
+
+    <?php // echo $form->field($model, 'zone_id') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

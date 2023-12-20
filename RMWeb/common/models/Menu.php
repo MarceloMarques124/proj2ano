@@ -13,7 +13,7 @@ use Yii;
  * @property int $restaurant_id
  *
  * @property FoodItem[] $foodItems
- * @property OrderedItem[] $orderedItems
+ * @property OrderedMenu[] $orderedMenus
  * @property Restaurant $restaurant
  */
 class Menu extends \yii\db\ActiveRecord
@@ -64,13 +64,13 @@ class Menu extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[OrderedItems]].
+     * Gets query for [[OrderedMenus]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getOrderedItems()
+    public function getOrderedMenus()
     {
-        return $this->hasMany(OrderedItem::class, ['menu_id' => 'id']);
+        return $this->hasMany(OrderedMenu::class, ['menu_id' => 'id']);
     }
 
     /**

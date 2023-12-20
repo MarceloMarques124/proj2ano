@@ -17,7 +17,7 @@ class ZoneSearch extends Zone
     public function rules()
     {
         return [
-            [['id', 'restaurant_id'], 'integer'],
+            [['id', 'restaurant_id', 'capacity'], 'integer'],
             [['name', 'description'], 'safe'],
         ];
     }
@@ -60,6 +60,7 @@ class ZoneSearch extends Zone
         $query->andFilterWhere([
             'id' => $this->id,
             'restaurant_id' => $this->restaurant_id,
+            'capacity' => $this->capacity,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])

@@ -5,11 +5,11 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var common\models\Restaurant $model */
 
-$this->title = 'Create Restaurants';
+$this->title = 'Create Restaurant';
 $this->params['breadcrumbs'][] = ['label' => 'Restaurants', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="restaurants-create">
+<div class="restaurant-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
