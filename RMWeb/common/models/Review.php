@@ -5,28 +5,25 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "user_info".
+ * This is the model class for table "reviews".
  *
  * @property int $id
  * @property int $user_id
- * @property string $name
- * @property string|null $address
- * @property string|null $door_number
- * @property string|null $postal_code
- * @property int|null $nif
- * @property int|null $restaurant_id
+ * @property int $restaurant_id
+ * @property float $stars
+ * @property string|null $description
  *
  * @property Restaurant $restaurant
  * @property User $user
  */
-class UserInfo extends \yii\db\ActiveRecord
+class Review extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'user_info';
+        return 'reviews';
     }
 
     /**
@@ -35,12 +32,10 @@ class UserInfo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'name'], 'required'],
-            [['user_id', 'nif', 'restaurant_id'], 'integer'],
-            [['name', 'address'], 'string', 'max' => 100],
-            [['door_number'], 'string', 'max' => 50],
-            [['postal_code'], 'string', 'max' => 20],
-            [['user_id'], 'unique'],
+            [['user_id', 'restaurant_id', 'stars'], 'required'],
+            [['user_id', 'restaurant_id'], 'integer'],
+            [['stars'], 'number'],
+            [['description'], 'string'],
             [['restaurant_id'], 'exist', 'skipOnError' => true, 'targetClass' => Restaurant::class, 'targetAttribute' => ['restaurant_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
@@ -54,12 +49,9 @@ class UserInfo extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'user_id' => 'User ID',
-            'name' => 'Name',
-            'address' => 'Address',
-            'door_number' => 'Door Number',
-            'postal_code' => 'Postal Code',
-            'nif' => 'Nif',
             'restaurant_id' => 'Restaurant ID',
+            'stars' => 'Stars',
+            'description' => 'Description',
         ];
     }
 

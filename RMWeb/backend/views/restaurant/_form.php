@@ -8,7 +8,7 @@ use yii\widgets\ActiveForm;
 /** @var yii\widgets\ActiveForm $form */
 ?>
 
-<div class="restaurants-form">
+<div class="restaurant-form">
 
     <?php $form = ActiveForm::begin(); ?>
 

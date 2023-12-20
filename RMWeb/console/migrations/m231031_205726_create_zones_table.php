@@ -20,6 +20,7 @@ class m231031_205726_create_zones_table extends Migration
             'name' => $this->string(50)->notNull(),
             'description' => $this->string(200),
             'restaurant_id' => $this->integer()->notNull(),
+            'capacity' => $this->integer()->notNull(),
         ],'ENGINE=InnoDB');
 
         // creates index for column `RestaurantID`

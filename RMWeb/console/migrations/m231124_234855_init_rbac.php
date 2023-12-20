@@ -79,13 +79,12 @@ class m231124_234855_init_rbac extends Migration
             $zone->name = $restaurantName . ' - ' . $zoneName;
             $zone->description = $restaurantName . ' - ' . $zoneName;
             $zone->restaurant_id = $restaurant->id;
+            $zone->capacity = 20;
             $zone->save();
 
             foreach (array('Mesa Muito Boa', 'Mesa Boa', 'Mesa Mais ou Menos', 'Mesa Má', 'Mesa Muito Má') as $tableDescription) {
                 $table = new Table();
-
-                $table->zone_id = $zone->id;
-                $table->description = $restaurantName . ' - ' . $zoneName . ' - ' . $tableDescription;
+                $table->description = $restaurantName .' - ' . $tableDescription;
                 $table->capacity = 4;
                 $table->save();
             }

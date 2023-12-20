@@ -6,7 +6,7 @@ use yii\db\Migration;
  * Handles the creation of table `{{%reservations}}`.
  * Has foreign keys to the tables:
  *
- * - `{{%tables}}`
+ * - `{{%zones}}`
  * - `{{%user}}`
  * - `{{%restaurants}}`
  * 
@@ -26,24 +26,25 @@ class m231031_224736_create_reservations_table extends Migration
             'people_number' => $this->integer()->notNull(),
             'remarks' => $this->text(),
             'restaurant_id' => $this->integer()->notNull(),
+            'zone_id' => $this->integer()->notNull(),
         ], 'ENGINE=InnoDB');
 
-/*         // creates index for column `table_id`
+        // creates index for column `table_id`
         $this->createIndex(
-            '{{%idx-reservations-table_id}}',
+            '{{%idx-reservations-zone_id}}',
             '{{%reservations}}',
-            'table_id'
-        ); */
+            'zone_id'
+        ); 
 
-/*         // add foreign key for table `{{%tables}}`
+        // add foreign key for table `{{%tables}}`
         $this->addForeignKey(
-            '{{%fk-reservations-table_id}}',
+            '{{%fk-reservations-zone_id}}',
             '{{%reservations}}',
-            'table_id',
-            '{{%tables}}',
+            'zone_id',
+            '{{%zones}}',
             'id',
             'CASCADE'
-        ); */
+        );
 
         // creates index for column `user_id`
         $this->createIndex(
@@ -85,17 +86,17 @@ class m231031_224736_create_reservations_table extends Migration
      */
     public function safeDown()
     {
-/*         // drops foreign key for table `{{%tables}}`
+        // drops foreign key for table `{{%tables}}`
         $this->dropForeignKey(
-            '{{%fk-reservations-table_id}}',
+            '{{%fk-reservations-zone_id}}',
             '{{%reservations}}'
         );
 
         // drops index for column `table_id`
         $this->dropIndex(
-            '{{%idx-reservations-table_id}}',
+            '{{%idx-reservations-zone_id}}',
             '{{%reservations}}'
-        ); */
+        );
 
         // drops foreign key for table `{{%user}}`
         $this->dropForeignKey(

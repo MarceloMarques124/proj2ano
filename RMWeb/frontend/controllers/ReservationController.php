@@ -92,6 +92,7 @@ class ReservationController extends Controller
             $peopleNumber = $this->request->post('Reservation')['people_number'];
             $tablesNumber = ceil($peopleNumber/4);
             $model->tables_number = $tablesNumber;
+            $model->zone_id = 1;
             if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
