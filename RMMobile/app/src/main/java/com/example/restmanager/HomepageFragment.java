@@ -46,7 +46,6 @@ public class HomepageFragment extends Fragment {
         binding.lvRestaurants.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(), "ikpojfed", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getContext(), RestaurantDetailsActivity.class); //Details de Restaurant
                 intent.putExtra(ID_RESTAURANT, (int)id);
                 startActivity(intent);
@@ -87,8 +86,8 @@ public class HomepageFragment extends Fragment {
     }
 
     public void onRefresh(){
-        /*restaurants = SingletonRestaurantManager.getInstance(getContext()).getBooksDB();
+        restaurants = SingletonRestaurantManager.getInstance(getContext()).getRestaurants();
         binding.lvRestaurants.setAdapter(new RestaurantsAdapter(getContext(), restaurants));
-        binding.swipeLayout.setRefreshing(false);*/
+        binding.swipeLayout.setRefreshing(false);
     }
 }

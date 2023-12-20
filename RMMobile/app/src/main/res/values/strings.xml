@@ -40,4 +40,5 @@
     <string name="txtPlus">+</string>
     <string name="txtMinus">-</string>
     <string name="btnAddChart">Add to chart</string>
+    <string name="Ok">Ok</string>
 </resources>

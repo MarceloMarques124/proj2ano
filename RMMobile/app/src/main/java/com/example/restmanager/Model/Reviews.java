@@ -1,21 +1,21 @@
 package com.example.restmanager.Model;
 
-public class Order {
+public class Reviews {
     private int id;
     private int userId;
     private int restId;
-    private int price;
-    private String status;
+    private int stars;
+    private String description;
 
-    public Order(int id, int userId, int restId, int price, String status) {
+    public Reviews() {
+    }
+
+    public Reviews(int id, int userId, int restId, int stars, String description) {
         this.id = id;
         this.userId = userId;
         this.restId = restId;
-        this.price = price;
-        this.status = status;
-    }
-
-    public Order() {
+        this.stars = stars;
+        this.description = description;
     }
 
     public int getId() {
@@ -38,19 +38,19 @@ public class Order {
         this.restId = restId;
     }
 
-    public int getPrice() {
-        return price;
+    public int getStars() {
+        return stars;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public void setStars(int stars) {
+        this.stars = stars;
     }
 
-    public String getStatus() {
-        return status;
+    public String getDescription() {
+        return description;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

@@ -6,15 +6,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.restmanager.Model.Menu;
+import com.example.restmanager.Model.MenuItem;
+import com.example.restmanager.Model.Order;
+import com.example.restmanager.Model.SingletonRestaurantManager;
 import com.example.restmanager.OrdersActivity;
 import com.example.restmanager.R;
 import com.example.restmanager.databinding.ItemMenuOrderBinding;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 public class MenusAdapter extends BaseAdapter {
@@ -22,6 +27,9 @@ public class MenusAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater inflater;
     private ArrayList<Menu> menus;
+    private Order order = new Order();
+    private ArrayList<MenuItem> menuItem;
+    //private MyViewHolder myViewHolder;
 
     public MenusAdapter(Context context, ArrayList<Menu> menus) {
         this.context = context;
@@ -43,49 +51,76 @@ public class MenusAdapter extends BaseAdapter {
         return menus.get(position).getId();
     }
 
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if(inflater == null)
             inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        if(convertView == null)
-            convertView = inflater.inflate(R.layout.item_menu_order, null);
-/*
-        convertView = binding.getRoot();*/
-        MenusAdapter.ViewHolderList viewHolderList = (MenusAdapter.ViewHolderList) convertView.getTag();
-        if(viewHolderList == null){
-            viewHolderList = new MenusAdapter.ViewHolderList(convertView);
-            convertView.setTag(viewHolderList);
+
+        ViewHolderList holder;
+        if(convertView == null){
+            binding = ItemMenuOrderBinding.inflate(LayoutInflater.from(context), parent, false);
+            convertView = binding.getRoot();
+            holder = new ViewHolderList(convertView);
+            convertView.setTag(holder);
+        }else {
+            holder = (ViewHolderList) convertView.getTag();
         }
-        viewHolderList.update(menus.get(position));
+            holder.update(menus.get(position));
 
+        binding.etQuantity.setEnabled(false);
+        binding.etQuantity.setCursorVisible(false);
 
-        convertView.findViewById(R.id.btnMinus).setOnClickListener(new View.OnClickListener() {
+        binding.btnMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Diminuir a quantity
+                Menu menu = menus.get(position);
+                if (menu.getQuantity() == 0) return;
+
+                menu.setQuantity(menu.getQuantity() - 1);
+                holder.update(menu);
             }
         });
 
-        convertView.findViewById(R.id.btnPlus).setOnClickListener(new View.OnClickListener() {
+        binding.btnPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //aumentar a quantity
+                Menu menu = menus.get(position);
+                menu.setQuantity(menu.getQuantity() + 1);
+                holder.update(menu);
+            }
+        });
+
+        binding.addToChart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Adding to chart", Toast.LENGTH_SHORT).show();
+
+                if (order == null){
+               //     order = SingletonRestaurantManager.
+                }
+
             }
         });
 
         return convertView;
     }
 
+
     public class ViewHolderList{
 
         private TextView menuName;
-        private ImageView imgCover;
+        private EditText qty;
+        private TextView price;
         public ViewHolderList(View view) {
             menuName = view.findViewById(R.id.tvRestName);
-            imgCover = view.findViewById(R.id.imgCover);
+            qty = view.findViewById(R.id.etQuantity);
+            price = view.findViewById(R.id.tvPrice);
         }
         public void update(Menu menu){
             menuName.setText(menu.getName());
+            qty.setText(""+menu.getQuantity());
+            price.setText(menu.getPrice()+" €");
         }
 
     }

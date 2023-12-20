@@ -30,7 +30,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onClickLogin(View view){
-        Toast.makeText(this, "Login clicked", Toast.LENGTH_SHORT).show();
         String email = binding.etEmailUsername.getText() + "";
         String pass = binding.etPassword.getText() + "";
         if (!isEmailValid(email) || !isUsernameValid(email)){
@@ -63,14 +62,12 @@ public class LoginActivity extends AppCompatActivity {
 
 
     public boolean isEmailValid(String email){
-        System.out.println("--->çjk");
         if (email.isEmpty())
             return false;
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     private boolean isUsernameValid(String email) {
-        System.out.println("--->Fuclsad");
         if (email.isEmpty())
             return false;
         //return consoante equalidade à api
