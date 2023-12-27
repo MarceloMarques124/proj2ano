@@ -2,12 +2,12 @@
 
 namespace backend\models;
 
-use common\models\Restaurant;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use common\models\Restaurant;
 
 /**
- * RestaurantSearch represents the model behind the search form of `common\models\Restaurants`.
+ * RestaurantSearch represents the model behind the search form of `common\models\Restaurant`.
  */
 class RestaurantSearch extends Restaurant
 {

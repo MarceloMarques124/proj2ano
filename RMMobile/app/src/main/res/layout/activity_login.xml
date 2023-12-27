@@ -61,6 +61,18 @@
         android:textColorHint="@color/white"
         android:textColorLink="@color/white" />
 
+    <Button
+        android:id="@+id/btnRegisterServerConfig"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/green"
+        android:onClick="onClickServer"
+        android:text="@string/navServerConnection"
+        android:textColor="@color/white"
+        android:textColorHighlight="@color/white"
+        android:textColorHint="@color/white"
+        android:textColorLink="@color/white" />
+
     <View
         android:id="@+id/view"
         android:layout_width="match_parent"

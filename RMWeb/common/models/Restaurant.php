@@ -2,7 +2,7 @@
 
 namespace common\models;
 
-use yii\db\ActiveRecord;
+use Yii;
 
 /**
  * This is the model class for table "restaurants".
@@ -13,8 +13,15 @@ use yii\db\ActiveRecord;
  * @property int $nif
  * @property string $email
  * @property string $mobile_number
+ *
+ * @property Menu[] $menus
+ * @property Order[] $orders
+ * @property Reservation[] $reservations
+ * @property Review[] $reviews
+ * @property UserInfo[] $userInfos
+ * @property Zone[] $zones
  */
-class Restaurant extends ActiveRecord
+class Restaurant extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -50,5 +57,65 @@ class Restaurant extends ActiveRecord
             'email' => 'Email',
             'mobile_number' => 'Mobile Number',
         ];
+    }
+
+    /**
+     * Gets query for [[Menus]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMenus()
+    {
+        return $this->hasMany(Menu::class, ['restaurant_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Orders]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrders()
+    {
+        return $this->hasMany(Order::class, ['restaurant_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Reservations]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getReservations()
+    {
+        return $this->hasMany(Reservation::class, ['restaurant_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Reviews]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getReviews()
+    {
+        return $this->hasMany(Review::class, ['restaurant_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[UserInfos]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserInfos()
+    {
+        return $this->hasMany(UserInfo::class, ['restaurant_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Zones]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getZones()
+    {
+        return $this->hasMany(Zone::class, ['restaurant_id' => 'id']);
     }
 }

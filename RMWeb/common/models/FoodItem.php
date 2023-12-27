@@ -13,10 +13,7 @@ use yii\db\ActiveRecord;
  * @property int|null $menu_id
  * @property float|null $price
  *
- * @property FoodItemsIngredients[] $foodItemsIngredients
- * @property Ingredients[] $ingredients
  * @property Menu $menu
- * @property OrderedItems[] $orderedItems
  */
 class FoodItem extends ActiveRecord
 {
@@ -56,42 +53,12 @@ class FoodItem extends ActiveRecord
     }
 
     /**
-     * Gets query for [[FoodItemsIngredients]].
-     *
-     * @return ActiveQuery
-     */
-    public function getFoodItemsIngredients()
-    {
-        return $this->hasMany(FoodItemsIngredients::class, ['food_items_id' => 'id']);
-    }
-
-    /**
-     * Gets query for [[Ingredients]].
-     *
-     * @return ActiveQuery
-     */
-    public function getIngredients()
-    {
-        return $this->hasMany(Ingredients::class, ['id' => 'ingredients_id'])->viaTable('food_items_ingredients', ['food_items_id' => 'id']);
-    }
-
-    /**
      * Gets query for [[Menu]].
      *
      * @return ActiveQuery
      */
     public function getMenu()
     {
-        return $this->hasOne(Menus::class, ['id' => 'menu_id']);
-    }
-
-    /**
-     * Gets query for [[OrderedItems]].
-     *
-     * @return ActiveQuery
-     */
-    public function getOrderedItems()
-    {
-        return $this->hasMany(OrderedItems::class, ['food_item_id' => 'id']);
+        return $this->hasOne(Menu::class, ['id' => 'menu_id']);
     }
 }

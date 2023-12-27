@@ -1,22 +1,21 @@
 <?php
 
-/** @var \yii\web\View $this */
+/** @var View $this */
+
 /** @var string $content */
 
+use yii\web\View;
+use yii\bootstrap5\Nav;
+use yii\bootstrap5\Html;
 use common\widgets\Alert;
 use frontend\assets\AppAsset;
-use rmrevin\yii\fontawesome\FA;
-use yii\bootstrap5\Breadcrumbs;
-use yii\bootstrap5\Html;
-use yii\bootstrap5\Nav;
-use yii\bootstrap5\NavBar;
-use rmrevin\yii\fontawesome\AssetBundle;
 
 AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>" class="h-100">
+
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -43,136 +42,122 @@ AppAsset::register($this);
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+
+    <!-- Adicione as dependências do Bootstrap e jQuery -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+WyL8iDR8gh6Lw2jWlO8qU1P/TtJUOihfuU" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js" integrity="sha384-BYKNOFkYvYr8I5gXQQeMZeUtiUqQ3kBCpKJ9YlU/4JG0diV3UZ4fQ5S9i0XNU6j" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+WyL8iDR8gh6Lw2jWlO8qU1P/TtJUOihfuU" crossorigin="anonymous"></script>
+
     <?php $this->head() ?>
 </head>
+
 <body class="d-flex flex-column h-100">
-<?php $this->beginBody() ?>
+    <?php $this->beginBody() ?>
 
-<header>
-    <div class="container-fluid fixed-top px-0 wow fadeIn" data-wow-delay="0.1s">
-        <!--<div class="top-bar row gx-0 align-items-center d-none d-lg-flex">
-            <div class="col-lg-6 px-5 text-start">
-            </div>
-            <div class="col-lg-6 px-5 text-end">
-                <small>Follow us:</small>
-                <a class="text-body ms-3" href=""><i class="fab fa-facebook-f"></i></a>
-                <a class="text-body ms-3" href=""><i class="fab fa-twitter"></i></a>
-                <a class="text-body ms-3" href=""><i class="fab fa-linkedin-in"></i></a>
-                <a class="text-body ms-3" href=""><i class="fab fa-instagram"></i></a>
-            </div>
-        </div>-->
-
-        <nav class="navbar navbar-expand-lg navbar-light py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
-            <a href="index.php" class="navbar-brand ms-4 ms-lg-0">
-                <img src="assets/img/png/logo-no-background.png" width="180" height="61,74">
-            </a>
-            <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <div class="navbar-nav ms-auto p-4 p-lg-0">
-                    <?= Html::a('Home', ['site/index'], ['data-method' => 'post', 'class' => 'nav-item nav-link'])?>
-                    <?= Html::a('About', ['site/about'], ['data-method' => 'post', 'class' => 'nav-item nav-link'])?>
-                    <?= Html::a('Contact', ['site/contact'], ['data-method' => 'post', 'class' => 'nav-item nav-link'])?>
-
-                    <?php
-                        if (Yii::$app->user->isGuest){
-                           echo Html::a('Login', ['site/login'], ['data-method' => 'post', 'class' => 'nav-item nav-link']);
-                        }else {
+    <header>
+        <div class="container-fluid fixed-top px-0 wow fadeIn" data-wow-delay="0.1s">
+            <nav class="navbar navbar-expand-lg navbar-light py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
+                <a href="index.php" class="navbar-brand ms-4 ms-lg-0">
+                    <img src="images/png/mainlogo.png" width="180" height="61,74">
+                </a>
+                <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <div class="navbar-nav ms-auto p-4 p-lg-0">
+                        <?php
+                        if (Yii::$app->user->isGuest) {
+                            echo Html::a('Login', ['site/login'], ['data-method' => 'post', 'class' => 'nav-item nav-link']);
+                        } else {
+                            echo Html::a('Home', ['site/index'], ['data-method' => 'post', 'class' => 'nav-item nav-link']);
+                            echo Html::a('Reserves', ['reservation/index'], ['data-method' => 'post', 'class' => 'nav-item nav-link']); //este ve so as realizadas
+                            echo Html::a('Orders', ['orders/index'], ['data-method' => 'post', 'class' => 'nav-item nav-link']); //este ve so as concluidas
+                            echo Html::a('Home', ['site/index'], ['data-method' => 'post', 'class' => 'nav-item nav-link']);
                             echo Html::a('Logout', ['site/logout'], ['data-method' => 'post', 'class' => 'nav-item nav-link']);
-
                         }
-                    ?>
+                        ?>
+                        <?php
+                        echo Nav::widget([
+                            'options' => ['class' => 'navbar-nav navbar-right'],
+                            'items' => [
+                                ['label' => 'Reserves', 'items' => [
+                                    ['label' => 'My reserves', 'url' => '#'],
+                                    ['label' => 'Make reserves', 'url' => '#'],
+                                ]],
 
-                    <!--<div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                        <div class="dropdown-menu m-0">
-                            <a href="blog.html" class="dropdown-item">Blog Grid</a>
-                            <a href="feature.html" class="dropdown-item">Our Features</a>
-                            <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                            <a href="404.html" class="dropdown-item">404 Page</a>
+                            ],
+
+                        ]);
+                        ?>
+                    </div>
+
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main role="main" class="flex-shrink-0">
+        <!-- Carousel Start -->
+        <div class="container-fluid p-0 mb-5 wow fadeIn" data-wow-delay="0.1s">
+            <div id="header-carousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="carousel-caption">
+                            <div class="container">
+                                <div class="row justify-content-start">
+                                    <div class="col-lg-7">
+                                        <h1 class="display-2 mb-5 animated slideInDown">Organic Food Is Good For
+                                            Health</h1>
+                                        <a href="" class="btn btn-primary rounded-pill py-sm-3 px-sm-5">Products</a>
+                                        <a href="" class="btn btn-secondary rounded-pill py-sm-3 px-sm-5 ms-3">Services</a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>-->
-                </div>
-                <div class="d-none d-lg-flex ms-2">
-                    <?php /*= Html::a('', ['site/login'], ['data-method' => 'post', 'class' => 'nav-item nav-link fa fa-user text-body'])*/?>
-                    <?php /*= Html::a('', ['site/about'], ['data-method' => 'post', 'class' => 'nav-item nav-link fas fa-sign-out-alt'])*/?>
-
-                    <!--
-                    <a class="btn-sm-square bg-white rounded-circle ms-3" href="">
-                        <small class="fa fa-user text-body"></small>
-                    </a>
-                    <a class="btn-sm-square bg-white rounded-circle ms-3" href="">
-                        <small class="fa fa-shopping-bag text-body"></small>
-                    </a>-->
-                </div>
-            </div>
-        </nav>
-    </div>
-</header>
-
-<main role="main" class="flex-shrink-0">
-    <!-- Carousel Start -->
-    <div class="container-fluid p-0 mb-5 wow fadeIn" data-wow-delay="0.1s">
-        <div id="header-carousel" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <div class="carousel-caption">
-                        <div class="container">
-                            <div class="row justify-content-start">
-                                <div class="col-lg-7">
-                                    <h1 class="display-2 mb-5 animated slideInDown">Organic Food Is Good For Health</h1>
-                                    <a href="" class="btn btn-primary rounded-pill py-sm-3 px-sm-5">Products</a>
-                                    <a href="" class="btn btn-secondary rounded-pill py-sm-3 px-sm-5 ms-3">Services</a>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="carousel-caption">
+                            <div class="container">
+                                <div class="row justify-content-start">
+                                    <div class="col-lg-7">
+                                        <h1 class="display-2 mb-5 animated slideInDown">Natural Food Is Always
+                                            Healthy</h1>
+                                        <a href="" class="btn btn-primary rounded-pill py-sm-3 px-sm-5">Products</a>
+                                        <a href="" class="btn btn-secondary rounded-pill py-sm-3 px-sm-5 ms-3">Services</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="carousel-item">
-                    <img class="w-100" src="img/carousel-2.jpg" alt="Image">
-                    <div class="carousel-caption">
-                        <div class="container">
-                            <div class="row justify-content-start">
-                                <div class="col-lg-7">
-                                    <h1 class="display-2 mb-5 animated slideInDown">Natural Food Is Always Healthy</h1>
-                                    <a href="" class="btn btn-primary rounded-pill py-sm-3 px-sm-5">Products</a>
-                                    <a href="" class="btn btn-secondary rounded-pill py-sm-3 px-sm-5 ms-3">Services</a>
-                                </div>
-                            </div>
-                        </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#header-carousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#header-carousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+        <!-- Carousel End -->
+
+
+        <!-- About Start -->
+        <div class="container-xxl py-5">
+            <div class="container">
+                <div class="row g-5 align-items-center">
+                    <div>
+                        <?= Alert::widget() ?>
+                        <?= $content ?>
                     </div>
                 </div>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#header-carousel"
-                    data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#header-carousel"
-                    data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
         </div>
-    </div>
-    <!-- Carousel End -->
+    </main>
 
-
-    <!-- About Start -->
-    <div class="container-xxl py-5">
-        <div class="container">
-            <div class="row g-5 align-items-center">
-                <div>
-                    <?= Alert::widget() ?>
-                    <?= $content ?>
-                </div>
-            </div>
-        </div>
-    </div>
-</main>
-
-<footer class="footer mt-auto py-3 text-muted">
+    <footer class="footer mt-auto py-3 text-muted">
         <div class="container py-5">
             <div class="row g-5">
                 <div class="col-lg-3 col-md-6">
@@ -199,9 +184,10 @@ AppAsset::register($this);
                 </div>
             </div>
         </div>
-</footer>
+    </footer>
 
-<?php $this->endBody() ?>
+    <?php $this->endBody() ?>
 </body>
+
 </html>
 <?php $this->endPage();

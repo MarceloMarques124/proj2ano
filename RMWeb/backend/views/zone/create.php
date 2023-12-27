@@ -4,8 +4,6 @@ use yii\helpers\Html;
 
 /** @var yii\web\View $this */
 /** @var common\models\Zone $model */
-/** @var common\models\Restaurant[] $restaurants */
-
 
 $this->title = 'Create Zone';
 $this->params['breadcrumbs'][] = ['label' => 'Zones', 'url' => ['index']];
@@ -17,7 +15,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
-        'restaurants' =>$restaurants,
     ]) ?>
 
 </div>

@@ -17,7 +17,7 @@ class TableSearch extends Table
     public function rules()
     {
         return [
-            [['id', 'zone_id'], 'integer'],
+            [['id', 'capacity'], 'integer'],
             [['description'], 'safe'],
         ];
     }
@@ -59,7 +59,7 @@ class TableSearch extends Table
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'zone_id' => $this->zone_id,
+            'capacity' => $this->capacity,
         ]);
 
         $query->andFilterWhere(['like', 'description', $this->description]);

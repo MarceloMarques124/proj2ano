@@ -17,7 +17,7 @@ class UserInfoSearch extends UserInfo
     public function rules()
     {
         return [
-            [['id', 'user_id', 'nif'], 'integer'],
+            [['id', 'user_id', 'nif', 'restaurant_id'], 'integer'],
             [['name', 'address', 'door_number', 'postal_code'], 'safe'],
         ];
     }
@@ -61,6 +61,7 @@ class UserInfoSearch extends UserInfo
             'id' => $this->id,
             'user_id' => $this->user_id,
             'nif' => $this->nif,
+            'restaurant_id' => $this->restaurant_id,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
@@ -70,4 +71,5 @@ class UserInfoSearch extends UserInfo
 
         return $dataProvider;
     }
+
 }

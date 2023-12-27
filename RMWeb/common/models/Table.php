@@ -2,17 +2,14 @@
 
 namespace common\models;
 
-use common\models\Zone;
-
-
 use Yii;
 
 /**
  * This is the model class for table "tables".
  *
  * @property int $id
- * @property int $zone_id
  * @property string|null $description
+ * @property int $capacity
  */
 class Table extends \yii\db\ActiveRecord
 {
@@ -30,9 +27,8 @@ class Table extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['zone_id'], 'required'],
-            [['zone_id'], 'integer'],
-            [['zone_id'], 'exist', 'targetClass' => Zone::className(), 'targetAttribute' => ['zone_id' => 'id']],
+            [['capacity'], 'required'],
+            [['capacity'], 'integer'],
             [['description'], 'string', 'max' => 200],
         ];
     }
@@ -44,8 +40,8 @@ class Table extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'zone_id' => 'Zone ID',
             'description' => 'Description',
+            'capacity' => 'Capacity',
         ];
     }
 }

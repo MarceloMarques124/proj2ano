@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\models;
+namespace frontend\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -17,7 +17,7 @@ class ReservationSearch extends Reservation
     public function rules()
     {
         return [
-            [['id', 'table_id', 'user_id', 'people_number'], 'integer'],
+            [['id', 'tables_number', 'user_id', 'people_number', 'restaurant_id'], 'integer'],
             [['date_time', 'remarks'], 'safe'],
         ];
     }
@@ -59,10 +59,11 @@ class ReservationSearch extends Reservation
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'table_id' => $this->table_id,
+            'tables_number' => $this->tables_number,
             'user_id' => $this->user_id,
             'date_time' => $this->date_time,
             'people_number' => $this->people_number,
+            'restaurant_id' => $this->restaurant_id,
         ]);
 
         $query->andFilterWhere(['like', 'remarks', $this->remarks]);

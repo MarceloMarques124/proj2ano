@@ -1,8 +1,10 @@
 <?php
 
+use common\models\FoodItem;
+use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
-use yii\helpers\Html;
 
 /** @var yii\web\View $this */
 /** @var backend\models\FoodItemSearch $searchModel */
@@ -16,17 +18,16 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
+
+            'id',
             'name',
+            'menu_id',
             'price',
             [
                 'class' => ActionColumn::className(),
-                'template' => '{update-food-item} {delete-food-item}',
-                'buttons' => [
-                    'update-food-item' => function ($url, $model, $key) {
-                        print_r($url);
-                        return Html::a('Update', $url, ['class' => 'btn btn-primary']);
-                    }
-                ]
+                'urlCreator' => function ($action, FoodItem $model, $key, $index, $column) {
+                    return Url::toRoute([$action, 'id' => $model->id]);
+                 }
             ],
         ],
     ]); ?>

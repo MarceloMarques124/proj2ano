@@ -2,8 +2,7 @@
 
 namespace common\models;
 
-use yii\db\ActiveQuery;
-use yii\db\ActiveRecord;
+use Yii;
 
 /**
  * This is the model class for table "user_info".
@@ -15,10 +14,12 @@ use yii\db\ActiveRecord;
  * @property string|null $door_number
  * @property string|null $postal_code
  * @property int|null $nif
+ * @property int|null $restaurant_id
  *
+ * @property Restaurant $restaurant
  * @property User $user
  */
-class UserInfo extends ActiveRecord
+class UserInfo extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -35,11 +36,12 @@ class UserInfo extends ActiveRecord
     {
         return [
             [['user_id', 'name'], 'required'],
-            [['user_id', 'nif'], 'integer'],
+            [['user_id', 'nif', 'restaurant_id'], 'integer'],
             [['name', 'address'], 'string', 'max' => 100],
             [['door_number'], 'string', 'max' => 50],
             [['postal_code'], 'string', 'max' => 20],
             [['user_id'], 'unique'],
+            [['restaurant_id'], 'exist', 'skipOnError' => true, 'targetClass' => Restaurant::class, 'targetAttribute' => ['restaurant_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
@@ -57,13 +59,24 @@ class UserInfo extends ActiveRecord
             'door_number' => 'Door Number',
             'postal_code' => 'Postal Code',
             'nif' => 'Nif',
+            'restaurant_id' => 'Restaurant ID',
         ];
+    }
+
+    /**
+     * Gets query for [[Restaurant]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRestaurant()
+    {
+        return $this->hasOne(Restaurant::class, ['id' => 'restaurant_id']);
     }
 
     /**
      * Gets query for [[User]].
      *
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getUser()
     {

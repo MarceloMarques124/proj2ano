@@ -8,14 +8,17 @@ use Yii;
  * This is the model class for table "reservations".
  *
  * @property int $id
- * @property int $table_id
+ * @property int $tables_number
  * @property int $user_id
  * @property string $date_time
  * @property int $people_number
  * @property string|null $remarks
+ * @property int $restaurant_id
+ * @property int $zone_id
  *
- * @property Table $table
+ * @property Restaurant $restaurant
  * @property User $user
+ * @property Zone $zone
  */
 class Reservation extends \yii\db\ActiveRecord
 {
@@ -33,14 +36,13 @@ class Reservation extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['table_id', 'user_id', 'date_time', 'people_number'], 'required'],
-            [['table_id', 'user_id', 'people_number'], 'integer'],
+            [['tables_number', 'user_id', 'date_time', 'people_number', 'restaurant_id', 'zone_id'], 'required'],
+            [['tables_number', 'user_id', 'people_number', 'restaurant_id', 'zone_id'], 'integer'],
             [['date_time'], 'safe'],
             [['remarks'], 'string'],
-            [['table_id'], 'unique'],
-            [['user_id'], 'unique'],
-            [['table_id'], 'exist', 'skipOnError' => true, 'targetClass' => Table::class, 'targetAttribute' => ['table_id' => 'id']],
+            [['restaurant_id'], 'exist', 'skipOnError' => true, 'targetClass' => Restaurant::class, 'targetAttribute' => ['restaurant_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
+            [['zone_id'], 'exist', 'skipOnError' => true, 'targetClass' => Zone::class, 'targetAttribute' => ['zone_id' => 'id']],
         ];
     }
 
@@ -51,22 +53,24 @@ class Reservation extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'table_id' => 'Table ID',
+            'tables_number' => 'Tables Number',
             'user_id' => 'User ID',
             'date_time' => 'Date Time',
             'people_number' => 'People Number',
             'remarks' => 'Remarks',
+            'restaurant_id' => 'Restaurant ID',
+            'zone_id' => 'Zone ID',
         ];
     }
 
     /**
-     * Gets query for [[Table]].
+     * Gets query for [[Restaurant]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getTable()
+    public function getRestaurant()
     {
-        return $this->hasOne(Table::class, ['id' => 'table_id']);
+        return $this->hasOne(Restaurant::class, ['id' => 'restaurant_id']);
     }
 
     /**
@@ -77,5 +81,15 @@ class Reservation extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+    /**
+     * Gets query for [[Zone]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getZone()
+    {
+        return $this->hasOne(Zone::class, ['id' => 'zone_id']);
     }
 }

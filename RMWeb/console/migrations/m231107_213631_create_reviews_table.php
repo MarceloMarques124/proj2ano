@@ -19,29 +19,11 @@ class m231107_213631_create_reviews_table extends Migration
     {
         $this->createTable('{{%reviews}}', [
             'id' => $this->primaryKey(),
-            'food_order_id' => $this->integer()->notNull(),
             'user_id' => $this->integer()->notNull(),
             'restaurant_id' => $this->integer()->notNull(),
             'stars' => $this->decimal(1,1)->notNull(),
             'description' => $this->text(),
         ],'ENGINE=InnoDB');
-
-        // creates index for column `food_order_id`
-        $this->createIndex(
-            '{{%idx-reviews-food_order_id}}',
-            '{{%reviews}}',
-            'food_order_id'
-        );
-
-        // add foreign key for table `{{%food_orders}}`
-        $this->addForeignKey(
-            '{{%fk-reviews-food_order_id}}',
-            '{{%reviews}}',
-            'food_order_id',
-            '{{%food_orders}}',
-            'id',
-            'CASCADE'
-        );
 
         // creates index for column `user_id`
         $this->createIndex(
@@ -83,18 +65,6 @@ class m231107_213631_create_reviews_table extends Migration
      */
     public function safeDown()
     {
-        // drops foreign key for table `{{%food_orders}}`
-        $this->dropForeignKey(
-            '{{%fk-reviews-food_order_id}}',
-            '{{%reviews}}'
-        );
-
-        // drops index for column `food_order_id`
-        $this->dropIndex(
-            '{{%idx-reviews-food_order_id}}',
-            '{{%reviews}}'
-        );
-
         // drops foreign key for table `{{%user}}`
         $this->dropForeignKey(
             '{{%fk-reviews-user_id}}',

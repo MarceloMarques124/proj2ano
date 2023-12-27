@@ -1,5 +1,7 @@
 package com.example.restmanager;
 
+import static com.example.restmanager.OrdersActivity.ID_REST;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -22,12 +24,13 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_details);
+
         
         binding = ActivityRestaurantDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         int id = getIntent().getIntExtra(String.valueOf(ID_RESTAURANT), 0);
-        restaurant = SingletonRestaurantManager.getInstance().getRestaurant(id);
+        restaurant = SingletonRestaurantManager.getInstance(getApplicationContext()).getRestaurant(id);
         binding.imgCover.setImageResource(restaurant.getCover());
         binding.tvEmail.setText(restaurant.getEmail());
         binding.tvRestName.setText(restaurant.getName());
@@ -46,6 +49,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
     public void onClickTakeAway(View view){
         Toast.makeText(this, "Take-Away", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getApplicationContext(), OrdersActivity.class);
+        intent.putExtra(ID_REST, restaurant.getId());
         startActivity(intent);
     }
 }

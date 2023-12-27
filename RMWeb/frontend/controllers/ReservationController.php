@@ -1,15 +1,14 @@
 <?php
 
-namespace backend\controllers;
+namespace frontend\controllers;
 
 use Yii;
-use common\models\User;
 use yii\web\Controller;
-use common\models\Table;
 use yii\filters\VerbFilter;
+use common\models\LoginForm;
 use common\models\Reservation;
 use yii\web\NotFoundHttpException;
-use backend\models\ReservationSearch;
+use frontend\models\ReservationSearch;
 
 /**
  * ReservationController implements the CRUD actions for Reservation model.
@@ -70,16 +69,30 @@ class ReservationController extends Controller
      */
     public function actionCreate()
     {
+        if (Yii::$app->user->isGuest){
+            $model = new LoginForm();
+            if ($model->load(Yii::$app->request->post()) && $model->login()) {
+                return $this->goBack();
+            }
+            $model->password = '';
+    
+            return $this->render('@frontend/views/site/login', [
+                'model' => $model,
+            ]);
+        }
         $model = new Reservation();
-        $tables = Table::find()->all();
+        $restaurantId = Yii::$app->request->get('restaurant_id');
+        $userId = Yii::$app->user->getId();
+        $currentDate = date('Y-m-d H:i:s');
 
-        $auth = Yii::$app->authManager;
-        $userIds = $auth->getUserIdsByRole('admin');
-        $users = User::find()
-            ->where(['in', 'id', $userIds])
-            ->all();
-        print_r($userIds);
         if ($this->request->isPost) {
+ 
+            $model->restaurant_id = $restaurantId;
+            $model->user_id = $userId;
+            $peopleNumber = $this->request->post('Reservation')['people_number'];
+            $tablesNumber = ceil($peopleNumber/4);
+            $model->tables_number = $tablesNumber;
+            $model->zone_id = 1;
             if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
@@ -89,8 +102,6 @@ class ReservationController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'tables' => $tables,    
-            'users' => $users, 
         ]);
     }
 
