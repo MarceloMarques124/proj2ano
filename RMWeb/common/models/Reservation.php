@@ -42,6 +42,8 @@ class Reservation extends \yii\db\ActiveRecord
             [['remarks'], 'string'],
             [['restaurant_id'], 'exist', 'skipOnError' => true, 'targetClass' => Restaurant::class, 'targetAttribute' => ['restaurant_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
+            [['zone_id'], 'integer'],
+            [['zone_id'], 'default', 'value' => null],
             [['zone_id'], 'exist', 'skipOnError' => true, 'targetClass' => Zone::class, 'targetAttribute' => ['zone_id' => 'id']],
         ];
     }
