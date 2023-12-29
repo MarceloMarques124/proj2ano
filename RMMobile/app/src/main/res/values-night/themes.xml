@@ -16,4 +16,22 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- other attributes -->
+    </style>
+
+    <style name="YourActivityTheme" parent="Theme.AppCompat">
+        <!-- other attributes -->
+    </style>
+
+    <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Dialog.Alert">
+        <!-- other attributes -->
+    </style>
+  <!-- Base application theme. -->
+    <style name="Base.Base.Theme.RestManager" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your dark theme here. -->
+        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+    </style>
+
 </resources>

@@ -13,7 +13,6 @@ public class Menu {
         this.description = description;
         this.price = price;
         this.restId = restId;
-        this.quantity = 0;
     }
 
     public int getId() {
@@ -26,14 +25,6 @@ public class Menu {
 
     public String getDescription() {
         return description;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
     }
 
     public double getPrice() {
@@ -50,5 +41,13 @@ public class Menu {
 
     public void setRestId(int restId) {
         this.restId = restId;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

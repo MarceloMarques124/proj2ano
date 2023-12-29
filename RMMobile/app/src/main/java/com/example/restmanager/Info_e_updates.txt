@@ -1,0 +1,7 @@
+Faltam métodos dos models no singleton
+
+A lógica do add ao cart e a criação da order/carrinho e cenas está a dar-me cabo da moleirinha
+
+jason parser quero ver se acabo em 2023
+
+Nos dbhelpers, fiz uma por model para maiss facil compreensão.

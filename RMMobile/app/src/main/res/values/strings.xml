@@ -18,7 +18,8 @@
     <string name="tvIP">IP Addrress</string>
     <string name="btnConnect">Connect</string>
     <string name="HomePage">Homepage</string>
-    <string name="navOrders">Orders</string>>
+    <string name="navOrders">Orders</string>
+    <string name="navChart">Cart</string>
     <string name="ndOpen">Open</string>
     <string name="ndClose">Close</string>
     <!-- TODO: Remove or change this placeholder text -->
@@ -39,6 +40,10 @@
     <string name="tvFinishOrder">Finish</string>
     <string name="txtPlus">+</string>
     <string name="txtMinus">-</string>
-    <string name="btnAddChart">Add to chart</string>
+    <string name="btnAddChart">Add to cart</string>
     <string name="Ok">Ok</string>
+    <string name="close">Close</string>
+    <string name="title_activity_cart">CartActivity</string>
+    <string name="btnRemoveFromCart">Remove</string>
+    <string name="reviews">Reviews from other clients</string>
 </resources>

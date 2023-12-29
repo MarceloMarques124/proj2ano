@@ -1,25 +1,22 @@
 package com.example.restmanager.Adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
-import android.util.Patterns;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.restmanager.Model.Menu;
 import com.example.restmanager.Model.MenuItem;
 import com.example.restmanager.Model.Order;
-import com.example.restmanager.Model.SingletonRestaurantManager;
-import com.example.restmanager.OrdersActivity;
 import com.example.restmanager.R;
 import com.example.restmanager.databinding.ItemMenuOrderBinding;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 
 public class MenusAdapter extends BaseAdapter {
@@ -29,6 +26,8 @@ public class MenusAdapter extends BaseAdapter {
     private ArrayList<Menu> menus;
     private Order order = new Order();
     private ArrayList<MenuItem> menuItem;
+    private AlertDialog alert = null;
+
     //private MyViewHolder myViewHolder;
 
     public MenusAdapter(Context context, ArrayList<Menu> menus) {
@@ -102,10 +101,53 @@ public class MenusAdapter extends BaseAdapter {
 
             }
         });
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("-->" + position);
+                //showDialog(position);
+            }
+        });
+
+
 
         return convertView;
     }
 
+    private void showDialog(int id) {
+        System.out.println("--> #1" + alert);
+        if (alert == null) {
+            System.out.println("--> #2" + alert);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(context.getApplicationContext(), R.style.AppCompatAlertDialogStyle);
+            builder.setTitle(menus.get(id).getName() + " | Info")
+                    .setMessage("Info do prato aqui")
+                    .setPositiveButton(R.string.close, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                           // alert.dismiss();
+                            alert = null;
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_info);
+
+            // Set the created AlertDialog to the member variable
+            alert = builder.create();
+
+        }else{
+            alert = null;
+            showDialog(id);
+        }
+        alert.show();
+        /*alert = new MaterialAlertDialogBuilder(context.getApplicationContext(), R.style.AppCompatAlertDialogStyle)
+                .setTitle(menus.get((int)id).getName() + " | Info")
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setPositiveButton("OK", null);
+
+        alert.setMessage("Falta inserir data/horário")
+                .create()
+                .show();*/
+    }
 
     public class ViewHolderList{
 
@@ -122,7 +164,6 @@ public class MenusAdapter extends BaseAdapter {
             qty.setText(""+menu.getQuantity());
             price.setText(menu.getPrice()+" €");
         }
-
     }
 
 }

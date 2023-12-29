@@ -14,11 +14,17 @@
             android:icon="@drawable/ic_home"
             android:title="@string/HomePage" />
         <item
-            android:id="@+id/navOrders"
+            android:id="@+id/navOrder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:icon="@drawable/ic_orders"
             android:title="@string/navOrders" />
+        <item
+            android:id="@+id/navCart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/ic_cart"
+            android:title="@string/navChart" />
         <item
             android:id="@+id/navServerConnection"
             android:layout_width="wrap_content"
