@@ -76,7 +76,7 @@ class m231124_234855_init_rbac extends Migration
         foreach (array('Esplanada', 'Dentro', 'Fora', 'Café', 'Restaurante') as $zoneName) {
             $zone = new Zone();
 
-            $zone->name = $restaurantName . ' - ' . $zoneName;
+            $zone->name = $zoneName;
             $zone->description = $restaurantName . ' - ' . $zoneName;
             $zone->restaurant_id = $restaurant->id;
             $zone->capacity = 20;

@@ -1,17 +1,23 @@
 <?php
 
 use yii\helpers\Html;
+use common\models\Zone;
 use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
 use kartik\datetime\DateTimePicker;
 
 /** @var yii\web\View $this */
 /** @var common\models\Reservation $model */
 /** @var yii\widgets\ActiveForm $form */
+
+/** @var common\models\Zone[] $zonas */
+
 ?>
 
 <div class="reservation-form">
 
     <?php $form = ActiveForm::begin(); ?>
+
 
     <?= $form->field($model, 'date_time')->widget(DateTimePicker::class, [
         'options' => ['placeholder' => 'Select date and time ...'],
@@ -28,8 +34,9 @@ use kartik\datetime\DateTimePicker;
             'minuteStep' => 15, // Arredonda para o próximo intervalo de 30 minutos
             'startDate' => date('Y-m-d H:00', strtotime('+1 hour')), // Define a hora inicial para uma hora após a hora atual com minutos como "00"
         ],
-    
+
     ]); ?>
+    <?= $form->field($model, 'zone_id')->dropDownList(ArrayHelper::map($zonas, 'id', 'name'), ['prompt' => 'Select Zone']); ?>
 
     <?= $form->field($model, 'people_number')->textInput() ?>
 
@@ -38,6 +45,7 @@ use kartik\datetime\DateTimePicker;
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
+
 
     <?php ActiveForm::end(); ?>
 

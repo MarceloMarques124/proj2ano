@@ -37,7 +37,7 @@ class UserInfo extends \yii\db\ActiveRecord
         return [
             [['user_id', 'name'], 'required'],
             [['user_id', 'nif', 'restaurant_id'], 'integer'],
-            [['name', 'address'], 'string', 'max' => 100],
+            [['name', 'address'], 'string', 'max' => 10],
             [['door_number'], 'string', 'max' => 50],
             [['postal_code'], 'string', 'max' => 20],
             [['user_id'], 'unique'],

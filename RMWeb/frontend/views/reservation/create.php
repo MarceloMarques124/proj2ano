@@ -5,6 +5,9 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var common\models\Reservation $model */
 
+/** @var common\models\Zone[] $zonas */
+
+
 $this->title = 'Create Reservation';
 $this->params['breadcrumbs'][] = ['label' => 'Reservations', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
@@ -15,6 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
+        'zonas' => $zonas
     ]) ?>
 
 </div>

@@ -1,4 +1,6 @@
 <?php
+
+use yii\web\UserInfo;
 return [
     'id' => 'app-common-tests',
     'basePath' => dirname(__DIR__),

@@ -26,7 +26,7 @@ class m231031_224736_create_reservations_table extends Migration
             'people_number' => $this->integer()->notNull(),
             'remarks' => $this->text(),
             'restaurant_id' => $this->integer()->notNull(),
-            'zone_id' => $this->integer()->notNull(),
+            'zone_id' => $this->integer(),
         ], 'ENGINE=InnoDB');
 
         // creates index for column `table_id`
