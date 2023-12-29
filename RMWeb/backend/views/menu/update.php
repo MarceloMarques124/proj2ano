@@ -11,6 +11,7 @@ use yii\web\View;
 /** @var Menu $model */
 /** @var FoodItem $foodItemModel */
 /** @var ActiveDataProvider $dataProvider */
+/** @var ActiveDataProvider $allFoodItems */
 /** @var Restaurant[] $restaurants */
 
 $this->title = 'Update Menu: ' . $model->name;
@@ -27,6 +28,7 @@ $this->params['breadcrumbs'][] = 'Update';
         'foodItemModel' => $foodItemModel,
         'restaurants' => $restaurants,
         'dataProvider' => $dataProvider,
+        'allFoodItems' => $allFoodItems,
     ]) ?>
 
 </div>

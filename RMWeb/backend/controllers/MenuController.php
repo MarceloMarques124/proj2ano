@@ -114,9 +114,10 @@ class MenuController extends Controller
     {
         $model = $this->findModel($id);
 
-        $searchModel = new FoodItemSearch(['menu_id' => $id]);
+        $menuFoodItemsSearch = new FoodItemSearch(['menu_id' => $id]);
+        $foodItemsSearch = new FoodItemSearch();
 
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        $dataProvider = $menuFoodItemsSearch->search($this->request->queryParams);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -130,6 +131,7 @@ class MenuController extends Controller
             'foodItemModel' => $foodItemModel,
             'restaurants' => Restaurant::find()->all(),
             'dataProvider' => $dataProvider,
+            'allFoodItems' => (new FoodItemSearch())->search($this->request->queryParams),
         ]);
     }
 

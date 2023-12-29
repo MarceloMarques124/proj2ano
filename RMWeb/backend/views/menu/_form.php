@@ -4,6 +4,8 @@ use common\models\FoodItem;
 use common\models\Menu;
 use common\models\Restaurant;
 use yii\data\ActiveDataProvider;
+use yii\grid\ActionColumn;
+use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\web\View;
@@ -15,6 +17,7 @@ use yii\widgets\ActiveForm;
 /** @var FoodItem $foodItemModel */
 /** @var ActiveDataProvider $dataProvider */
 /** @var Restaurant[] $restaurants */
+/** @var ActiveDataProvider $allFoodItems */
 ?>
 
 <div class="menu-form">
@@ -41,9 +44,23 @@ use yii\widgets\ActiveForm;
         </div>
 
         <div class="col-md-4">
-            <?= $this->render('../food-item/_form', [
-                'model' => $foodItemModel
-            ]) ?>
+            <?= GridView::widget([
+                'dataProvider' => $allFoodItems,
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
+                    'name',
+                    'price',
+                    [
+                        'class' => ActionColumn::className(),
+                        'template' => '{update-food-item} {delete-food-item}',
+                        'buttons' => [
+                            'add-food-item' => function ($url, $model, $key) {
+                                return Html::a('Update', $url, ['class' => 'btn btn-primary']);
+                            }
+                        ]
+                    ],
+                ],
+            ]); ?>
         </div>
     </div>
 
