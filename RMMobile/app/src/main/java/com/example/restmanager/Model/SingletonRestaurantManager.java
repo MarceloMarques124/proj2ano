@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public class SingletonRestaurantManager {
     private ArrayList<Restaurant> restaurants;
+    private ArrayList<OrderedMenu> orderedMenus;
     private ArrayList<Menu> menus;
     private static SingletonRestaurantManager instance = null;
 
@@ -24,6 +25,7 @@ public class SingletonRestaurantManager {
     private void generateDinamicData() {
         restaurants = new ArrayList<>();
         menus = new ArrayList<>();
+        orderedMenus = new ArrayList<>();
 
         restaurants.add(new Restaurant(1, "AntiGona", "Rua da cona da tia que é prima", 222635245, "antigona@k.com", "234668994", R.drawable.coloredlogo));
         restaurants.add(new Restaurant(2, "Foda-se", "Rua da cona da tia que é prima", 222089755, "fuck@k.com", "234668998", R.drawable.coloredlogo));
@@ -56,6 +58,16 @@ public class SingletonRestaurantManager {
             if (r.getId() == id){
                 return r;
             }
+        }
+        return null;
+    }
+
+
+    public OrderedMenu getOrderedMenusByOrderId(int id){
+
+        for (OrderedMenu ordered: orderedMenus) {
+            if (ordered.getOrderId() == id)
+                return ordered;
         }
         return null;
     }

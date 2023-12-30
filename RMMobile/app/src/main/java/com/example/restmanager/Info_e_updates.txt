@@ -1,6 +1,6 @@
 Faltam métodos dos models no singleton
 
-A lógica do add ao cart e a criação da order/carrinho e cenas está a dar-me cabo da moleirinha
+A lógica do add ao cart e a criação da order/carrinho e cenas está a dar-me cabo da moleirinha - verifica existencia de order pelo id e estado´, cria ou da add
 
 jason parser quero ver se acabo em 2023
 

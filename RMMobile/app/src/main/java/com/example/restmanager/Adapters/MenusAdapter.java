@@ -14,6 +14,8 @@ import android.widget.Toast;
 import com.example.restmanager.Model.Menu;
 import com.example.restmanager.Model.MenuItem;
 import com.example.restmanager.Model.Order;
+import com.example.restmanager.Model.OrderedMenu;
+import com.example.restmanager.Model.SingletonRestaurantManager;
 import com.example.restmanager.R;
 import com.example.restmanager.databinding.ItemMenuOrderBinding;
 
@@ -24,7 +26,9 @@ public class MenusAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater inflater;
     private ArrayList<Menu> menus;
-    private Order order = new Order();
+    private ArrayList<Order> orders;
+    private Order order;
+    private OrderedMenu orderedMenu;
     private ArrayList<MenuItem> menuItem;
     private AlertDialog alert = null;
 
@@ -61,6 +65,7 @@ public class MenusAdapter extends BaseAdapter {
             binding = ItemMenuOrderBinding.inflate(LayoutInflater.from(context), parent, false);
             convertView = binding.getRoot();
             holder = new ViewHolderList(convertView);
+            orders = new ArrayList<>();
             convertView.setTag(holder);
         }else {
             holder = (ViewHolderList) convertView.getTag();
@@ -95,9 +100,18 @@ public class MenusAdapter extends BaseAdapter {
             public void onClick(View v) {
                 Toast.makeText(context, "Adding to chart", Toast.LENGTH_SHORT).show();
 
-                if (order == null){
-               //     order = SingletonRestaurantManager.
-                }
+                int qty =  Integer.parseInt(binding.etQuantity.getText().toString());
+
+                orders.forEach(order1 -> {
+                    if (/*order1.getUserId() = get do id logado &&*/ order1.getStatus() == "Pendente"){
+                            OrderedMenu ordered = SingletonRestaurantManager.getInstance(context).getOrderedMenusByOrderId(order1.getId());
+                        if (ordered == null){
+                            orderedMenu = new OrderedMenu(0, position, order1.getId(), qty);
+                        }else{
+                            ordered.setQuantity(ordered.getQuantity() + qty);
+                        }
+                    }
+                });
 
             }
         });
