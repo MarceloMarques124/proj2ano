@@ -101,6 +101,13 @@ class ReservationController extends Controller
             $tablesNumber = ceil($peopleNumber / 4);
             $model->tables_number = $tablesNumber;
 
+            // Verificar a zona escolhida
+            $selectedZoneId = $this->request->post('Reservation')['zone_id'];
+            // Obter a capacidade da zona do banco de dados
+            $zone = Zone::findOne(['id' => $selectedZoneId]);
+            $zoneCapacity = $zone ? $zone->capacity : 0;
+            $zoneTablesNumber = $zoneCapacity / 4;
+
             //verificar se na zona escolhida tem mesas com vagas para o total de pessoas da reserva
             $reservationDateTime = $this->request->post('Reservation')['date_time'];
             $peopleNumber = $this->request->post('Reservation')['people_number'];
@@ -160,12 +167,83 @@ class ReservationController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+        // Verificar se falta pelo menos 1 hora para a hora da reserva
+        $currentDateTime = date('Y-m-d H:i:s');
+        $reservationDateTime = $model->date_time;
+
+        $oneHourLater = date('Y-m-d H:i:s', strtotime($currentDateTime) + 60 * 60);
+
+        if ($currentDateTime >= $reservationDateTime) {
+            Yii::$app->session->setFlash('error', 'Desculpe, a reserva não pode ser atualizada após o início da mesma.');
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
+        if ($oneHourLater >= $reservationDateTime) {
+            Yii::$app->session->setFlash('error', 'Desculpe, a reserva só pode ser atualizada até 1 hora antes da hora marcada.');
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        //buscar o id ao modelo(form)
+        $restaurantId = $model->restaurant_id;
+        // o  user id de quem esta loggado
+        $userId = Yii::$app->user->getId();
+        // as zonas sao necessarias para o dropdown se o cliente quiser escolhe uma zona
+        $zonas = Zone::find()->where(['restaurant_id' => $restaurantId])->all();
+
+        if ($this->request->isPost) {
+            // Verificar a zona escolhida
+            $selectedZoneId = $this->request->post('Reservation')['zone_id'];
+            // Obter a capacidade da zona do banco de dados
+            $zone = Zone::findOne(['id' => $selectedZoneId]);
+            $zoneCapacity = $zone ? $zone->capacity : 0;
+            $zoneTablesNumber = $zoneCapacity / 4;
+
+            // Verificar se há reservas nas duas horas anteriores à hora escolhida
+            $twoHoursEarlier = date('Y-m-d H:i:s', strtotime($reservationDateTime) - 2 * 60 * 60);
+            $twoHoursLater = date('Y-m-d H:i:s', strtotime($reservationDateTime) + 2 * 60 * 60);
+            $existingReservations = Reservation::find()
+                ->where(['restaurant_id' => $restaurantId, 'zone_id' => $selectedZoneId])
+                ->andWhere(['>', 'date_time', $twoHoursEarlier])
+                ->andWhere(['<=', 'date_time', $twoHoursLater])
+                // Excluir a reserva atual da consulta
+                ->andWhere(['!=', 'id', $model->id])
+                ->all();
+            $peopleNumber = $this->request->post('Reservation')['people_number'];
+            $tablesNumber = ceil($peopleNumber / 4);
+
+            if (!empty($existingReservations)) {
+                // Há reservas nas duas horas anteriores à hora escolhida
+
+                $reservedTablesInZone = 0;
+
+                foreach ($existingReservations as $existingReservation) {
+                    $reservedTablesInZone += $existingReservation->tables_number;
+                }
+
+                // Calcular a disponibilidade de mesas
+                $availableTablesInZone = $zoneTablesNumber - $reservedTablesInZone;
+                if ($tablesNumber <= $availableTablesInZone) {
+                    // Mesas suficientes estão disponíveis, continuar com a atualização
+                    $model->tables_number = $tablesNumber;
+
+                    if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+                        return $this->redirect(['view', 'id' => $model->id]);
+                    }
+                } else {
+                    // Mesas insuficientes, exiba uma mensagem de erro
+                    Yii::$app->session->setFlash('error', 'Desculpe, não há mesas disponíveis na zona escolhida para a data e hora selecionadas.');
+                }
+            } else {
+                $model->tables_number = $tablesNumber;
+
+                if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            }
+        }
         return $this->render('update', [
             'model' => $model,
+            'zonas' => $zonas,
         ]);
     }
 
