@@ -61,7 +61,7 @@ class Reservation extends \yii\db\ActiveRecord
             'people_number' => 'People Number',
             'remarks' => 'Remarks',
             'restaurant_id' => 'Restaurant ID',
-            'zone_id' => 'Zone ID',
+            'zone_id' => 'Zone',
         ];
     }
 
