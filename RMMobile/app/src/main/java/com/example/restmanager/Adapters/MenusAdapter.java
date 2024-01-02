@@ -15,7 +15,7 @@ import com.example.restmanager.Model.Menu;
 import com.example.restmanager.Model.MenuItem;
 import com.example.restmanager.Model.Order;
 import com.example.restmanager.Model.OrderedMenu;
-import com.example.restmanager.Model.SingletonRestaurantManager;
+import com.example.restmanager.Singleton.SingletonRestaurantManager;
 import com.example.restmanager.R;
 import com.example.restmanager.databinding.ItemMenuOrderBinding;
 

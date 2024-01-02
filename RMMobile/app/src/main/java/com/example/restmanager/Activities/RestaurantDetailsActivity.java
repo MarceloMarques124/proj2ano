@@ -35,7 +35,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
 
         int id = getIntent().getIntExtra(String.valueOf(ID_RESTAURANT), 0);
         restaurant = SingletonRestaurantManager.getInstance(getApplicationContext()).getRestaurant(id);
-        binding.imgCover.setImageResource(restaurant.getCover());
+      //  binding.imgCover.setImageResource(restaurant.getCover());
         binding.tvEmail.setText(restaurant.getEmail());
         binding.tvRestName.setText(restaurant.getName());
         binding.tvLocal.setText(restaurant.getAddress());

@@ -41,8 +41,10 @@ public class HomepageFragment extends Fragment {
         binding = FragmentHomepageBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        restaurants = SingletonRestaurantManager.getInstance(getContext()).getRestaurants();
-        binding.lvRestaurants.setAdapter(new RestaurantsAdapter(getContext(), restaurants));
+       // restaurants = SingletonRestaurantManager.getInstance(getContext()).getRestaurants();
+
+       // restaurants = SingletonRestaurantManager.getInstance(getContext()).getRestaurantsAPI();r
+//        binding.lvRestaurants.setAdapter(new RestaurantsAdapter(getContext(), restaurants));
 
         binding.lvRestaurants.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -53,6 +55,8 @@ public class HomepageFragment extends Fragment {
 
             }
         });
+
+        SingletonRestaurantManager.getInstance(getContext()).getRestaurantsAPI(getContext());
         return view;
     }
 
@@ -87,8 +91,7 @@ public class HomepageFragment extends Fragment {
     }
 
     public void onRefresh(){
-        restaurants = SingletonRestaurantManager.getInstance(getContext()).getRestaurants();
-        binding.lvRestaurants.setAdapter(new RestaurantsAdapter(getContext(), restaurants));
+        SingletonRestaurantManager.getInstance(getContext()).getRestaurantsAPI(getContext());
         binding.swipeLayout.setRefreshing(false);
     }
 }

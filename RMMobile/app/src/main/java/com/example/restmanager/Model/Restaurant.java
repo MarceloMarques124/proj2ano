@@ -8,16 +8,16 @@ public class Restaurant {
     private int nif;
     private String email;
     private String mobileNumber;
-    private int imgCover;
+    private String imgCover;
 
-    public Restaurant(int id, String name, String address, int nif, String email, String mobileNumber, int imgCover) {
+    public Restaurant(int id, String name, String address, int nif, String email, String mobileNumber/*, String imgCover*/) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.nif = nif;
         this.email = email;
         this.mobileNumber = mobileNumber;
-        this.imgCover = imgCover;
+        /*this.imgCover = imgCover;*/
     }
 
     public int getId() {
@@ -64,11 +64,11 @@ public class Restaurant {
         this.mobileNumber = mobileNumber;
     }
 
-    public int getCover() {
+    public String getCover() {
         return imgCover;
     }
 
-    public void setCover(int imgCover) {
+    public void setCover(String imgCover) {
         this.imgCover = imgCover;
     }
 }
