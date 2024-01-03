@@ -169,7 +169,7 @@ public class SingletonRestaurantManager {
 
     public ArrayList<Menu> getMenusById(int id){
         ArrayList<Menu> restMenus = new ArrayList<>();
-
+        menus = this.getMenusDB();
         menus.forEach(menu -> {
             if (menu.getRestId() == id)
                 restMenus.add(menu);
@@ -187,6 +187,7 @@ public class SingletonRestaurantManager {
             JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, apiUrl + "/menus", null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
+                    System.out.println("aqui " + apiUrl);
                     menus = JsonParser.jsonMenusParser(response);
                     addMenusDB(menus);
 

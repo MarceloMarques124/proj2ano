@@ -17,7 +17,6 @@ public class MenuDBHelper extends SQLiteOpenHelper {
     private static final int DB_VERSION = 1;
     private final SQLiteDatabase db;
     private static final String NAME = "name";
-    private static final String DESCRIPTION = "description";
     private static final String PRICE = "price";
     private static final String RESTID = "restId";
     private static final String ID = "id";
@@ -30,14 +29,13 @@ public class MenuDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createBooksTable = "CREATE TABLE " + DB_TABLE + "(" +
+        String createMenusTable = "CREATE TABLE " + DB_TABLE + "(" +
                 ID + " INTEGER PRIMARY KEY, " +
                 NAME + " TEXT NOT NULL, " +
-                DESCRIPTION + " TEXT NOT NULL, " +
-                PRICE + " TEXT NOT NULL, " +
-                RESTID + " TEXT NOT NULL" +
+                PRICE + " DECIMAL NOT NULL, " +
+                RESTID + " INTEGER NOT NULL" +
                 ");";
-        db.execSQL(createBooksTable);
+        db.execSQL(createMenusTable);
     }
 
     @Override
@@ -48,16 +46,15 @@ public class MenuDBHelper extends SQLiteOpenHelper {
 
     public ArrayList<Menu> getAllMenus(){
         ArrayList<Menu> menus =  new ArrayList<>();
-        Cursor cursor = this.db.query(DB_TABLE, new String[]{ID, NAME, DESCRIPTION, PRICE, RESTID}, null, null, null, null, null);
+        Cursor cursor = this.db.query(DB_TABLE, new String[]{ID, NAME, PRICE, RESTID}, null, null, null, null, null);
 
         if (cursor.moveToNext()){
             do{
                 Menu menu = new Menu(
                         cursor.getInt(0),
                         cursor.getString(1),
-                        cursor.getString(2),
-                        cursor.getDouble(3),
-                        cursor.getInt(4)
+                        cursor.getDouble(2),
+                        cursor.getInt(3)
                 );
                 menus.add(menu);
             }while (cursor.moveToNext());
@@ -71,7 +68,6 @@ public class MenuDBHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
 
         values.put(NAME, m.getName());
-        values.put(DESCRIPTION, m.getDescription());
         values.put(PRICE, m.getPrice());
         values.put(RESTID, m.getRestId());
 
@@ -79,7 +75,7 @@ public class MenuDBHelper extends SQLiteOpenHelper {
     }
 
     public void removeAll() {
-        this.db.delete(DB_TABLE, null, null);
+//        this.db.delete(DB_TABLE, null, null);
     }
 
 }

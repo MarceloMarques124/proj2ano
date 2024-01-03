@@ -29,15 +29,15 @@ public class OrdersActivity extends AppCompatActivity implements MenusListener {
         setContentView(binding.getRoot());
 
         int id = getIntent().getIntExtra(ID_REST, 0);
-        menus = SingletonRestaurantManager.getInstance(getApplicationContext()).getMenusById(id);
-        binding.lvMenus.setAdapter(new MenusAdapter(getApplicationContext(), menus));
+        SingletonRestaurantManager.getInstance(getApplicationContext()).getMenusAPI(this);
 
 
     }
 
     @Override
     public void onRefreshMenusList(ArrayList<Menu> menus) {
-        if (menus != null)
+        if (menus != null){
             binding.lvMenus.setAdapter(new MenusAdapter(getApplicationContext(), menus));
+        }
     }
 }

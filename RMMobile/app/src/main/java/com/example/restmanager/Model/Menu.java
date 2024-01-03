@@ -7,10 +7,9 @@ public class Menu {
     private double price;
     private int restId;
     private int quantity;
-    public Menu(int id, String name, String description, double price, int restId) {
+    public Menu(int id, String name, double price, int restId) {
         this.id = id;
         this.name = name;
-        this.description = description;
         this.price = price;
         this.restId = restId;
     }

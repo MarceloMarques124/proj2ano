@@ -3,7 +3,7 @@
     <style name="Base.Theme.RestManager" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Customize your light theme here. -->
         <item name="colorPrimary">@color/green</item>
-        <item name="android:statusBarColor">@color/black</item>
+        <item name="android:statusBarColor">@color/green</item>
     </style>
 
     <style name="Theme.RestManager" parent="Base.Theme.RestManager" />

@@ -62,9 +62,9 @@ public class JsonParser {
                 String name = menu.getString("name");
                 String description = menu.getString("description");
                 double price = menu.getDouble("price");
-                int restId =menu.getInt("restid");
+                int restId =menu.getInt("restaurant_id");
 
-                Menu m = new Menu(idMenu, name, description, price, restId);
+                Menu m = new Menu(idMenu, name, price, restId);
                 menus.add(m);
             }
         }catch (JSONException e){

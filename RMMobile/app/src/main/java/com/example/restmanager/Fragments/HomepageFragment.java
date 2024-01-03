@@ -105,7 +105,5 @@ public class HomepageFragment extends Fragment implements RestaurantsListener{
         if (restaurants !=null){
             binding.lvRestaurants.setAdapter(new RestaurantsAdapter(getContext(), restaurants));
         }
-
-        System.out.println("couna");
     }
 }
