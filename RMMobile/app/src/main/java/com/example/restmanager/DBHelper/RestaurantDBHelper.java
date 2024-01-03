@@ -1,4 +1,5 @@
 package com.example.restmanager.DBHelper;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -67,5 +68,21 @@ public class RestaurantDBHelper extends SQLiteOpenHelper {
             cursor.close();
         }
         return restaurants;
+    }
+
+    public void addBookDB(Restaurant r) {
+        ContentValues values = new ContentValues();
+
+        values.put(NAME, r.getName());
+        values.put(ADDRESS, r.getAddress());
+        values.put(NIF, r.getNif());
+        values.put(EMAIL, r.getEmail());
+        values.put(MOBILE_NUMBER, r.getMobileNumber());
+
+        this.db.insert(DB_TABLE, null, values);
+    }
+
+    public void removveAll() {
+        this.db.delete(DB_TABLE, null, null);
     }
 }

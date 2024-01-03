@@ -19,6 +19,7 @@ import android.widget.SearchView;
 
 import com.example.restmanager.Activities.RestaurantDetailsActivity;
 import com.example.restmanager.Adapters.RestaurantsAdapter;
+import com.example.restmanager.Listeners.RestaurantsListener;
 import com.example.restmanager.Model.Restaurant;
 import com.example.restmanager.R;
 import com.example.restmanager.Singleton.SingletonRestaurantManager;
@@ -27,7 +28,7 @@ import com.example.restmanager.databinding.FragmentHomepageBinding;
 import java.util.ArrayList;
 
 
-public class HomepageFragment extends Fragment {
+public class HomepageFragment extends Fragment implements RestaurantsListener{
     private FragmentHomepageBinding binding;
     private ArrayList<Restaurant> restaurants;
     /*private ListView lvRestaurants;*/
@@ -56,6 +57,10 @@ public class HomepageFragment extends Fragment {
             }
         });
 
+        binding.swipeLayout.setOnRefreshListener(this::onRefresh);
+
+
+        SingletonRestaurantManager.getInstance(getContext()).setRestaurantsListener(this);
         SingletonRestaurantManager.getInstance(getContext()).getRestaurantsAPI(getContext());
         return view;
     }
@@ -93,5 +98,14 @@ public class HomepageFragment extends Fragment {
     public void onRefresh(){
         SingletonRestaurantManager.getInstance(getContext()).getRestaurantsAPI(getContext());
         binding.swipeLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void onRefreshRestaurantsList(ArrayList<Restaurant> restaurants) {
+        if (restaurants !=null){
+            binding.lvRestaurants.setAdapter(new RestaurantsAdapter(getContext(), restaurants));
+        }
+
+        System.out.println("couna");
     }
 }
