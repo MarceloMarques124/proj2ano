@@ -5,6 +5,7 @@ use common\models\Table;
 use common\models\User;
 use common\models\UserInfo;
 use common\models\Zone;
+use common\models\Menu;
 use yii\db\Migration;
 
 /**
@@ -38,6 +39,14 @@ class m231124_234855_init_rbac extends Migration
         foreach (array('Restaurante Muito Bom', 'Restaurante Bom', 'Restaurante Mais ou Menos', 'Restaurante Mau', 'Restaurante Muito Mau') as $restaurantName) {
             $this->createRestaurant($restaurantName);
         }
+
+        foreach (array('One - 1', 'Two - 2', 'Tree - 3') as $menuName){
+            $this->createMenu($menuName);
+        }
+
+
+
+
     }
 
     public function createUser($roleName)
@@ -89,9 +98,19 @@ class m231124_234855_init_rbac extends Migration
                 $table->save();
             }
         }
-
-
     }
+
+    public function createMenu($menuName)
+    {
+        $menu = new Menu();
+
+        $menu->name = 'Menu ' . $menuName;
+        $menu->price = 10.2;
+        $menu->restaurant_id = 1;
+        $menu->save();
+    }
+
+
 
     /**
      * {@inheritdoc}
