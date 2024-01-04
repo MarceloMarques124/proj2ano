@@ -41,6 +41,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Revi
         binding.tvRestName.setText(restaurant.getName());
         binding.tvLocal.setText(restaurant.getAddress());
         binding.tvPhone.setText(restaurant.getMobileNumber());
+
         
         SingletonRestaurantManager.getInstance(getApplicationContext()).setReviewsListener(this);
         SingletonRestaurantManager.getInstance(getApplicationContext()).getReviewsAPI(getApplicationContext());

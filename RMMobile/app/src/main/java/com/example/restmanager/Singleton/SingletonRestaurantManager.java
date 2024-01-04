@@ -132,7 +132,7 @@ public class SingletonRestaurantManager {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    System.out.println("--> Error " + error);
+                    System.out.println("--> Restaurants error: " + error);
                 }
             });
 
@@ -198,7 +198,7 @@ public class SingletonRestaurantManager {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    System.out.println("--> Error " + error);
+                    System.out.println("--> Menus error: " + error);
                 }
             });
             volleyQueue.add(request);
@@ -269,9 +269,10 @@ public class SingletonRestaurantManager {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    System.out.println("-->" + error);
+                    System.out.println("--> Review error: " + error);
                 }
             });
+
             volleyQueue.add(request);
         }
     }

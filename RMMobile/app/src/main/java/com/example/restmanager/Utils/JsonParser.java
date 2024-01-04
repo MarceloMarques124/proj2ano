@@ -60,7 +60,6 @@ public class JsonParser {
 
                 int idMenu = menu.getInt("id");
                 String name = menu.getString("name");
-                String description = menu.getString("description");
                 double price = menu.getDouble("price");
                 int restId =menu.getInt("restaurant_id");
 

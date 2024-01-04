@@ -29,6 +29,7 @@ public class OrdersActivity extends AppCompatActivity implements MenusListener {
         setContentView(binding.getRoot());
 
         int id = getIntent().getIntExtra(ID_REST, 0);
+        SingletonRestaurantManager.getInstance(getApplicationContext()).setMenusListener(this);
         SingletonRestaurantManager.getInstance(getApplicationContext()).getMenusAPI(this);
 
 
