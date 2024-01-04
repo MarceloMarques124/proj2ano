@@ -3,6 +3,10 @@
 use hail812\adminlte\widgets\Menu;
 
 ?>
+<?php 
+if (!Yii::$app->user->isGuest) {
+    # code...
+?>
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="index.php" class="brand-link">
@@ -86,3 +90,4 @@ use hail812\adminlte\widgets\Menu;
     </div>
     <!-- /.sidebar -->
 </aside>
+<?php }?>

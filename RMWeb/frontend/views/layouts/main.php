@@ -4,9 +4,10 @@
 
 /** @var string $content */
 
+use Yii;
 use yii\web\View;
-use yii\bootstrap5\Nav;
-use yii\bootstrap5\Html;
+use yii\bootstrap4\Nav;
+use yii\bootstrap4\Html;
 use common\widgets\Alert;
 use frontend\assets\AppAsset;
 
@@ -149,7 +150,6 @@ AppAsset::register($this);
             <div class="container">
                 <div class="row g-5 align-items-center">
                     <div>
-                        <?= Alert::widget() ?>
                         <?= $content ?>
                     </div>
                 </div>

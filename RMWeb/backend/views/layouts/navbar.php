@@ -4,6 +4,10 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 ?>
+<?php 
+if (!Yii::$app->user->isGuest)  {
+    # code...
+?>
 <!-- Navbar -->
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
@@ -192,3 +196,4 @@ use yii\helpers\Url;
     </ul>
 </nav>
 <!-- /.navbar -->
+<?php }?>

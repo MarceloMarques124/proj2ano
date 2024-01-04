@@ -2,12 +2,13 @@
 
 namespace backend\controllers;
 
-use common\models\LoginForm;
 use Yii;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-use yii\web\Controller;
 use yii\web\Response;
+use yii\web\Controller;
+use yii\filters\VerbFilter;
+use common\models\LoginForm;
+use yii\filters\AccessControl;
+use yii\web\ForbiddenHttpException;
 
 /**
  * Site controller
@@ -22,23 +23,30 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                
+
                 'rules' => [
-                        [
-                            'actions' => ['login', 'error'],
-                            'allow' => true,
-                        ],
-                        [
-                            'actions' => ['logout', 'index'],
-                            'allow' => true,
-                            'roles' => ['@'],
-                        ],
-                        [
-                            'actions' => ['index'],
-                            'allow' => false,
-                            'roles' => ['client'],
-                        ]
+                    [
+                        'actions' => ['login', 'error'],
+                        'allow' => true,
+                    ],
+                    [
+                        'actions' => ['logout', 'index'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    [
+                        'actions' => ['index'],
+                        'allow' => false,
+                        'roles' => ['client', '?'],
+                    ]
                 ],
+                'denyCallback' => function ($rule, $action) {
+                    if (Yii::$app->user->getIsGuest()) {
+                        Yii::$app->user->loginRequired();
+                    } else {
+                        Yii::$app->response->redirect(Yii::$app->request->referrer);
+                    }
+                },
             ],
             'verbs' => [
                 'class' => VerbFilter::class,
@@ -71,8 +79,8 @@ class SiteController extends Controller
         return $this->render('index');
     }
 
-    public function actionLoginFront(){
-        
+    public function actionLoginFront()
+    {
     }
     /**
      * Login action.
@@ -84,16 +92,14 @@ class SiteController extends Controller
         if (!\Yii::$app->user->isGuest) {
             return $this->goHome();
         }
-    
+
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             //check user roles, is user is Admin? 
-            if (\Yii::$app->user->can('employee'))
-            {
+            if (\Yii::$app->user->can('employee')) {
                 // yes he is Admin, so redirect page 
                 return $this->goBack();
-            }
-            else // if he is not an Admin then what :P
+            } else // if he is not an Admin then what :P
             {   // put him out :P Automatically logout. 
                 Yii::$app->user->logout();
                 // set error on login page. 
@@ -101,7 +107,6 @@ class SiteController extends Controller
                 //redirect again page to login form.
                 return $this->redirect(['site/login']);
             }
-    
         } else {
             $this->layout = 'main-login.php';
             return $this->render('login', [
@@ -118,7 +123,15 @@ class SiteController extends Controller
     public function actionLogout()
     {
         Yii::$app->user->logout();
-
-        return $this->goHome();
+        return $this->redirect(['site/login']);
     }
+
+    public function actionError()
+{
+    $exception = Yii::$app->errorHandler->exception;
+    if ($exception !== null) {
+        Yii::$app->response->statusCode = 403; // Define o status como 403 Forbidden
+        return $this->render('error', ['exception' => $exception]);
+    }
+}
 }
