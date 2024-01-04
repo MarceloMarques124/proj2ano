@@ -5,7 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.DrawableRes;
 
 import com.example.restmanager.Model.Menu;
 import com.example.restmanager.Model.Review;
@@ -65,15 +68,21 @@ public class ReviewsAdapter extends BaseAdapter {
     public class ViewHolderList{
 
         private TextView tvUseNam;
+        private TextView tvStars;
         private TextView reviewText;
+        private ImageView imgView;
 
         public ViewHolderList(View view) {
             tvUseNam = view.findViewById(R.id.tvUseNam);
+            tvStars = view.findViewById(R.id.tvStars);
             reviewText = view.findViewById(R.id.tvReviewText);
+            imgView = view.findViewById(R.id.imgStar);
         }
         public void update(Review review){
             tvUseNam.setText("" + review.getUserId());
+            tvStars.setText(review.getStars() + "/5");
             reviewText.setText(review.getDescription());
+            imgView.setImageResource(R.drawable.ic_action_name);
         }
     }
 }

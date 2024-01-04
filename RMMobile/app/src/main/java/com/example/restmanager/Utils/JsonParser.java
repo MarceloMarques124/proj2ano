@@ -80,8 +80,8 @@ public class JsonParser {
                 JSONObject review = (JSONObject) response.get(i);
 
                 int idReview = review.getInt("id");
-                int userID = review.getInt("userid");
-                int restID = review.getInt("restid");
+                int userID = review.getInt("user_id");
+                int restID = review.getInt("restaurant_id");
                 int stars = review.getInt("stars");
                 String description = review.getString("description");
 

@@ -45,7 +45,7 @@ class m231124_234855_init_rbac extends Migration
             $this->createMenu($menuName);
         }
 
-        foreach (array(1, 2, 3, 4, 5) as $reviewNumb){
+        for($i = 0; $i < 15; $i++){
             $this->createReview();
         }
     }
