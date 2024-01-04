@@ -119,6 +119,8 @@ class m231124_234855_init_rbac extends Migration
         $review->user_id = 1;
         $review->stars = 4;
 
+        $review->save();
+
     }
 
 
