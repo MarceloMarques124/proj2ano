@@ -21,7 +21,7 @@ class m231107_213631_create_reviews_table extends Migration
             'id' => $this->primaryKey(),
             'user_id' => $this->integer()->notNull(),
             'restaurant_id' => $this->integer()->notNull(),
-            'stars' => $this->decimal(1,1)->notNull(),
+            'stars' => $this->integer()->notNull(),
             'description' => $this->text(),
         ],'ENGINE=InnoDB');
 

@@ -5,6 +5,7 @@ use common\models\Table;
 use common\models\User;
 use common\models\UserInfo;
 use common\models\Zone;
+use \common\models\Review;
 use common\models\Menu;
 use yii\db\Migration;
 
@@ -44,9 +45,9 @@ class m231124_234855_init_rbac extends Migration
             $this->createMenu($menuName);
         }
 
-
-
-
+        foreach (array(1, 2, 3, 4, 5) as $reviewNumb){
+            $this->createReview();
+        }
     }
 
     public function createUser($roleName)
@@ -108,6 +109,16 @@ class m231124_234855_init_rbac extends Migration
         $menu->price = 10.2;
         $menu->restaurant_id = 1;
         $menu->save();
+    }
+
+    public function createReview(){
+        $review = new Review();
+
+        $review->restaurant_id = 1;
+        $review->description = "review teste";
+        $review->user_id = 1;
+        $review->stars = 4;
+
     }
 
 
