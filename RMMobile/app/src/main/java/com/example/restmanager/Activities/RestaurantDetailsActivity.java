@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.restmanager.Adapters.ReviewsAdapter;
+import com.example.restmanager.Listeners.ReviewsListener;
 import com.example.restmanager.Model.Restaurant;
 import com.example.restmanager.Model.Review;
 import com.example.restmanager.R;
@@ -18,7 +19,7 @@ import com.example.restmanager.databinding.ActivityRestaurantDetailsBinding;
 
 import java.util.ArrayList;
 
-public class RestaurantDetailsActivity extends AppCompatActivity {
+public class RestaurantDetailsActivity extends AppCompatActivity implements ReviewsListener {
     public final static String ID_RESTAURANT = "ID_RESTAURANT";
     private ActivityRestaurantDetailsBinding binding;
     Restaurant restaurant;
@@ -35,14 +36,15 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
 
         int id = getIntent().getIntExtra(String.valueOf(ID_RESTAURANT), 0);
         restaurant = SingletonRestaurantManager.getInstance(getApplicationContext()).getRestaurant(id);
-        binding.imgCover.setImageResource(restaurant.getCover());
+      //  binding.imgCover.setImageResource(restaurant.getCover());
         binding.tvEmail.setText(restaurant.getEmail());
         binding.tvRestName.setText(restaurant.getName());
         binding.tvLocal.setText(restaurant.getAddress());
         binding.tvPhone.setText(restaurant.getMobileNumber());
+
         
-        reviews = SingletonRestaurantManager.getInstance(getApplicationContext()).getReviews(restaurant.getId());
-        binding.lvReviews.setAdapter(new ReviewsAdapter(getApplicationContext(), reviews));
+        SingletonRestaurantManager.getInstance(getApplicationContext()).setReviewsListener(this);
+        SingletonRestaurantManager.getInstance(getApplicationContext()).getReviewsAPI(getApplicationContext());
     }
 
     public void onClickReserve(View view){
@@ -56,5 +58,11 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), OrdersActivity.class);
         intent.putExtra(ID_REST, restaurant.getId());
         startActivity(intent);
+    }
+
+    @Override
+    public void onRefreshReviewsList(ArrayList<Review> reviews) {
+        if (reviews != null)
+            binding.lvReviews.setAdapter(new ReviewsAdapter(getApplicationContext(), reviews));
     }
 }

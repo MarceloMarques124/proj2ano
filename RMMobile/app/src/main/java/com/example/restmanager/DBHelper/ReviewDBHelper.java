@@ -1,7 +1,10 @@
 package com.example.restmanager.DBHelper;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.example.restmanager.Model.Review;
 
 public class ReviewDBHelper extends SQLiteOpenHelper {
 
@@ -36,5 +39,35 @@ public class ReviewDBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + DB_TABLE);
         this.onCreate(db);
+    }
+
+    public void addReview(Review r) {
+        ContentValues values = new ContentValues();
+
+        values.put(USER_ID, r.getUserId());
+        values.put(REST_ID, r.getRestId());
+        values.put(STARS, r.getStars());
+        values.put(DESCRIPTION, r.getDescription());
+
+        this.db.insert(DB_TABLE, null, values);
+    }
+
+    public boolean editReview(Review r){
+        ContentValues values = new ContentValues();
+
+        values.put(USER_ID, r.getUserId());
+        values.put(REST_ID, r.getRestId());
+        values.put(STARS, r.getStars());
+        values.put(DESCRIPTION, r.getDescription());
+
+        return this.db.update(DB_TABLE, values, ID + "= ?",  new String[]{"" + r.getId()}) > 0;
+    }
+
+    public void removeAll() {
+        this.db.delete(DB_TABLE, null, null);
+    }
+
+    public boolean removeReview(int id){
+        return (this.db.delete(DB_TABLE, ID + "= ?", new String[]{"" + id}) == 1);
     }
 }

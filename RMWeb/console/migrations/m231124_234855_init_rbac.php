@@ -5,6 +5,8 @@ use common\models\Table;
 use common\models\User;
 use common\models\UserInfo;
 use common\models\Zone;
+use \common\models\Review;
+use common\models\Menu;
 use yii\db\Migration;
 
 /**
@@ -37,6 +39,14 @@ class m231124_234855_init_rbac extends Migration
 
         foreach (array('Restaurante Muito Bom', 'Restaurante Bom', 'Restaurante Mais ou Menos', 'Restaurante Mau', 'Restaurante Muito Mau') as $restaurantName) {
             $this->createRestaurant($restaurantName);
+        }
+
+        foreach (array('One - 1', 'Two - 2', 'Tree - 3') as $menuName){
+            $this->createMenu($menuName);
+        }
+
+        for($i = 0; $i < 15; $i++){
+            $this->createReview();
         }
     }
 
@@ -89,9 +99,31 @@ class m231124_234855_init_rbac extends Migration
                 $table->save();
             }
         }
+    }
 
+    public function createMenu($menuName)
+    {
+        $menu = new Menu();
+
+        $menu->name = 'Menu ' . $menuName;
+        $menu->price = 10.2;
+        $menu->restaurant_id = 1;
+        $menu->save();
+    }
+
+    public function createReview(){
+        $review = new Review();
+
+        $review->restaurant_id = 1;
+        $review->description = "review teste";
+        $review->user_id = 1;
+        $review->stars = 4;
+
+        $review->save();
 
     }
+
+
 
     /**
      * {@inheritdoc}
