@@ -2,16 +2,16 @@
 
 namespace backend\modules\api\controllers;
 
-use yii\web\Controller;
+use yii\web1\Controller;
 use yii\rest\ActiveController;
 
 /**
  * Default controller for the `api` module
  */
-class MenuController extends ActiveController
+class TableController extends ActiveController
 {
-    public $modelClass = 'common\models\Menu';
-    
+    public $modelClass = 'common\models\Table';
+
     /**
      * Renders the index view for the module
      * @return string

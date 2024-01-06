@@ -65,6 +65,8 @@ return [
                 ['class' => 'yii\rest\UrlRule', 'controller' => 'api/restaurant'],
                 ['class' => 'yii\rest\UrlRule', 'controller' => 'api/menu'],
                 ['class' => 'yii\rest\UrlRule', 'controller' => 'api/review'],
+                ['class' => 'yii\rest\UrlRule', 'controller' => 'api/zone'],
+                ['class' => 'yii\rest\UrlRule', 'controller' => 'api/table'],
             ],
         ],
 

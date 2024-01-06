@@ -62,13 +62,14 @@ if (!Yii::$app->user->isGuest)  {
             <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
                 <a href="<?= Url::to(['/api/restaurants']) ?>" class="nav-link">Restaurants</a>
                 <a href="<?= Url::to(['/api/zones']) ?>" class="nav-link">Zones</a>
-                <a href="<?= Url::to(['/api/tables']) ?>" class="nav-link">Tables</a>
-                <a href="<?= Url::to(['/api/orders']) ?>" class="nav-link">Reservations</a>
+                <a href="<?= Url::to(['/api/menus']) ?>" class="nav-link">Menus</a>
+                <a href="<?= Url::to(['/api/reviews']) ?>" class="nav-link">Reviews</a>
+                <a href="<?= Url::to(['/api/table']) ?>" class="nav-link">Tables</a>
+                <!-- <a href="<?= Url::to(['/api/orders']) ?>" class="nav-link">Reservations</a>
                 <a href="<?= Url::to(['/api/orderesmenus']) ?>" class="nav-link">Reservations</a>
                 <a href="<?= Url::to(['/api/reservations']) ?>" class="nav-link">Reservations</a>
-                <a href="<?= Url::to(['/api/reviews']) ?>" class="nav-link">Reviews</a>
                 <a href="<?= Url::to(['/api/userinfos']) ?>" class="nav-link">Reservations</a>
-                <a href="<?= Url::to(['/api/reservations']) ?>" class="nav-link">Reservations</a>
+                <a href="<?= Url::to(['/api/reservations']) ?>" class="nav-link">Reservations</a> -->
                 <li><?= Html::a('Sign out', ['site/logout'], ['data-method' => 'post', 'class' => 'dropdown-item']) ?></li>
                 <!-- End Level two -->
             </ul>

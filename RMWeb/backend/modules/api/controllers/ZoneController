@@ -8,10 +8,10 @@ use yii\rest\ActiveController;
 /**
  * Default controller for the `api` module
  */
-class MenuController extends ActiveController
+class ZoneController extends ActiveController
 {
-    public $modelClass = 'common\models\Menu';
-    
+    public $modelClass = 'common\models\Zone';
+
     /**
      * Renders the index view for the module
      * @return string
