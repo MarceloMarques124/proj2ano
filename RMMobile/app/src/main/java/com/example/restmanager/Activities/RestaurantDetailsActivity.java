@@ -19,6 +19,7 @@ import com.example.restmanager.Model.Review;
 import com.example.restmanager.R;
 import com.example.restmanager.Singleton.SingletonRestaurantManager;
 import com.example.restmanager.databinding.ActivityRestaurantDetailsBinding;
+import com.example.restmanager.databinding.ActivityReviewDetailsBinding;
 
 import java.util.ArrayList;
 
@@ -66,9 +67,16 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Revi
         startActivity(intent);
     }
 
+    public void onClickReview(View view){
+        Intent intent = new Intent(getApplicationContext(), ReviewDetailsActivity.class);
+        intent.putExtra(ID_REST, restaurant.getId());
+        startActivity(intent);
+    }
+
     @Override
     public void onRefreshReviewsList(ArrayList<Review> reviews) {
         if (reviews != null)
             binding.lvReviews.setAdapter(new ReviewsAdapter(getApplicationContext(), reviews));
     }
+
 }

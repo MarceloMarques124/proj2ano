@@ -82,7 +82,7 @@ public class ReviewsAdapter extends BaseAdapter {
             tvUseNam.setText("" + review.getUserId());
             tvStars.setText(review.getStars() + "/5");
             reviewText.setText(review.getDescription());
-            imgView.setImageResource(R.drawable.ic_action_name);
+            imgView.setImageResource(R.drawable.ic_star);
         }
     }
 }

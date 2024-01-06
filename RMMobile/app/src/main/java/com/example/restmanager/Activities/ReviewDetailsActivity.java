@@ -3,6 +3,7 @@ package com.example.restmanager.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.restmanager.Listeners.RestaurantListener;
 import com.example.restmanager.R;
@@ -19,6 +20,13 @@ public class ReviewDetailsActivity extends AppCompatActivity implements Restaura
 
         binding = ActivityReviewDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+
+    }
+
+    public void onClickSaveReview(View view){
+
+        System.out.println("-->" + binding.etDescription.getText());
     }
 
     @Override

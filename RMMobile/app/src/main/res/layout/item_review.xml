@@ -46,7 +46,7 @@
                 android:id="@+id/imgStar"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                app:srcCompat="@drawable/ic_action_name" />
+                app:srcCompat="@drawable/ic_star" />
 
         </LinearLayout>
 
