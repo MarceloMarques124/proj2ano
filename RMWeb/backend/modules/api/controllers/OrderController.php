@@ -8,15 +8,14 @@ use yii\rest\ActiveController;
 /**
  * Default controller for the `api` module
  */
-class ZoneController extends ActiveController
+class OrderController extends ActiveController
 {
-    public $modelClass = 'common\models\Zone';
-
+    public $modelClass = 'common\models\Order';
+    
     /**
      * Renders the index view for the module
      * @return string
      */
-    
     public function actionIndex()
     {
         return $this->render('index');
