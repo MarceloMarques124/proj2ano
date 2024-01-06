@@ -74,7 +74,7 @@ public class MenuDBHelper extends SQLiteOpenHelper {
         this.db.insert(DB_TABLE, null, values);
     }
 
-    public void removeAll() {
+    public void removeAllmenus() {
 //        this.db.delete(DB_TABLE, null, null);
     }
 

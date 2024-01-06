@@ -20,6 +20,7 @@
     <string name="HomePage">Homepage</string>
     <string name="navOrders">Orders</string>
     <string name="navChart">Cart</string>
+    <string name="navReviews">My Reviews</string>
     <string name="ndOpen">Open</string>
     <string name="ndClose">Close</string>
     <!-- TODO: Remove or change this placeholder text -->
@@ -45,5 +46,8 @@
     <string name="close">Close</string>
     <string name="title_activity_cart">CartActivity</string>
     <string name="btnRemoveFromCart">Remove</string>
-    <string name="reviews">Reviews from other clients</string>
+    <string name="reviews">Reviews</string>
+    <string name="btnSave">Save</string>
+    <string name="tvDescription">Description</string>
+    <string name="review">Review</string>
 </resources>

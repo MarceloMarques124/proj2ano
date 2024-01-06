@@ -19,6 +19,7 @@ import com.example.restmanager.Fragments.CartFragment;
 import com.example.restmanager.Fragments.HomepageFragment;
 import com.example.restmanager.Fragments.OrdersFragment;
 import com.example.restmanager.Fragments.ProfileFragment;
+import com.example.restmanager.Fragments.ReviewsFragment;
 import com.example.restmanager.R;
 import com.google.android.material.navigation.NavigationView;
 
@@ -65,6 +66,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         else if(item.getItemId()== R.id.navCart){
             fragment = new CartFragment();
+            setTitle(item.getTitle());
+        }
+        else if(item.getItemId()== R.id.navReviews){
+            fragment = new ReviewsFragment();
             setTitle(item.getTitle());
         }
         else if(item.getItemId()== R.id.navServerConnection){

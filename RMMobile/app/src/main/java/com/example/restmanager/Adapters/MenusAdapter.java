@@ -1,8 +1,10 @@
 package com.example.restmanager.Adapters;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.restmanager.Activities.ServerConnectionActivity;
 import com.example.restmanager.Model.Menu;
 import com.example.restmanager.Model.MenuItem;
 import com.example.restmanager.Model.Order;
@@ -30,7 +33,7 @@ public class MenusAdapter extends BaseAdapter {
     private Order order;
     private OrderedMenu orderedMenu;
     private ArrayList<MenuItem> menuItem;
-    private AlertDialog alert = null;
+    private AlertDialog alert;
 
     //private MyViewHolder myViewHolder;
 
@@ -115,13 +118,6 @@ public class MenusAdapter extends BaseAdapter {
 
             }
         });
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                System.out.println("-->" + position);
-                //showDialog(position);
-            }
-        });
 
 
 
@@ -130,37 +126,9 @@ public class MenusAdapter extends BaseAdapter {
 
     private void showDialog(int id) {
         System.out.println("--> #1" + alert);
-        if (alert == null) {
-            System.out.println("--> #2" + alert);
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(context.getApplicationContext(), R.style.AppCompatAlertDialogStyle);
-            builder.setTitle(menus.get(id).getName() + " | Info")
-                    .setMessage("Info do prato aqui")
-                    .setPositiveButton(R.string.close, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                           // alert.dismiss();
-                            alert = null;
-                        }
-                    })
-                    .setIcon(android.R.drawable.ic_dialog_info);
+        System.out.println("--> #2" + alert);
 
-            // Set the created AlertDialog to the member variable
-            alert = builder.create();
-
-        }else{
-            alert = null;
-            showDialog(id);
-        }
-        alert.show();
-        /*alert = new MaterialAlertDialogBuilder(context.getApplicationContext(), R.style.AppCompatAlertDialogStyle)
-                .setTitle(menus.get((int)id).getName() + " | Info")
-                .setIcon(android.R.drawable.ic_dialog_info)
-                .setPositiveButton("OK", null);
-
-        alert.setMessage("Falta inserir data/horário")
-                .create()
-                .show();*/
     }
 
     public class ViewHolderList{

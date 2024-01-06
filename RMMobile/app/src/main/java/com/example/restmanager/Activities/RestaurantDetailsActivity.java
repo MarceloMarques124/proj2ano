@@ -4,9 +4,12 @@ import static com.example.restmanager.Activities.OrdersActivity.ID_REST;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.example.restmanager.Adapters.ReviewsAdapter;
@@ -41,6 +44,9 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Revi
         binding.tvRestName.setText(restaurant.getName());
         binding.tvLocal.setText(restaurant.getAddress());
         binding.tvPhone.setText(restaurant.getMobileNumber());
+
+
+
 
         
         SingletonRestaurantManager.getInstance(getApplicationContext()).setReviewsListener(this);

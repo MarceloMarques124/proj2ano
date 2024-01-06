@@ -26,6 +26,12 @@
             android:icon="@drawable/ic_cart"
             android:title="@string/navChart" />
         <item
+            android:id="@+id/navReviews"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/ic_review"
+            android:title="@string/navReviews" />
+        <item
             android:id="@+id/navServerConnection"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

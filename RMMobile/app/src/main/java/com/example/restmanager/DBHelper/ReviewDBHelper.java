@@ -63,7 +63,7 @@ public class ReviewDBHelper extends SQLiteOpenHelper {
         return this.db.update(DB_TABLE, values, ID + "= ?",  new String[]{"" + r.getId()}) > 0;
     }
 
-    public void removeAll() {
+    public void removeAllReviews() {
         this.db.delete(DB_TABLE, null, null);
     }
 

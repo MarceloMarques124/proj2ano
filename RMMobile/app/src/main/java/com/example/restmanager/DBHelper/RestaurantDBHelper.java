@@ -82,7 +82,7 @@ public class RestaurantDBHelper extends SQLiteOpenHelper {
         this.db.insert(DB_TABLE, null, values);
     }
 
-    public void removveAll() {
+    public void removeAllRestaurants() {
         this.db.delete(DB_TABLE, null, null);
     }
 }

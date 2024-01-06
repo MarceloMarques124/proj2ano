@@ -2,7 +2,12 @@ package com.example.restmanager.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 
 import com.example.restmanager.Adapters.MenusAdapter;
 import com.example.restmanager.Listeners.MenusListener;
@@ -32,7 +37,13 @@ public class OrdersActivity extends AppCompatActivity implements MenusListener {
         SingletonRestaurantManager.getInstance(getApplicationContext()).setMenusListener(this);
         SingletonRestaurantManager.getInstance(getApplicationContext()).getMenusAPI(this);
 
-
+        binding.lvMenus.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getApplicationContext(), ServerConnectionActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

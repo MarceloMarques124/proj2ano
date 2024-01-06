@@ -9,11 +9,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.restmanager.DBHelper.MenuDBHelper;
-import com.example.restmanager.DBHelper.RestaurantDBHelper;
-import com.example.restmanager.DBHelper.ReviewDBHelper;
+import com.example.restmanager.DBHelper.RestManagerDBHelper;
 import com.example.restmanager.Listeners.MenusListener;
 import com.example.restmanager.Listeners.RestaurantsListener;
+import com.example.restmanager.Listeners.ReviewListener;
 import com.example.restmanager.Listeners.ReviewsListener;
 import com.example.restmanager.Model.Menu;
 import com.example.restmanager.Model.OrderedMenu;
@@ -26,28 +25,27 @@ import org.json.JSONArray;
 import java.util.ArrayList;
 
 public class SingletonRestaurantManager {
+
     //region # Restaurants variables #
     private ArrayList<Restaurant> restaurants;
-    private RestaurantDBHelper restaurantDBHelper;
+    private RestManagerDBHelper restManagerDBHelper;
     private RestaurantsListener restaurantsListener;
     //endregion
 
     //region # Menus variables #
     private ArrayList<Menu> menus;
-    private MenuDBHelper menuDBHelper;
     private MenusListener menusListener;
     //endregion
 
     //region # Reviews variables #
     private ArrayList<Review> reviews;
-    private ReviewDBHelper reviewDBHelper;
     private ReviewsListener reviewsListener;
     //endregion
 
     //region # Constants #
     private static SingletonRestaurantManager instance = null;
     private static RequestQueue volleyQueue = null;
-    private static String apiUrl = "http://172.22.21.221:8080/api";
+    private static final String apiUrl = "http://172.22.21.221:8080/api";
     //endregion
 
     private ArrayList<OrderedMenu> orderedMenus;
@@ -71,12 +69,14 @@ public class SingletonRestaurantManager {
         this.reviewsListener = reviewsListener;
     }
 
+    public void setReviewListener(ReviewListener reviewListener){
+    }
+
     private SingletonRestaurantManager(Context context) {
         generateDinamicData();
-        restaurantDBHelper = new RestaurantDBHelper(context);
-        menuDBHelper = new MenuDBHelper(context);
-        reviewDBHelper = new ReviewDBHelper(context);
+        restManagerDBHelper = new RestManagerDBHelper(context);
     }
+
 
     private void generateDinamicData() {
         restaurants = new ArrayList<>();
@@ -112,7 +112,7 @@ public class SingletonRestaurantManager {
             Toast.makeText(context, "--> No internet conection", Toast.LENGTH_SHORT).show();
 
             if (restaurantsListener != null){
-                restaurantsListener.onRefreshRestaurantsList(restaurantDBHelper.getAllRestaurants());
+                restaurantsListener.onRefreshRestaurantsList(restManagerDBHelper.getAllRestaurants());
 
             }
         }else{
@@ -141,7 +141,7 @@ public class SingletonRestaurantManager {
     }
 
     public void addRestaurantsDB(ArrayList<Restaurant> restaurants){
-        restaurantDBHelper.removveAll();
+        restManagerDBHelper.removeAllRestaurants();
 
         for(Restaurant r : restaurants){
             addRestaurantDB(r);
@@ -149,7 +149,7 @@ public class SingletonRestaurantManager {
     }
 
     public void addRestaurantDB(Restaurant restaurant){
-        restaurantDBHelper.addBookDB(restaurant);
+        restManagerDBHelper.addBookDB(restaurant);
     }
     //endregion
 
@@ -181,7 +181,7 @@ public class SingletonRestaurantManager {
         if (!JsonParser.isConnectionInternet(context)){
 
             if (menusListener != null){
-                menusListener.onRefreshMenusList(menuDBHelper.getAllMenus());
+                menusListener.onRefreshMenusList(restManagerDBHelper.getAllMenus());
             }
         }else {
             JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, apiUrl + "/menus", null, new Response.Listener<JSONArray>() {
@@ -206,7 +206,7 @@ public class SingletonRestaurantManager {
     }
 
     public void addMenusDB(ArrayList<Menu> menus){
-        menuDBHelper.removeAll();
+        restManagerDBHelper.removeAllmenus();
 
         for (Menu m : menus){
             addMenuDB(m);
@@ -214,7 +214,7 @@ public class SingletonRestaurantManager {
     }
 
     public void addMenuDB(Menu m){
-        menuDBHelper.addMenu(m);
+        restManagerDBHelper.addMenu(m);
     }
     //endregion
 
@@ -253,7 +253,7 @@ public class SingletonRestaurantManager {
         if (!JsonParser.isConnectionInternet(context)){
 
             if (menusListener != null){
-                menusListener.onRefreshMenusList(menuDBHelper.getAllMenus());
+                menusListener.onRefreshMenusList(restManagerDBHelper.getAllMenus());
             }
         }else{
             JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, apiUrl + "/reviews", null, new Response.Listener<JSONArray>() {
@@ -278,7 +278,7 @@ public class SingletonRestaurantManager {
     }
 
     public void addReview(ArrayList<Review> reviews){
-        reviewDBHelper.removeAll();
+        restManagerDBHelper.removeAllReviews();
 
         for (Review r : reviews){
             addReviewDB(r);
@@ -286,7 +286,7 @@ public class SingletonRestaurantManager {
     }
 
     public void addReviewDB(Review r){
-        reviewDBHelper.addReview(r);
+        restManagerDBHelper.addReview(r);
     }
     //endregion
 
