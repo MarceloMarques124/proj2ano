@@ -16,7 +16,7 @@ class userValidationsTest extends \Codeception\Test\Unit
     {
     }
 
-    // tests
+    // test 1
     public function testSomeFeature()
     {
         $userInfo = new \common\models\UserInfo();
@@ -28,5 +28,10 @@ class userValidationsTest extends \Codeception\Test\Unit
 
         // Verificar se há um erro para o campo 'username'
         $this->assertTrue($userInfo->hasErrors('name'));
+    }
+
+    //test 2
+    public function testAnotherFeature(){
+
     }
 }
