@@ -27,6 +27,8 @@ public class ReviewDetailsActivity extends AppCompatActivity implements Restaura
     public void onClickSaveReview(View view){
 
         System.out.println("-->" + binding.etDescription.getText());
+        System.out.println("-->" + binding.ratingBar.getRating());
+
     }
 
     @Override

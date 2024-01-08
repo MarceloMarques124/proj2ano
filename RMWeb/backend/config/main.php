@@ -83,7 +83,10 @@ return [
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'api/table'
+                    'controller' => 'api/table',
+                    'extraPatterns' => [
+                        'GET {id}' => 'tablesbyzone'
+                    ],
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',

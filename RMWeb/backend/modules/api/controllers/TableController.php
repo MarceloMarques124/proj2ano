@@ -2,6 +2,7 @@
 
 namespace backend\modules\api\controllers;
 
+use common\models\Table;
 use yii\web1\Controller;
 use yii\rest\ActiveController;
 
@@ -20,5 +21,11 @@ class TableController extends ActiveController
     public function actionIndex()
     {
         return $this->render('index');
+    }
+
+    public function actionTablesbyzone($id)
+     {
+        return Table::find()->where(['zone_id' => $id])->all();
+
     }
 }

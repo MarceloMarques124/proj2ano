@@ -116,8 +116,7 @@ public class SingletonRestaurantManager {
 
             }
         }else{
-            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, apiUrl + "/restaurants",
-                    null, new Response.Listener<JSONArray>() {
+            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, apiUrl + "/restaurants", null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
                     System.out.println("-->" + response);
