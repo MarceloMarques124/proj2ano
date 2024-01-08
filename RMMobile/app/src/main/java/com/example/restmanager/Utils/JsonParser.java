@@ -7,7 +7,7 @@ import android.net.NetworkInfo;
 import com.example.restmanager.Model.Menu;
 import com.example.restmanager.Model.Restaurant;
 import com.example.restmanager.Model.Review;
-import com.example.restmanager.R;
+import com.example.restmanager.Model.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -94,4 +94,26 @@ public class JsonParser {
         return reviews;
     }
 
+    public static User jsonLoginParser(String response){//user
+        User user = null;
+
+        try {
+            JSONObject login = new JSONObject(response);
+
+            int id = login.getInt("id");
+          //  int user_id = login.getInt("user_id");
+            String name = login.getString("name");
+            String address = login.getString("address");
+            String door_number = login.getString("door_number");
+            String postal_code = login.getString("postal_code");
+            int nif = login.getInt("nif");
+            String token = login.getString("token");
+
+            user = new User(id, name, address, door_number, postal_code, nif, token);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        return user;
+    }
 }

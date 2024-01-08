@@ -66,6 +66,7 @@ if (!Yii::$app->user->isGuest)  {
                 <a href="<?= Url::to(['/api/reviews']) ?>" class="nav-link">Reviews</a>
                 <a href="<?= Url::to(['/api/table']) ?>" class="nav-link">Tables</a>
                 <a href="<?= Url::to(['/api/orders']) ?>" class="nav-link">Orders</a>
+                <a href="<?= Url::to(['/api/users']) ?>" class="nav-link">Users</a>
                 <!-- <a href="<?= Url::to(['/api/orders']) ?>" class="nav-link">Reservations</a>
                 <a href="<?= Url::to(['/api/orderesmenus']) ?>" class="nav-link">Reservations</a>
                 <a href="<?= Url::to(['/api/reservations']) ?>" class="nav-link">Reservations</a>

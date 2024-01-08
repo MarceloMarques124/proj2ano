@@ -22,10 +22,4 @@ class TableController extends ActiveController
     {
         return $this->render('index');
     }
-
-    public function actionTablesbyzone($id)
-     {
-        return Table::find()->where(['zone_id' => $id])->all();
-
-    }
 }
