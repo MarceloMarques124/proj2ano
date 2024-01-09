@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         if ($model->user->status == 10) {
                             return Html::a(
                                 '<span class="fas fa-times"></span>',
-                                ['activate', 'id' => $model->id],
+                                ['desactivate', 'id' => $model->id],
                                 [
                                     'title' => 'Desactivate',
                                     'data' => [

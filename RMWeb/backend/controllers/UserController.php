@@ -38,7 +38,7 @@ class UserController extends Controller
                     'class' => AccessControl::className(),
                     'rules' => [
                         [
-                            'actions' => ['update', 'index', 'delete', 'view', 'create', 'activate'],
+                            'actions' => ['update', 'index', 'delete', 'view', 'create', 'activate', 'desactivate'],
                             'allow' => true,
                             'roles' => ['UserManagement'],
                             'denyCallback' => function ($rule, $action) {
@@ -265,9 +265,9 @@ class UserController extends Controller
 
             // Salvar as alterações no banco de dados
             if ($user->save()) {
-                Yii::$app->session->setFlash('success', 'Usuário ativado com sucesso.');
+                Yii::$app->session->setFlash('success', 'Usuário desativado com sucesso.');
             } else {
-                Yii::$app->session->setFlash('error', 'Erro ao ativar o usuário.');
+                Yii::$app->session->setFlash('error', 'Erro ao desativar o usuário.');
             }
         } else {
             Yii::$app->session->setFlash('error', 'Usuário não encontrado.');

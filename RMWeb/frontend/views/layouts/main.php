@@ -4,7 +4,7 @@
 
 /** @var string $content */
 
-use Yii;
+
 use yii\web\View;
 use yii\bootstrap4\Nav;
 use yii\bootstrap4\Html;

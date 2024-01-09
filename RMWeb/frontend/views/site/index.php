@@ -24,7 +24,7 @@ $this->title = 'My Yii Application';
                     <br>
                     <?= $restaurant['address']; ?>
                     <br>
-                    <button type="button" style="margin-bottom: 20px;"><a href="<?= Url::to(['reservation/create', 'restaurant_id' => $restaurant['id']]) ?>" class="nav-link">Reserve</a></button>
+                    <button id="btnReserve" type="button" style="margin-bottom: 20px;"><a href="<?= Url::to(['reservation/create', 'restaurant_id' => $restaurant['id']]) ?>" class="nav-link">Reserve</a></button>
                 </div>
             <?php endforeach; ?>
         </div>
