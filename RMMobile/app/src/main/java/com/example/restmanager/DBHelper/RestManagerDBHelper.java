@@ -6,9 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.restmanager.Model.Login;
 import com.example.restmanager.Model.Menu;
 import com.example.restmanager.Model.Restaurant;
 import com.example.restmanager.Model.Review;
+import com.example.restmanager.Model.User;
 
 import java.util.ArrayList;
 
@@ -29,6 +31,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
     private static final String TABLE_USER = "users";
     private static final String TABLE_ZONE = "zones";
     private static final String ID = "id";
+    private static final String TOKEN = "token";
     private static final String NAME = "name";
     private static final String ADDRESS = "address";
     private static final String NIF = "nif";
@@ -354,6 +357,19 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
                 ");";
     }
 
+    public void addUserDB(User u) {
+        ContentValues values = new ContentValues();
+        values.put(ID, u.getId());
+        values.put(USERNAME, u.getUsername());
+        values.put(ADDRESS, u.getAddress());
+        values.put(DOOR_NUMBER, u.getDoorNumber());
+        values.put(POSTAL_CODE, u.getPostalCode());
+        values.put(NIF, u.getNif());
+        values.put(TOKEN, u.getToken());
+
+        this.db.insert(TABLE_USER, null, values);
+    }
+
     public String deleteUsersTable() {
         return "DROP TABLE IF EXISTS " + TABLE_USER;
     }
@@ -374,6 +390,12 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
     public String deleteZonesTable() {
         return "DROP TABLE IF EXISTS " + TABLE_ZONE;
     }
+
+    //endregion
+
+    //region # USER DB METHODS #
+
+
 
     //endregion
 

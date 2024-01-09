@@ -2,17 +2,23 @@ package com.example.restmanager.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
 
+import com.example.restmanager.Model.Login;
 import com.example.restmanager.R;
+import com.example.restmanager.Singleton.SingletonRestaurantManager;
+import com.example.restmanager.Utils.Public;
 import com.example.restmanager.databinding.ActivityLoginBinding;
 
 public class LoginActivity extends AppCompatActivity {
 
     private ActivityLoginBinding binding;
+    private Login login;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,26 +27,78 @@ public class LoginActivity extends AppCompatActivity {
 
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        String email = binding.etEmailUsername.getText() + "";
 
-        binding.etEmailUsername.setText("z@z.x");
-        binding.etPassword.setText("1234");
+        if (isTokenValid()){
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.putExtra(MainActivity.USERNAME, email);
+            startActivity(intent);
+        }
+
+        binding.etEmailUsername.setText("client");
+        binding.etPassword.setText("password");
     }
 
     public void onClickLogin(View view){
         String email = binding.etEmailUsername.getText() + "";
         String pass = binding.etPassword.getText() + "";
-        if (!isEmailValid(email) || !isUsernameValid(email)){
+        if (!isUsernameValid(email)){
             binding.etEmailUsername.setError(getString(R.string.etEmailError));
-                return;
+            return;
         }
         if (!isPasswordValid(pass)){
             binding.etPassword.setError(getString(R.string.etPasswordError));
             return;
+        }else{
+            if (isLoginValid(email, pass)){
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra(MainActivity.USERNAME, email);
+                startActivity(intent);
+                onPause();
+            }
+
+
         }
 
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(intent);
-        onPause();
+    }
+
+    private boolean isUsernameValid(String email) {
+        if (email.isEmpty())
+            return false;
+        //return consoante equalidade à api
+        return true;
+    }
+
+    private boolean isLoginValid(String email, String pass){
+        login = new Login(email, pass);
+        SingletonRestaurantManager.getInstance(getApplicationContext()).loginAPI(login, getApplicationContext());
+
+        SharedPreferences sharedPreferences = getApplication().getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
+
+        if (sharedPreferences.getString(Public.TOKEN, "TOKEN").matches("TOKEN")){
+            return false;
+        }else{
+            return true;
+        }
+
+    }
+
+    public boolean isTokenValid(){
+        SharedPreferences sharedPreferences = getApplication().getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
+
+        if (sharedPreferences.getString(Public.TOKEN, "TOKEN").matches("TOKEN")){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+
+    public boolean isPasswordValid(String password){
+        if (password.isEmpty())
+            return false;
+        //return consoante equalidade à api
+        return true;
     }
 
     public void onClickRegister(View view){
@@ -55,26 +113,5 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
         onPause();
 
-    }
-
-
-    public boolean isEmailValid(String email){
-        if (email.isEmpty())
-            return false;
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
-    }
-
-    private boolean isUsernameValid(String email) {
-        if (email.isEmpty())
-            return false;
-        //return consoante equalidade à api
-        return true;
-    }
-
-    public boolean isPasswordValid(String password){
-        if (password.isEmpty())
-            return false;
-        //return consoante equalidade à api
-        return true;
     }
 }

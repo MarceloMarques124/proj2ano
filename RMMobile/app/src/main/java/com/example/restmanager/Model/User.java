@@ -3,85 +3,75 @@ package com.example.restmanager.Model;
 public class User {
 
     private int Id;
-    private String Usermane;
-    private String Address;
-    private String DoorNumber;
-    private String PostalCode;
-    private int NIF;
-    private String email;
-    private String Password;
+    private String username;
+    private String address;
+    private String doorNumber;
+    private String postalCode;
+    private int nif;
+    private String token;
 
     public User() {
     }
 
-    public User(int id, String usermane, String address, String doorNumber, String postalCode, int NIF, String email, String password) {
+    public User(int id, String username, String address, String doorNumber, String postalCode, int nif, String token) {
         this.Id = id;
-        this.Usermane = usermane;
-        this.Address = address;
-        this.DoorNumber = doorNumber;
-        this.PostalCode = postalCode;
-        this.NIF = NIF;
-        this.email = email;
-        this.Password = password;
+        this.username = username;
+        this.address = address;
+        this.doorNumber = doorNumber;
+        this.postalCode = postalCode;
+        this.nif = nif;
+        this.token = token;
     }
 
     public int getId() {
         return Id;
     }
 
-    public String getUsermane() {
-        return Usermane;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUsermane(String usermane) {
-        Usermane = usermane;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getAddress() {
-        return Address;
+        return address;
     }
 
     public void setAddress(String address) {
-        Address = address;
+        this.address = address;
     }
 
     public String getDoorNumber() {
-        return DoorNumber;
+        return doorNumber;
     }
 
     public void setDoorNumber(String doorNumber) {
-        DoorNumber = doorNumber;
+        this.doorNumber = doorNumber;
     }
 
     public String getPostalCode() {
-        return PostalCode;
+        return postalCode;
     }
 
     public void setPostalCode(String postalCode) {
-        PostalCode = postalCode;
+        this.postalCode = postalCode;
     }
 
-    public int getNIF() {
-        return NIF;
+    public int getNif() {
+        return nif;
     }
 
-    public void setNIF(int NIF) {
-        this.NIF = NIF;
+    public void setNif(int nif) {
+        this.nif = nif;
     }
 
-    public String getEmail() {
-        return email;
+    public String getToken() {
+        return token;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return Password;
-    }
-
-    public void setPassword(String password) {
-        Password = password;
+    public void setToken(String token) {
+        this.token = token;
     }
 }

@@ -26,6 +26,7 @@ import com.google.android.material.navigation.NavigationView;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
 
+    public static final String USERNAME = "username";
     private NavigationView navigationView;
     private DrawerLayout drawer;
     private FragmentManager fragmentManager;

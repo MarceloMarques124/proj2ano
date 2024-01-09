@@ -17,7 +17,6 @@ return [
         ],
     ],
     'components' => [
-
         'view' => [
             'theme' => [
                 'pathMap' => [
@@ -83,11 +82,21 @@ return [
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'api/table'
+                    'controller' => 'api/table'//,
+                    // 'extraPatterns' => [
+                    //     'GET {id}' => 'tablesbyzone'
+                    //],
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/order'
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/user',
+                    'extraPatterns' => [
+                        'POST login' => 'login'
+                    ],
                 ],
             ],
         ],
