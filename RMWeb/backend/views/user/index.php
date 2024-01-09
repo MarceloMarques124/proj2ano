@@ -19,7 +19,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); 
+    ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -34,9 +35,40 @@ $this->params['breadcrumbs'][] = $this->title;
             'user.email',
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, UserInfo $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                }
+                'template' => '{view} {update}  {delete} {activate} {desactivate}',
+                'buttons' => [
+                    'activate' => function ($url, $model, $key) {
+                        if ($model->user->status == 9) {
+                            return Html::a(
+                                '<span class="fas fa-check"></span>',
+                                ['activate', 'id' => $model->id],
+                                [
+                                    'title' => 'Activate',
+                                    'data' => [
+                                        'confirm' => 'Are you sure you want to activate this user?',
+                                        'method' => 'post',
+                                    ],
+                                ]
+                            );
+                        }
+                    },
+
+                    'desactivate' => function ($url, $model, $key) {
+                        if ($model->user->status == 10) {
+                            return Html::a(
+                                '<span class="fas fa-times"></span>',
+                                ['activate', 'id' => $model->id],
+                                [
+                                    'title' => 'Activate',
+                                    'data' => [
+                                        'confirm' => 'Are you sure you want to activate this user?',
+                                        'method' => 'post',
+                                    ],
+                                ]
+                            );
+                        }
+                    },
+                ],
             ],
         ],
     ]); ?>

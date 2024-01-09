@@ -17,7 +17,6 @@ return [
         ],
     ],
     'components' => [
-
         'view' => [
             'theme' => [
                 'pathMap' => [
