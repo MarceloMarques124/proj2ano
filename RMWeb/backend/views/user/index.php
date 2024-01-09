@@ -59,9 +59,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                 '<span class="fas fa-times"></span>',
                                 ['activate', 'id' => $model->id],
                                 [
-                                    'title' => 'Activate',
+                                    'title' => 'Desactivate',
                                     'data' => [
-                                        'confirm' => 'Are you sure you want to activate this user?',
+                                        'confirm' => 'Are you sure you want to desactivate this user?',
                                         'method' => 'post',
                                     ],
                                 ]

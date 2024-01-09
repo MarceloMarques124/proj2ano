@@ -227,31 +227,6 @@ class UserController extends Controller
         return $this->redirect(['index']);
     }
 
-    public function actionDesactivate($id)
-    {
-        // Lógica para ativar o usuário com o ID fornecido
-        // Encontrar o modelo UserInfo com base no ID fornecido
-        $user = User::findOne($id);
-
-        // Verificar se o modelo foi encontrado
-        if ($user) {
-            // Atualizar o campo de status para 9 (ou qualquer valor desejado)
-            $user->status = 9;
-
-            // Salvar as alterações no banco de dados
-            if ($user->save()) {
-                Yii::$app->session->setFlash('success', 'Usuário desativado com sucesso.');
-            } else {
-                Yii::$app->session->setFlash('error', 'Erro ao desativar o usuário.');
-            }
-        } else {
-            Yii::$app->session->setFlash('error', 'Usuário não encontrado.');
-        }
-
-        // Redirecionar de volta para a página de índice (ou qualquer página desejada)
-        return $this->redirect(['index']);
-    }
-
     public function actionActivate($id)
     {
         // Lógica para ativar o usuário com o ID fornecido
@@ -276,4 +251,31 @@ class UserController extends Controller
         // Redirecionar de volta para a página de índice (ou qualquer página desejada)
         return $this->redirect(['index']);
     }
+
+    public function actionDesactivate($id)
+    {
+        // Lógica para ativar o usuário com o ID fornecido
+        // Encontrar o modelo UserInfo com base no ID fornecido
+        $user = User::findOne($id);
+
+        // Verificar se o modelo foi encontrado
+        if ($user) {
+            // Atualizar o campo de status para 9 (ou qualquer valor desejado)
+            $user->status = 9;
+
+            // Salvar as alterações no banco de dados
+            if ($user->save()) {
+                Yii::$app->session->setFlash('success', 'Usuário ativado com sucesso.');
+            } else {
+                Yii::$app->session->setFlash('error', 'Erro ao ativar o usuário.');
+            }
+        } else {
+            Yii::$app->session->setFlash('error', 'Usuário não encontrado.');
+        }
+
+        // Redirecionar de volta para a página de índice (ou qualquer página desejada)
+        return $this->redirect(['index']);
+    }
+
+    
 }
