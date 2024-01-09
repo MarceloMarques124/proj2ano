@@ -1,6 +1,7 @@
 package com.example.restmanager.Singleton;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -8,21 +9,29 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.restmanager.DBHelper.RestManagerDBHelper;
 import com.example.restmanager.Listeners.MenusListener;
 import com.example.restmanager.Listeners.RestaurantsListener;
 import com.example.restmanager.Listeners.ReviewListener;
 import com.example.restmanager.Listeners.ReviewsListener;
+import com.example.restmanager.Model.Login;
 import com.example.restmanager.Model.Menu;
 import com.example.restmanager.Model.OrderedMenu;
 import com.example.restmanager.Model.Restaurant;
 import com.example.restmanager.Model.Review;
+import com.example.restmanager.Model.User;
 import com.example.restmanager.Utils.JsonParser;
+import com.example.restmanager.Utils.Public;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SingletonRestaurantManager {
 
@@ -116,8 +125,7 @@ public class SingletonRestaurantManager {
 
             }
         }else{
-            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, apiUrl + "/restaurants",
-                    null, new Response.Listener<JSONArray>() {
+            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, apiUrl + "/restaurants", null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
                     System.out.println("-->" + response);
@@ -296,7 +304,61 @@ public class SingletonRestaurantManager {
     //region #  #
     //endregion
 
-    //region #  #
+    //region # LOGIN #
+
+    public void loginAPI(final Login login, final Context context){
+        if (!JsonParser.isConnectionInternet(context)){
+            Toast.makeText(context, "--> No internet conection", Toast.LENGTH_SHORT).show();
+        }else{
+            StringRequest request = new StringRequest(Request.Method.POST, apiUrl + "/users/login", new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    System.out.println("--> " + response);
+
+                    SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                    if (response.contains("Denied Access")){
+                        System.out.println("--> DA 1");
+                        editor.putString(Public.TOKEN, "TOKEN");
+                        editor.apply();
+                    }else{
+                        addUserBD(JsonParser.jsonLoginParser(response));
+                        try{
+                            System.out.println("--> DA 2");
+                            JSONObject jsonObject = new JSONObject(response);
+
+                            editor.putString(Public.TOKEN, jsonObject.getString("token"));
+                            editor.apply();
+                        } catch (JSONException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    System.out.println("--> Login error: " + error.getMessage());
+                }
+            }){
+                protected Map<String, String> getParams(){
+                    System.out.println("--> DA 3");
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("username", login.getUsername());
+                    params.put("password", login.getPassword());
+                    return params;
+                }
+            };
+            volleyQueue.add(request);
+        }
+    }
+
+    public void addUserBD(User l){
+        restManagerDBHelper.deleteUsersTable();
+        restManagerDBHelper.addUserDB(l);
+    }
+
     //endregion
 
     public OrderedMenu getOrderedMenusByOrderId(int id){

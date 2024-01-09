@@ -2,6 +2,7 @@
 
 namespace backend\modules\api\controllers;
 
+use common\models\Table;
 use yii\web1\Controller;
 use yii\rest\ActiveController;
 
