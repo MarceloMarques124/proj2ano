@@ -76,19 +76,6 @@ AppAsset::register($this);
                             echo Html::a('Logout', ['site/logout'], ['data-method' => 'post', 'class' => 'nav-item nav-link']);
                         }
                         ?>
-                        <?php
-                        /*echo Nav::widget([
-                            'options' => ['class' => 'navbar-nav navbar-right'],
-                            'items' => [
-                                ['label' => 'Reserves', 'items' => [
-                                    ['label' => 'My reserves', 'url' => '#'],
-                                    ['label' => 'Make reserves', 'url' => '#'],
-                                ]],
-
-                            ],
-
-                        ]);*/
-                        ?>
                     </div>
 
                 </div>
