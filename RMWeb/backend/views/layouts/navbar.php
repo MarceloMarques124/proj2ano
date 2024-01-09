@@ -35,7 +35,6 @@ if (!Yii::$app->user->isGuest)  {
                 <a href="<?= Url::to(['/api/userinfos']) ?>" class="nav-link">Reservations</a>
                 <a href="<?= Url::to(['/api/reservations']) ?>" class="nav-link">Reservations</a> -->
                 <li><?= Html::a('Sign out', ['site/logout'], ['data-method' => 'post', 'class' => 'dropdown-item']) ?></li>
-                <!-- End Level two -->
             </ul>
         </li>
     </ul>
