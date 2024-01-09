@@ -4,9 +4,15 @@ namespace backend\controllers;
 
 use Yii;
 use yii\web\Response;
+use common\models\User;
 use yii\web\Controller;
+use common\models\Order;
+use common\models\Review;
+use common\models\UserInfo;
 use yii\filters\VerbFilter;
 use common\models\LoginForm;
+use common\models\Restaurant;
+use common\models\Reservation;
 use yii\filters\AccessControl;
 use yii\web\ForbiddenHttpException;
 
@@ -76,12 +82,65 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
-    }
+        $auth = Yii::$app->authManager;
+        $userId = Yii::$app->user->id;  // Obter o ID do usuário atual
+        // Obter o papel (role) e o restaurante do usuário
+        $roles = $auth->getRolesByUser($userId);
+        $user = UserInfo::findOne($userId);
+        foreach ($roles as $role) {
+            $userRole = $role->name;  // Nome da função
+        }
+        $userRestaurantId = $user->restaurant_id;
 
-    public function actionLoginFront()
-    {
+        // Inicializar a variável que armazenará o número de reservas
+        $reservasNumber = 0;
+        $ordersNumber = 0;
+        $ordersPending = 0;
+        $reviewNumbers = 0;
+        $review4Stars = 0;
+
+        if ($userRole == 'employee' || $userRole == 'manager') {
+            // Se o usuário for um employee ou manager, contar as reservas para o restaurante do usuário no dia atual
+            $reservasNumber = Reservation::find()
+                ->where([
+                    'restaurant_id' => $userRestaurantId,
+                ])
+                ->andWhere(['>=', 'date_time', date('Y-m-d 00:00:00')])
+                ->andWhere(['<=', 'date_time', date('Y-m-d 23:59:59')])
+                ->count();
+
+            //pedidos para hoje
+            $ordersNumber = Order::find()
+                ->where(['restaurant_id' => $userRestaurantId,])
+                ->count();
+
+            //pedidos pendentes
+            $ordersPending = Order::find()
+                ->where(['restaurant_id' => $userRestaurantId,])
+                ->andWhere(['state' => 1])
+                ->count();
+
+            //quantidade de review ao restaurant
+            $reviewNumbers = Review::find()
+                ->where(['restaurant_id' => $userRestaurantId,])
+                ->count();
+
+            //quantidade review de 4 estrelas ou mais
+            $review4Stars = Review::find()
+                ->where(['restaurant_id' => $userRestaurantId,])
+                ->andWhere(['>=' , 'stars', 4])
+                ->count();
+        }
+
+        return $this->render('index', [
+            'ordersNumber' => $ordersNumber,
+            'ordersPending' => $ordersPending,
+            'reservasNumber' => $reservasNumber,
+            'reviewNumbers' => $reviewNumbers,
+            'review4Stars' => $review4Stars,
+        ]);
     }
+    
     /**
      * Login action.
      *
@@ -127,11 +186,11 @@ class SiteController extends Controller
     }
 
     public function actionError()
-{
-    $exception = Yii::$app->errorHandler->exception;
-    if ($exception !== null) {
-        Yii::$app->response->statusCode = 403; // Define o status como 403 Forbidden
-        return $this->render('error', ['exception' => $exception]);
+    {
+        $exception = Yii::$app->errorHandler->exception;
+        if ($exception !== null) {
+            Yii::$app->response->statusCode = 403; // Define o status como 403 Forbidden
+            return $this->render('error', ['exception' => $exception]);
+        }
     }
-}
 }

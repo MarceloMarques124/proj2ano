@@ -24,16 +24,15 @@ class m231124_234855_init_rbac extends Migration
         $roles = $auth->getRoles();
 
         $roleEmployee = $roles['employee'];
-        $roleChef = $roles['chef'];
         $roleClient = $roles['client'];
         $roleManager = $roles['manager'];
 
-        $auth->assign($roleEmployee, 2);
-        $auth->assign($roleChef, 3);
-        $auth->assign($roleClient, 4);
-        $auth->assign($roleManager, 5);
 
-        foreach (array('admin', 'employee', 'chef', 'client', 'manager') as $role) {
+        $auth->assign($roleEmployee, 2);
+        $auth->assign($roleClient, 3);
+        $auth->assign($roleManager, 4);
+
+        foreach (array('admin', 'employee', 'client', 'manager') as $role) {
             $this->createUser($role);
         }
 

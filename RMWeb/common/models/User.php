@@ -218,4 +218,23 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
+
+    function generateRandomPassword($length = 8) {
+        // Caracteres permitidos na senha
+        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_';
+    
+        // Obtém o comprimento da string de caracteres permitidos
+        $charsLength = strlen($chars);
+    
+        // Inicializa a senha como uma string vazia
+        $password = '';
+    
+        // Gera a senha aleatória
+        for ($i = 0; $i < $length; $i++) {
+            // Escolhe um caractere aleatório da string de caracteres permitidos
+            $password .= $chars[rand(0, $charsLength - 1)];
+        }
+    
+        return $password;
+    }
 }

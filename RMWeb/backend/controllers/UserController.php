@@ -9,6 +9,7 @@ use yii\web\Controller;
 use common\models\UserForm;
 use common\models\UserInfo;
 use yii\filters\VerbFilter;
+use common\models\Restaurant;
 use yii\filters\AccessControl;
 use common\models\UserInfoSearch;
 use yii\web\NotFoundHttpException;
@@ -37,7 +38,7 @@ class UserController extends Controller
                     'class' => AccessControl::className(),
                     'rules' => [
                         [
-                            'actions' => ['update', 'index', 'delete', 'view', 'create'],
+                            'actions' => ['update', 'index', 'delete', 'view', 'create', 'activate'],
                             'allow' => true,
                             'roles' => ['UserManagement'],
                             'denyCallback' => function ($rule, $action) {
@@ -55,25 +56,42 @@ class UserController extends Controller
      *
      * @return string
      */
+
     public function actionIndex()
     {
-        if (\Yii::$app->user->can('admin')) {
-            $searchModel = new UserInfoSearch();
-        }
+        $searchModel = new UserInfoSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
 
-        if (\Yii::$app->user->can('manager')) {
+        if (\Yii::$app->user->can('admin')) {
             $idUserLogged = Yii::$app->user->getId();
             $userInfo = UserInfo::findOne(['user_id' => $idUserLogged]);
-            $searchModel = new UserInfoSearch(['restaurant_id' => $userInfo->restaurant_id]);
+
+            // Verificar se $userInfo existe antes de continuar
+            if ($userInfo) {
+                // Filtrar usuários com o mesmo restaurant_id, excluindo o usuário logado
+                $dataProvider->query->andWhere(['<>', 'user_id', $idUserLogged]);
+            }
+        } elseif (\Yii::$app->user->can('manager')) {
+            $idUserLogged = Yii::$app->user->getId();
+            $userInfo = UserInfo::findOne(['user_id' => $idUserLogged]);
+
+            // Verificar se $userInfo existe antes de continuar
+            if ($userInfo) {
+                // Filtrar usuários com o mesmo restaurant_id, excluindo o usuário logado
+                $dataProvider->query->andWhere(['<>', 'user_id', $idUserLogged]);
+                $dataProvider->query->andWhere(['restaurant_id' => $userInfo->restaurant_id]);
+            }
         }
 
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        // Não há restrições adicionais para usuários com a permissão 'admin'
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
+
+
 
     /**
      * Displays a single UserInfo model.
@@ -116,15 +134,17 @@ class UserController extends Controller
         $authManager = Yii::$app->authManager;
 
         $roles = $authManager->getRoles();
+        $restaurants = Restaurant::find()->all();
 
         if ($userForm->load(Yii::$app->request->post()) && $userForm->createUser()) {
-            
+
             return $this->redirect(['view', 'id' => $userForm->userInfoId]);
         }
 
         return $this->render('create', [
             'userForm' => $userForm,
-            'roles' => $roles
+            'roles' => $roles,
+            'restaurants' => $restaurants,
         ]);
     }
 
@@ -142,17 +162,25 @@ class UserController extends Controller
         $authManager = Yii::$app->authManager;
 
         $roles = $authManager->getRoles();
+        $restaurants = Restaurant::find()->all();
 
         if ($userForm->load(Yii::$app->request->post())) {
             $user = $userForm->updateUser();
+
             $userInfo = $user->userInfo;
+            // Chamando a função para gerar uma senha aleatória
+            $randomPassword = $user->generateRandomPassword();
+            // Armazene uma mensagem na sessão
+            $message = 'Usuário criado com sucesso! A senha é: ' . $randomPassword;
+            Yii::$app->session->setFlash('success', $message);
 
             return $this->redirect(['view', 'id' => $userInfo->id]);
         }
 
         return $this->render('update', [
             'userForm' => $userForm,
-            'roles' => $roles
+            'roles' => $roles,
+            'restaurants' => $restaurants,
         ]);
     }
 
@@ -173,6 +201,7 @@ class UserController extends Controller
             $userForm->door_number = $userInfo->door_number;
             $userForm->postal_code = $userInfo->postal_code;
             $userForm->nif = $userInfo->nif;
+            $userForm->restaurant_id = $userInfo->restaurant_id;
 
             // vai buscar a primeira porque as roles dependem umas das outras
             if ($userRoles && count($userRoles) > 0)
@@ -195,6 +224,56 @@ class UserController extends Controller
     {
         $this->findModel($id)->delete();
 
+        return $this->redirect(['index']);
+    }
+
+    public function actionDesactivate($id)
+    {
+        // Lógica para ativar o usuário com o ID fornecido
+        // Encontrar o modelo UserInfo com base no ID fornecido
+        $user = User::findOne($id);
+
+        // Verificar se o modelo foi encontrado
+        if ($user) {
+            // Atualizar o campo de status para 9 (ou qualquer valor desejado)
+            $user->status = 9;
+
+            // Salvar as alterações no banco de dados
+            if ($user->save()) {
+                Yii::$app->session->setFlash('success', 'Usuário desativado com sucesso.');
+            } else {
+                Yii::$app->session->setFlash('error', 'Erro ao desativar o usuário.');
+            }
+        } else {
+            Yii::$app->session->setFlash('error', 'Usuário não encontrado.');
+        }
+
+        // Redirecionar de volta para a página de índice (ou qualquer página desejada)
+        return $this->redirect(['index']);
+    }
+
+    public function actionActivate($id)
+    {
+        // Lógica para ativar o usuário com o ID fornecido
+        // Encontrar o modelo UserInfo com base no ID fornecido
+        $user = User::findOne($id);
+
+        // Verificar se o modelo foi encontrado
+        if ($user) {
+            // Atualizar o campo de status para 9 (ou qualquer valor desejado)
+            $user->status = 10;
+
+            // Salvar as alterações no banco de dados
+            if ($user->save()) {
+                Yii::$app->session->setFlash('success', 'Usuário ativado com sucesso.');
+            } else {
+                Yii::$app->session->setFlash('error', 'Erro ao ativar o usuário.');
+            }
+        } else {
+            Yii::$app->session->setFlash('error', 'Usuário não encontrado.');
+        }
+
+        // Redirecionar de volta para a página de índice (ou qualquer página desejada)
         return $this->redirect(['index']);
     }
 }

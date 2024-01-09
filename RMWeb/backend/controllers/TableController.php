@@ -2,11 +2,13 @@
 
 namespace backend\controllers;
 
-use common\models\Table;
-use backend\models\TableSearch;
 use yii\web\Controller;
-use yii\web\NotFoundHttpException;
+use common\models\Table;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+use backend\models\TableSearch;
+use yii\web\NotFoundHttpException;
+use yii\web\ForbiddenHttpException;
 
 /**
  * TableController implements the CRUD actions for Table model.
@@ -25,6 +27,20 @@ class TableController extends Controller
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
+                    ],
+                ],
+                'access' => [
+                    'class' => AccessControl::className(),
+                    'rules' => [
+                        [
+                            'actions' => ['update', 'index', 'delete', 'view', 'create'],
+                            'allow' => true,
+                            'roles' => ['TablesManagement'],
+                            'denyCallback' => function ($rule, $action) {
+                                throw new ForbiddenHttpException('You are not allowed to perform this action.');
+                            },
+                        ],
+                        
                     ],
                 ],
             ]

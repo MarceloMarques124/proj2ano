@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\web\YiiAsset;
+use yii\bootstrap5\Alert;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
@@ -24,7 +25,9 @@ YiiAsset::register($this);
                 'confirm' => 'Are you sure you want to delete this item?',
                 'method' => 'post',
             ],
-        ]) ?>
+        ])
+        ?>
+
     </p>
 
     <?= DetailView::widget([
@@ -38,5 +41,13 @@ YiiAsset::register($this);
             'nif',
         ],
     ]) ?>
+
+    <?php // Exiba a mensagem se existir
+    if (Yii::$app->session->hasFlash('success')) {
+        echo Alert::widget([
+            'options' => ['class' => 'alert-success'],
+            'body' => Yii::$app->session->getFlash('success'),
+        ]);
+    } ?>
 
 </div>

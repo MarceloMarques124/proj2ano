@@ -25,6 +25,7 @@ class UserForm extends Model
     public $door_number;
     public $postal_code;
     public $nif;
+    public $restaurant_id;
 
     public $role;
 
@@ -37,26 +38,27 @@ class UserForm extends Model
             ['username', 'trim'],
             ['username', 'required'],
             ['username', 'string', 'min' => 2, 'max' => 255],
-            ['username', 'unique', 'targetClass' => '\common\models\User',
+            [
+                'username', 'unique', 'targetClass' => '\common\models\User',
                 'when' => function ($model) {
                     if ($model->userId)
                         return $model->username != $this->getPreviousUser($model->userId)->username;
                     return true;
-                }],
+                }
+            ],
 
             ['email', 'trim'],
             ['email', 'required'],
             ['email', 'email'],
             ['email', 'string', 'max' => 255],
-            ['email', 'unique', 'targetClass' => '\common\models\User',
+            [
+                'email', 'unique', 'targetClass' => '\common\models\User',
                 'when' => function ($model) {
                     if ($model->userId)
                         return $model->email != $this->getPreviousUser($model->userId)->email;
                     return true;
-                }],
-
-            ['password', 'required'],
-            ['password', 'string', 'min' => Yii::$app->params['user.passwordMinLength']],
+                }
+            ],
 
             // for user_info
             ['name', 'trim'],
@@ -79,10 +81,13 @@ class UserForm extends Model
             ['nif', 'trim'],
             ['nif', 'required'],
             ['nif', 'integer'],
-//          ['nif', 'unique', 'targetClass' => '\common\models\UserInfo', 'message' => 'This nif address has already been taken.'],
+            //          ['nif', 'unique', 'targetClass' => '\common\models\UserInfo', 'message' => 'This nif address has already been taken.'],
             ['nif', 'match', 'pattern' => '/\b\d{9}\b/'],
 
             ['role', 'required'],
+            ['restaurant_id', 'integer'],
+            ['password', 'string', 'min' => Yii::$app->params['user.passwordMinLength']],
+
         ];
     }
 
@@ -105,13 +110,17 @@ class UserForm extends Model
         $user = new User();
         $user->username = $this->username;
         $user->email = $this->email;
-        $user->setPassword($this->password);
-        $user->generateAuthKey();
         $user->generateEmailVerificationToken();
         $user->status = 10;
+
+        $password = $user->generateRandomPassword();
+        $user->password = $password;
+        $user->setPassword($password);
+        $user->generateAuthKey();
+
         $user->save() && $this->sendEmail($user);
 
-        $auth = Yii::$app->authManager;
+        $auth = \Yii::$app->authManager;
         $role = $auth->getRole($this->role);
         if ($role)
             $auth->assign($role, $user->id);
@@ -123,10 +132,14 @@ class UserForm extends Model
         $userInfo->door_number = $this->door_number;
         $userInfo->postal_code = $this->postal_code;
         $userInfo->nif = $this->nif;
+        $userInfo->restaurant_id = $this->restaurant_id;
         $userInfo->save();
         $this->userId = $user->id;
         $this->userInfoId = $userInfo->id;
 
+        // Armazene uma mensagem na sessão
+        $message = 'Usuário criado com sucesso! A senha é: ' . $password;
+        Yii::$app->session->setFlash('success', $message);
         return $user;
     }
 
@@ -160,6 +173,7 @@ class UserForm extends Model
         $user->username = $this->username;
         $user->email = $this->email;
 
+
         if ($this->password) {
             $user->setPassword($this->password);
         }
@@ -185,7 +199,7 @@ class UserForm extends Model
         $userInfo->door_number = $this->door_number;
         $userInfo->postal_code = $this->postal_code;
         $userInfo->nif = $this->nif;
-
+        $userInfo->restaurant_id = $this->restaurant_id;
         $userInfo->save();
 
         return $user;

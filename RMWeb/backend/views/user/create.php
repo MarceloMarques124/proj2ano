@@ -7,6 +7,8 @@ use yii\web\View;
 /** @var View $this */
 /** @var UserForm $userForm */
 /** @var $roles */
+/** @var $restaurants */
+
 
 $this->title = 'Create User Info';
 $this->params['breadcrumbs'][] = ['label' => 'User Infos', 'url' => ['index']];
@@ -18,7 +20,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'userForm' => $userForm,
-        'roles' => $roles
+        'roles' => $roles,
+        'restaurants' => $restaurants,
     ]) ?>
 
 </div>

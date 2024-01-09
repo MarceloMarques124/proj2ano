@@ -2,11 +2,15 @@
 
 namespace backend\controllers;
 
+use Yii;
 use common\models\Zone;
-use backend\models\ZoneSearch;
 use yii\web\Controller;
-use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use common\models\Restaurant;
+use backend\models\ZoneSearch;
+use yii\filters\AccessControl;
+use yii\web\NotFoundHttpException;
+use yii\web\ForbiddenHttpException;
 
 /**
  * ZoneController implements the CRUD actions for Zone model.
@@ -25,6 +29,19 @@ class ZoneController extends Controller
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
+                    ],
+                ],
+                'access' => [
+                    'class' => AccessControl::className(),
+                    'rules' => [
+                        [
+                            'actions' => ['update', 'index', 'delete', 'view', 'create'],
+                            'allow' => true,
+                            'roles' => ['ZoneManagement'],
+                            'denyCallback' => function ($rule, $action) {
+                                throw new ForbiddenHttpException('You are not allowed to perform this action.');
+                            },
+                        ],
                     ],
                 ],
             ]
@@ -67,6 +84,15 @@ class ZoneController extends Controller
      */
     public function actionCreate()
     {
+        // Verifica se existem restaurantes
+        $restaurants = Restaurant::find()->all();
+
+        if (empty($restaurants)) {
+            // Redireciona o usuário ou exibe uma mensagem informando sobre a indisponibilidade
+            Yii::$app->session->setFlash('noRest', 'Não é possível criar um menu porque não há restaurantes disponíveis.');
+            return $this->redirect(['restaurant/index']); // ou outra ação apropriada
+        }
+
         $model = new Zone();
 
         if ($this->request->isPost) {
@@ -79,6 +105,7 @@ class ZoneController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'restaurants' => $restaurants,
         ]);
     }
 
@@ -92,6 +119,7 @@ class ZoneController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $restaurants = Restaurant::find()->all();
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -99,6 +127,7 @@ class ZoneController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'restaurants' => $restaurants,
         ]);
     }
 

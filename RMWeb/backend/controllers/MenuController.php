@@ -2,13 +2,16 @@
 
 namespace backend\controllers;
 
-use backend\models\MenuSearch;
-use common\models\Menu;
-use common\models\Restaurant;
-use yii\filters\VerbFilter;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
+use Yii;
 use yii\web\Response;
+use common\models\Menu;
+use yii\web\Controller;
+use yii\filters\VerbFilter;
+use common\models\Restaurant;
+use backend\models\MenuSearch;
+use yii\filters\AccessControl;
+use yii\web\NotFoundHttpException;
+use yii\web\ForbiddenHttpException;
 
 /**
  * MenuController implements the CRUD actions for Menu model.
@@ -27,6 +30,19 @@ class MenuController extends Controller
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
+                    ],
+                ],
+                'access' => [
+                    'class' => AccessControl::className(),
+                    'rules' => [
+                        [
+                            'actions' => ['update', 'index', 'delete', 'view', 'create'],
+                            'allow' => true,
+                            'roles' => ['MenuManagement'],
+                            'denyCallback' => function ($rule, $action) {
+                                throw new ForbiddenHttpException('You are not allowed to perform this action.');
+                            },
+                        ],
                     ],
                 ],
             ]
@@ -85,6 +101,15 @@ class MenuController extends Controller
      */
     public function actionCreate()
     {
+        // Verifica se existem restaurantes
+        $restaurants = Restaurant::find()->all();
+
+        if (empty($restaurants)) {
+            // Redireciona o usuário ou exibe uma mensagem informando sobre a indisponibilidade
+            Yii::$app->session->setFlash('noRest', 'Não é possível criar um menu porque não há restaurantes disponíveis.');
+            return $this->redirect(['restaurant/index']); // ou outra ação apropriada
+        }
+
         $model = new Menu();
 
         $restaurants = Restaurant::find()->all();

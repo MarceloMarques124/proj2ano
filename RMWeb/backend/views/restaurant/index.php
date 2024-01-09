@@ -1,10 +1,11 @@
 <?php
 
-use common\models\Restaurant;
-use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\grid\ActionColumn;
+use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\bootstrap5\Alert;
+use yii\grid\ActionColumn;
+use common\models\Restaurant;
 
 /** @var yii\web\View $this */
 /** @var backend\models\RestaurantSearch $searchModel */
@@ -45,4 +46,11 @@ $this->params['breadcrumbs'][] = $this->title;
     ]); ?>
 
 
+<?php // Exiba a mensagem se existir
+    if (Yii::$app->session->hasFlash('noRest')) {
+        echo Alert::widget([
+            'options' => ['class' => 'alert-success'],
+            'body' => Yii::$app->session->getFlash('noRest'),
+        ]);
+    } ?>
 </div>
