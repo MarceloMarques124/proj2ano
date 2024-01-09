@@ -11,6 +11,7 @@ import android.view.View;
 
 import com.example.restmanager.Model.Login;
 import com.example.restmanager.R;
+import com.example.restmanager.Singleton.SingletonRestaurantManager;
 import com.example.restmanager.Utils.Public;
 import com.example.restmanager.databinding.ActivityLoginBinding;
 
@@ -32,7 +33,6 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             intent.putExtra(MainActivity.USERNAME, email);
             startActivity(intent);
-            onPause();
         }
 
         binding.etEmailUsername.setText("client");
@@ -50,7 +50,6 @@ public class LoginActivity extends AppCompatActivity {
             binding.etPassword.setError(getString(R.string.etPasswordError));
             return;
         }else{
-            System.out.println("-->" + pass);
             if (isLoginValid(email, pass)){
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.putExtra(MainActivity.USERNAME, email);
@@ -63,21 +62,6 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    public void onClickRegister(View view){
-        Intent intent = new Intent(getApplicationContext(), RegistActivity.class);
-        startActivity(intent);
-        onPause();
-
-    }
-
-    public void onClickServer(View view){
-        Intent intent = new Intent(getApplicationContext(), ServerConnectionActivity.class);
-        startActivity(intent);
-        onPause();
-
-    }
-
-
     private boolean isUsernameValid(String email) {
         if (email.isEmpty())
             return false;
@@ -87,6 +71,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean isLoginValid(String email, String pass){
         login = new Login(email, pass);
+        SingletonRestaurantManager.getInstance(getApplicationContext()).loginAPI(login, getApplicationContext());
 
         SharedPreferences sharedPreferences = getApplication().getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
 
@@ -98,7 +83,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private boolean isTokenValid(){
+    public boolean isTokenValid(){
         SharedPreferences sharedPreferences = getApplication().getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
 
         if (sharedPreferences.getString(Public.TOKEN, "TOKEN").matches("TOKEN")){
@@ -114,5 +99,19 @@ public class LoginActivity extends AppCompatActivity {
             return false;
         //return consoante equalidade à api
         return true;
+    }
+
+    public void onClickRegister(View view){
+        Intent intent = new Intent(getApplicationContext(), RegistActivity.class);
+        startActivity(intent);
+        onPause();
+
+    }
+
+    public void onClickServer(View view){
+        Intent intent = new Intent(getApplicationContext(), ServerConnectionActivity.class);
+        startActivity(intent);
+        onPause();
+
     }
 }

@@ -307,10 +307,10 @@ public class SingletonRestaurantManager {
     //region # LOGIN #
 
     public void loginAPI(final Login login, final Context context){
-        if (JsonParser.isConnectionInternet(context)){
+        if (!JsonParser.isConnectionInternet(context)){
             Toast.makeText(context, "--> No internet conection", Toast.LENGTH_SHORT).show();
         }else{
-            StringRequest request = new StringRequest(Request.Method.POST, apiUrl + "users/login", new Response.Listener<String>() {
+            StringRequest request = new StringRequest(Request.Method.POST, apiUrl + "/users/login", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     System.out.println("--> " + response);
@@ -319,11 +319,13 @@ public class SingletonRestaurantManager {
                     SharedPreferences.Editor editor = sharedPreferences.edit();
 
                     if (response.contains("Denied Access")){
+                        System.out.println("--> DA 1");
                         editor.putString(Public.TOKEN, "TOKEN");
                         editor.apply();
                     }else{
                         addUserBD(JsonParser.jsonLoginParser(response));
                         try{
+                            System.out.println("--> DA 2");
                             JSONObject jsonObject = new JSONObject(response);
 
                             editor.putString(Public.TOKEN, jsonObject.getString("token"));
@@ -340,7 +342,8 @@ public class SingletonRestaurantManager {
                     System.out.println("--> Login error: " + error.getMessage());
                 }
             }){
-                protected Map<String, String> getToken(){
+                protected Map<String, String> getParams(){
+                    System.out.println("--> DA 3");
                     Map<String, String> params = new HashMap<String, String>();
                     params.put("username", login.getUsername());
                     params.put("password", login.getPassword());
