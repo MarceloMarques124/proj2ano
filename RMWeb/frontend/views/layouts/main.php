@@ -73,7 +73,7 @@ AppAsset::register($this);
                         } else {
                             echo Html::a('Home', ['site/index'], ['data-method' => 'post', 'class' => 'nav-item nav-link']);
                             echo Html::a('Reserves', ['reservation/index'], ['data-method' => 'post', 'class' => 'nav-item nav-link']); //este ve so as realizadas
-                            echo Html::a('Orders', ['orders/index'], ['data-method' => 'post', 'class' => 'nav-item nav-link']); //este ve so as concluidas
+                            echo Html::a('Orders', ['order/index'], ['data-method' => 'post', 'class' => 'nav-item nav-link']); //este ve so as concluidas
                             echo Html::a('Home', ['site/index'], ['data-method' => 'post', 'class' => 'nav-item nav-link']);
                             echo Html::a('Logout', ['site/logout'], ['data-method' => 'post', 'class' => 'nav-item nav-link']);
                         }

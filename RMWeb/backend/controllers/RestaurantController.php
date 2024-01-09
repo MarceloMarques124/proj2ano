@@ -2,11 +2,13 @@
 
 namespace backend\controllers;
 
-use common\models\Restaurant;
-use backend\models\RestaurantSearch;
 use yii\web\Controller;
-use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use common\models\Restaurant;
+use yii\filters\AccessControl;
+use yii\web\NotFoundHttpException;
+use yii\web\ForbiddenHttpException;
+use backend\models\RestaurantSearch;
 
 /**
  * RestaurantController implements the CRUD actions for Restaurant model.
@@ -25,6 +27,19 @@ class RestaurantController extends Controller
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
+                    ],
+                ],
+                'access' => [
+                    'class' => AccessControl::className(),
+                    'rules' => [
+                        [
+                            'actions' => ['update', 'index', 'delete', 'view', 'create'],
+                            'allow' => true,
+                            'roles' => ['RestaurantManagement'],
+                            'denyCallback' => function ($rule, $action) {
+                                throw new ForbiddenHttpException('You are not allowed to perform this action.');
+                            },
+                        ],
                     ],
                 ],
             ]

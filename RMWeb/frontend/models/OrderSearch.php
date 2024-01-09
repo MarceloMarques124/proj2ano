@@ -4,13 +4,13 @@ namespace frontend\models;
 
 use Yii;
 use yii\base\Model;
-use common\models\Reservation;
+use common\models\Order;
 use yii\data\ActiveDataProvider;
 
 /**
- * ReservationSearch represents the model behind the search form of `common\models\Reservation`.
+ * OrderSearch represents the model behind the search form of `common\models\Order`.
  */
-class ReservationSearch extends Reservation
+class OrderSearch extends Order
 {
     /**
      * {@inheritdoc}
@@ -18,8 +18,8 @@ class ReservationSearch extends Reservation
     public function rules()
     {
         return [
-            [['id', 'tables_number', 'user_id', 'people_number', 'restaurant_id'], 'integer'],
-            [['date_time', 'remarks'], 'safe'],
+            [['id', 'user_id', 'restaurant_id', 'state'], 'integer'],
+            [['price'], 'number'],
         ];
     }
 
@@ -41,9 +41,9 @@ class ReservationSearch extends Reservation
      */
     public function search($params)
     {
-        $query = Reservation::find();
+        $query = Order::find();
         // Adicione uma condição para filtrar as orders do usuário logado
-        $query->andWhere(['user_id' => Yii::$app->user->id]);
+        $query->andWhere(['user_id' => Yii::$app->user->id, 'state' => 1]);
 
         // add conditions that should always apply here
 
@@ -62,14 +62,11 @@ class ReservationSearch extends Reservation
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'tables_number' => $this->tables_number,
             'user_id' => $this->user_id,
-            'date_time' => $this->date_time,
-            'people_number' => $this->people_number,
             'restaurant_id' => $this->restaurant_id,
+            'price' => $this->price,
+            'state' => $this->state,
         ]);
-
-        $query->andFilterWhere(['like', 'remarks', $this->remarks]);
 
         return $dataProvider;
     }

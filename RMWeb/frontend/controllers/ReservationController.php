@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use Yii;
 use common\models\Zone;
 use yii\web\Controller;
+use common\models\Table;
 use yii\filters\VerbFilter;
 use common\models\LoginForm;
 use common\models\Reservation;
@@ -96,7 +97,9 @@ class ReservationController extends Controller
             // Obter a capacidade da zona do banco de dados
             $zone = Zone::findOne(['id' => $selectedZoneId]);
             $zoneCapacity = $zone ? $zone->capacity : 0;
-            $zoneTablesNumber = $zoneCapacity / 4;
+            $table = Table::find()->one();
+            $tablesCapacity = $table->capacity;
+            $zoneTablesNumber = $zoneCapacity / $tablesCapacity;
 
             $reservationDateTime = $this->request->post('Reservation')['date_time'];
             // Verificar se há reservas nas duas horas anteriores/seguintes à hora escolhida
@@ -109,7 +112,7 @@ class ReservationController extends Controller
                 ->andWhere(['<=', 'date_time', $twoHoursLater])
                 ->all();
             $peopleNumber = $this->request->post('Reservation')['people_number'];
-            $tablesNumber = ceil($peopleNumber / 4);
+            $tablesNumber = ceil($peopleNumber / $tablesCapacity);
 
 
 
@@ -136,12 +139,17 @@ class ReservationController extends Controller
                     Yii::$app->session->setFlash('error', 'Desculpe, não há mesas disponíveis na zona escolhida para a data e hora selecionadas.');
                 }
             } else {
-                $model->restaurant_id = $restaurantId;
-                $model->user_id = $userId;
-                $model->tables_number = $tablesNumber;
+                if ($zoneTablesNumber >= $tablesNumber) {
+                    $model->restaurant_id = $restaurantId;
+                    $model->user_id = $userId;
+                    $model->tables_number = $tablesNumber;
 
-                if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-                    return $this->redirect(['view', 'id' => $model->id]);
+                    if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+                        return $this->redirect(['view', 'id' => $model->id]);
+                    }
+                } else {
+                    // Mesas insuficientes, exiba uma mensagem de erro
+                    Yii::$app->session->setFlash('error', 'Desculpe, não há mesas disponíveis na zona escolhida para a data e hora selecionadas.');
                 }
             }
         } else {
@@ -194,7 +202,12 @@ class ReservationController extends Controller
             // Obter a capacidade da zona do banco de dados
             $zone = Zone::findOne(['id' => $selectedZoneId]);
             $zoneCapacity = $zone ? $zone->capacity : 0;
-            $zoneTablesNumber = $zoneCapacity / 4;
+
+            $table = Table::find()->one();
+            $tablesCapacity = $table->capacity;
+
+            $zoneTablesNumber = $zoneCapacity / $tablesCapacity;
+
 
             // Verificar se há reservas nas duas horas anteriores à hora escolhida
             $twoHoursEarlier = date('Y-m-d H:i:s', strtotime($reservationDateTime) - 2 * 60 * 60);
@@ -232,10 +245,15 @@ class ReservationController extends Controller
                     Yii::$app->session->setFlash('error', 'Desculpe, não há mesas disponíveis na zona escolhida para a data e hora selecionadas.');
                 }
             } else {
-                $model->tables_number = $tablesNumber;
+                if ($zoneTablesNumber >= $tablesNumber) {
+                    $model->tables_number = $tablesNumber;
 
-                if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-                    return $this->redirect(['view', 'id' => $model->id]);
+                    if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+                        return $this->redirect(['view', 'id' => $model->id]);
+                    }
+                } else {
+                    // Mesas insuficientes, exiba uma mensagem de erro
+                    Yii::$app->session->setFlash('error', 'Desculpe, não há mesas disponíveis na zona escolhida para a data e hora selecionadas.');
                 }
             }
         }
