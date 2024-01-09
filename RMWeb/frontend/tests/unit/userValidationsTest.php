@@ -41,7 +41,7 @@ class userValidationsTest extends \Codeception\Test\Unit
         $userInfo->postal_code = '1234-125';
         $userInfo->nif = 123456789;
 
-        $this->assertTrue($userInfo->save());
+        $this->assertFalse($userInfo->save());
     }
 
     

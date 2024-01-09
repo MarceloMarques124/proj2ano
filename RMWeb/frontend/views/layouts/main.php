@@ -4,11 +4,9 @@
 
 /** @var string $content */
 
-use Yii;
 use yii\web\View;
 use yii\bootstrap4\Nav;
 use yii\bootstrap4\Html;
-use common\widgets\Alert;
 use frontend\assets\AppAsset;
 
 AppAsset::register($this);
@@ -79,7 +77,7 @@ AppAsset::register($this);
                         }
                         ?>
                         <?php
-                        echo Nav::widget([
+                        /*echo Nav::widget([
                             'options' => ['class' => 'navbar-nav navbar-right'],
                             'items' => [
                                 ['label' => 'Reserves', 'items' => [
@@ -89,7 +87,7 @@ AppAsset::register($this);
 
                             ],
 
-                        ]);
+                        ]);*/
                         ?>
                     </div>
 

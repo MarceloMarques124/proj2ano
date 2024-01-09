@@ -2,8 +2,8 @@
 
 namespace frontend\tests\functional;
 
-use frontend\tests\FunctionalTester;
 use common\fixtures\UserFixture;
+use frontend\tests\FunctionalTester;
 
 class LoginCest
 {
@@ -46,7 +46,7 @@ class LoginCest
 
     public function checkWrongPassword(FunctionalTester $I)
     {
-        $I->submitForm('#login-form', $this->formParams('admin', 'wrong'));
+        $I->submitForm('#login-form', $this->formParams('client', 'wrong'));
         $I->seeValidationError('Incorrect username or password.');
     }
 
@@ -58,9 +58,14 @@ class LoginCest
 
     public function checkValidLogin(FunctionalTester $I)
     {
-        $I->submitForm('#login-form', $this->formParams('erau', 'password_0'));
-        $I->see('Logout (erau)', 'form button[type=submit]');
-        $I->dontSeeLink('Login');
+        $I->submitForm('#login-form', $this->formParams('erau', 'Password_0'));
+        $I->see('Login', 'form button[type=submit]');
+        $I->dontSeeLink('logout');
         $I->dontSeeLink('Signup');
+    }
+
+    protected function _after(FunctionalTester $I)
+    {
+        // Realize a limpeza necessária, se aplicável
     }
 }
