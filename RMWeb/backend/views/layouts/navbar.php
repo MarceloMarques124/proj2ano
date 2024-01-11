@@ -40,6 +40,8 @@ if (!Yii::$app->user->isGuest)  {
             </ul>
         </li>
     </ul>
+    
+
 </nav>
 <!-- /.navbar -->
 <?php }?>
