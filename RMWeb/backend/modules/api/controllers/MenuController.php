@@ -2,9 +2,11 @@
 
 namespace backend\modules\api\controllers;
 
+use app\mosquitto\phpMQTT as MosquittoPhpMQTT;
 use Yii;
 use Mosquitto\Client;
 use Bluerhinos\phpMQTT;
+use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Php;
 use yii\web\Controller;
 use yii\rest\ActiveController;
 
@@ -52,7 +54,7 @@ class MenuController extends ActiveController
      */
     private function enviarMensagensMQTT($id)
     {
-        $mqtt = new phpMQTT('localhost', 1883, 'ClientID'); // Substitua 'localhost', 1883 e 'ClientID' conforme necessário
+        $mqtt = new phpMQTT('127.0.0.1', 1883, 'AndroidClient'); // Substitua 'localhost', 1883 e 'ClientID' conforme necessário
 
         if ($mqtt->connect()) {
             // Construa a mensagem MQTT usando dados do objeto criado

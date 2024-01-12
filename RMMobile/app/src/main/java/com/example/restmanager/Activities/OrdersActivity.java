@@ -6,8 +6,12 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
+import android.widget.TextView;
 
 import com.example.restmanager.Adapters.MenusAdapter;
 import com.example.restmanager.Listeners.MenusListener;
@@ -31,6 +35,7 @@ public class OrdersActivity extends AppCompatActivity implements MenusListener {
         setContentView(R.layout.activity_orders);
 
         MqttClientTask mqttClientTask = new MqttClientTask();
+
         mqttClientTask.execute();
 
         binding = ActivityOrdersBinding.inflate(getLayoutInflater());
@@ -54,5 +59,15 @@ public class OrdersActivity extends AppCompatActivity implements MenusListener {
         if (menus != null){
             binding.lvMenus.setAdapter(new MenusAdapter(getApplicationContext(), menus));
         }
+    }
+
+    public void updateUI(String payload) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextView seuTextView = findViewById(R.id.textView44);
+                seuTextView.setText(payload);
+            }
+        });
     }
 }
