@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import com.example.restmanager.Adapters.MenusAdapter;
 import com.example.restmanager.Listeners.MenusListener;
 import com.example.restmanager.Model.Menu;
+import com.example.restmanager.Mosquitto.MqttClientTask;
 import com.example.restmanager.R;
 import com.example.restmanager.Singleton.SingletonRestaurantManager;
 import com.example.restmanager.databinding.ActivityOrdersBinding;
@@ -29,6 +30,8 @@ public class OrdersActivity extends AppCompatActivity implements MenusListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_orders);
 
+        MqttClientTask mqttClientTask = new MqttClientTask();
+        mqttClientTask.execute();
 
         binding = ActivityOrdersBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
