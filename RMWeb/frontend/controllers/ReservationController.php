@@ -98,7 +98,7 @@ class ReservationController extends Controller
             $zone = Zone::findOne(['id' => $selectedZoneId]);
             $zoneCapacity = $zone ? $zone->capacity : 0;
             $table = Table::find()->one();
-            $tablesCapacity = $table->capacity;
+            $tablesCapacity = 4;
             $zoneTablesNumber = $zoneCapacity / $tablesCapacity;
 
             $reservationDateTime = $this->request->post('Reservation')['date_time'];

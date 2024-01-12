@@ -20,7 +20,8 @@
         "yiisoft/yii2-symfonymailer": "~2.0.3",
         "hail812/yii2-adminlte3": "~1.1",
         "rmrevin/yii2-fontawesome": "2.10.*",
-        "kartik-v/yii2-widget-datetimepicker": "^1.5"
+        "kartik-v/yii2-widget-datetimepicker": "^1.5",
+        "bluerhinos/phpmqtt": "@dev"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

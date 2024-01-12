@@ -2,17 +2,16 @@
 
 namespace frontend\controllers;
 
+use common\models\prestacao;
+use frontend\models\PrestacaoSearch;
 use yii\web\Controller;
-use common\models\Order;
-use yii\filters\VerbFilter;
-use common\models\Prestacao;
-use frontend\models\OrderSearch;
 use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;
 
 /**
- * OrderController implements the CRUD actions for Order model.
+ * PrestacaoController implements the CRUD actions for prestacao model.
  */
-class OrderController extends Controller
+class PrestacaoController extends Controller
 {
     /**
      * @inheritDoc
@@ -33,13 +32,13 @@ class OrderController extends Controller
     }
 
     /**
-     * Lists all Order models.
+     * Lists all prestacao models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new OrderSearch();
+        $searchModel = new PrestacaoSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -49,7 +48,7 @@ class OrderController extends Controller
     }
 
     /**
-     * Displays a single Order model.
+     * Displays a single prestacao model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -62,7 +61,49 @@ class OrderController extends Controller
     }
 
     /**
-     * Deletes an existing Order model.
+     * Creates a new prestacao model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return string|\yii\web\Response
+     */
+    public function actionCreate()
+    {
+        $model = new prestacao();
+
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+        } else {
+            $model->loadDefaultValues();
+        }
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Updates an existing prestacao model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param int $id ID
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Deletes an existing prestacao model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -76,43 +117,18 @@ class OrderController extends Controller
     }
 
     /**
-     * Finds the Order model based on its primary key value.
+     * Finds the prestacao model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return Order the loaded model
+     * @return prestacao the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Order::findOne(['id' => $id])) !== null) {
+        if (($model = prestacao::findOne(['id' => $id])) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
-    }
-
-    public function actionPay($id)
-    {
-        $order = Order::findOne(['id' => $id]);
-        $order->state = 2;
-        $order->save();
-        return $this->redirect(['index']);
-    }
-
-    public function actionTimes($id)
-    {
-        $order = Order::findOne(['id' => $id]);
-        if ($order->state == 1) {
-            $order->state = 3;
-            $order->save();
-
-            $prestacao = new Prestacao();
-            $prestacao->user_id = $order->user_id;
-            $prestacao->data = date('Y-m-d H:i:s');
-            $prestacao->montante = $order->price;
-            $prestacao->order_id = $order->id;
-            $prestacao->save();
-        }
-        return $this->redirect(['index']);
     }
 }

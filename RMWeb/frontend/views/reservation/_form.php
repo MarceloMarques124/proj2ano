@@ -16,7 +16,7 @@ use kartik\datetime\DateTimePicker;
 
 <div class="reservation-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['id' => 'formReserve']); ?>
 
 
     <?= $form->field($model, 'date_time')->widget(DateTimePicker::class, [
@@ -43,7 +43,7 @@ use kartik\datetime\DateTimePicker;
     <?= $form->field($model, 'remarks')->textarea(['rows' => 6]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Save', ['class' => 'btn btn-success', 'name'=>'btnSave']) ?>
     </div>
 
 
