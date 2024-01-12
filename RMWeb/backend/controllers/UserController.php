@@ -166,14 +166,7 @@ class UserController extends Controller
 
         if ($userForm->load(Yii::$app->request->post())) {
             $user = $userForm->updateUser();
-
             $userInfo = $user->userInfo;
-            // Chamando a função para gerar uma senha aleatória
-            $randomPassword = $user->generateRandomPassword();
-            // Armazene uma mensagem na sessão
-            $message = 'Usuário criado com sucesso! A senha é: ' . $randomPassword;
-            Yii::$app->session->setFlash('success', $message);
-
             return $this->redirect(['view', 'id' => $userInfo->id]);
         }
 

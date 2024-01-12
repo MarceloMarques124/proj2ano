@@ -9,14 +9,13 @@ return [
         'password_reset_token' => 'RkD_Jw0_8HEedzLk7MM-ZKEFfYR7VbMr_1392559490',
         'created_at' => '1392559490',
         'updated_at' => '1392559490',
-        'status' => '10',
         'email' => 'sfriesen@jenkins.info',
     ],
     [
         'username' => 'test.test',
         'auth_key' => 'O87GkY3_UfmMHYkyezZ7QLfmkKNsllzT',
         // Test1234
-        'password_hash' => 'O87GkY3_UfmMHYkyezZ7QLfmkKNsllzT',
+        'password_hash' => Yii::$app->security->generatePasswordHash('Test1234'),
         'email' => 'test@mail.com',
         'status' => '10',
         'created_at' => '1548675330',

@@ -4,25 +4,19 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
-/** @var common\models\Order $model */
+/** @var common\models\prestacao $model */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Orders', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Prestacaos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="order-view">
+<div class="prestacao-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?php if($model->state == 1){?>
-        <?= Html::a('Pay', ['pay', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('3 times pay', ['prestacao/create', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?php }?>
-        <?php if($model->state == 1){?>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?php }?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -37,9 +31,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'user_id',
-            'restaurant_id',
-            'price',
-            'state',
+            'data',
+            'montante',
+            'order_id',
         ],
     ]) ?>
 

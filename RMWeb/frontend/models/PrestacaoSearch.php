@@ -2,15 +2,14 @@
 
 namespace frontend\models;
 
-use Yii;
 use yii\base\Model;
-use common\models\Order;
 use yii\data\ActiveDataProvider;
+use common\models\prestacao;
 
 /**
- * OrderSearch represents the model behind the search form of `common\models\Order`.
+ * PrestacaoSearch represents the model behind the search form of `common\models\prestacao`.
  */
-class OrderSearch extends Order
+class PrestacaoSearch extends prestacao
 {
     /**
      * {@inheritdoc}
@@ -18,8 +17,8 @@ class OrderSearch extends Order
     public function rules()
     {
         return [
-            [['id', 'user_id', 'restaurant_id', 'state'], 'integer'],
-            [['price'], 'number'],
+            [['id', 'user_id', 'montante', 'order_id'], 'integer'],
+            [['data'], 'safe'],
         ];
     }
 
@@ -41,9 +40,7 @@ class OrderSearch extends Order
      */
     public function search($params)
     {
-        $query = Order::find();
-        // Adicione uma condição para filtrar as orders do usuário logado
-        $query->andWhere(['user_id' => Yii::$app->user->id]);
+        $query = prestacao::find();
 
         // add conditions that should always apply here
 
@@ -63,9 +60,9 @@ class OrderSearch extends Order
         $query->andFilterWhere([
             'id' => $this->id,
             'user_id' => $this->user_id,
-            'restaurant_id' => $this->restaurant_id,
-            'price' => $this->price,
-            'state' => $this->state,
+            'montante' => $this->montante,
+            'order_id' => $this->order_id,
+            'data' => $this->data,
         ]);
 
         return $dataProvider;
