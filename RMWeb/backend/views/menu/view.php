@@ -32,9 +32,18 @@ YiiAsset::register($this);
         'attributes' => [
             'id',
             'name',
-            'price',
+            [
+                'attribute' => 'price',
+                'value' => function ($model) {
+                    return number_format($model->price, 2, ',', ' ') . ' €';
+                },
+            ],
             'restaurant.name',
         ],
     ]) ?>
+    <p>
+        
+        <?= Html::a('Add Item', ['fooditem/create', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
+    </p>
 
 </div>

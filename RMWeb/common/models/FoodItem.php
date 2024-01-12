@@ -12,7 +12,7 @@ use Yii;
  * @property int|null $menu_id
  * @property float|null $price
  *
- * @property Menu $menu
+ * @property Menus $menu
  */
 class FoodItem extends \yii\db\ActiveRecord
 {

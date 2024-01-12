@@ -69,6 +69,13 @@ if (!Yii::$app->user->isGuest) {
                                 ['label' => 'View all', 'url' => ['menu/index'], 'iconStyle' => 'far'],
                             ]
                         ],
+                        [
+                            'label' => 'ITEMS', 'icon' => 'fa-solid fa-utensils',
+                            'items' => [
+                                ['label' => 'Create', 'url' => ['item/create'], 'iconStyle' => 'far'],
+                                ['label' => 'View all', 'url' => ['fooditem/index'], 'iconStyle' => 'far'],
+                            ]
+                        ],
                     ],
 
                 ]);

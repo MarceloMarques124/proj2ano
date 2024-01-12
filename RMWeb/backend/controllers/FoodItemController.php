@@ -2,11 +2,14 @@
 
 namespace backend\controllers;
 
-use common\models\FoodItem;
 use backend\models\FoodItemSearch;
+use common\models\FoodItem;
+use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\ForbiddenHttpException;
 
 /**
  * FoodItemController implements the CRUD actions for FoodItem model.
@@ -43,6 +46,10 @@ class FoodItemController extends Controller
 
         return $this->render('index', [
             'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+
+        return $this->render('index', [
             'dataProvider' => $dataProvider,
         ]);
     }
