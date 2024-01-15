@@ -83,7 +83,7 @@ class Menu extends \yii\db\ActiveRecord
         return $this->hasOne(Restaurant::class, ['id' => 'restaurant_id']);
     }
 
-    public function afterSave($insert, $changedAttributes)
+   /*public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
         //Obter dados do registo em causa
@@ -102,7 +102,7 @@ class Menu extends \yii\db\ActiveRecord
             $this->FazPublishNoMosquitto("INSERT", $myJSON);
         else
             $this->FazPublishNoMosquitto("UPDATE", $myJSON);
-    }
+    }*/
 
     public function afterDelete()
     {
