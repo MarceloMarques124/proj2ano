@@ -3,7 +3,6 @@
 namespace common\models;
 
 use Yii;
-use Bluerhinos\phpMQTT;
 
 /**
  * This is the model class for table "menus".
@@ -115,19 +114,19 @@ class Menu extends \yii\db\ActiveRecord
         $this->FazPublishNoMosquitto("DELETE", $myJSON);
     }
 
-    public function FazPublishNoMosquitto($canal, $msg)
-    {
-        $server = "127.0.0.1";
-        $port = 1883;
-        $username = ""; // set your username
-        $password = ""; // set your password
-        $client_id = "phpMQTT-publisher"; // unique!
-        $mqtt = new phpMQTT($server, $port, $client_id);
-        if ($mqtt->connect(true, NULL, $username, $password)) {
-            $mqtt->publish($canal, $msg, 0);
-            $mqtt->close();
-        } else {
-            file_put_contents("debug.output", "Time out!");
-        }
-    }
+    // public function FazPublishNoMosquitto($canal, $msg)
+    // {
+    //     $server = "127.0.0.1";
+    //     $port = 1883;
+    //     $username = ""; // set your username
+    //     $password = ""; // set your password
+    //     $client_id = "phpMQTT-publisher"; // unique!
+    //     $mqtt = new phpMQTT($server, $port, $client_id);
+    //     if ($mqtt->connect(true, NULL, $username, $password)) {
+    //         $mqtt->publish($canal, $msg, 0);
+    //         $mqtt->close();
+    //     } else {
+    //         file_put_contents("debug.output", "Time out!");
+    //     }
+    // }
 }
