@@ -2,8 +2,10 @@
 
 namespace backend\modules\api\controllers;
 
+use common\models\Menu;
 use common\models\Order;
 use common\models\OrderedMenu;
+use Yii;
 use yii\web\Controller;
 use yii\rest\ActiveController;
 
@@ -26,26 +28,62 @@ class OrderController extends ActiveController
 
     public function actionPay($id)
     {
-        $order = Order::find($id);
+        $order = Order::findOne($id);
 
-        if($order->state == 1)//foi pedido para pagar/ encomendado
-        {
-            $order->state = 2; //está pago
-
+        if ($order && $order->state == 1) {
+            $order->state = 2;
             $this->actionCreateinvoice($id);
-
             $order->save();
-
             return "Pedido pago";
         }
     }
 
-    public function actionCreateinvoice($id)
+    public function actionCreateinvoice()
     {
-        $ordered = OrderedMenu::find()->where(['order_id'=>$id])->all();
+       // $params = json_decode(Yii::$app->request->getRawBody(), true);
+    // $params = Yii::$app->request->post();
 
 
+    //  foreach ($params as $param) {
+    //      $ordered = new OrderedMenu();
+    //      $ordered->id = $param['id'];
+    //      $ordered->menu_id = $param['menu_id'];
+    //      $ordered->quantity = $param['quantity'];
+    //      $ordered->order_id = $param['order_id'];
+         
+         
+    //      if ($ordered->save()) {
+    //          $order = Order::findOne(['id' => $ordered->order_id]);
+    //          $menu = Menu::findOne(['id' => $ordered->menu_id]);
 
+    //          $order->price += ($ordered->quantity*$menu->price); 
+    //          $order->save();
 
+    //          return "Was Created";
+    //      } else {
+    //          return "Failed to create invoice";
+    //      }
+    //  }
+    $params = Yii::$app->request->post();
+
+    foreach ($params as $param) {
+        $ordered = new OrderedMenu();
+        $ordered->id = $param['id'];
+        $ordered->menu_id = $param['menu_id'];
+        $ordered->quantity = $param['quantity'];
+        $ordered->order_id = $param['order_id'];
+
+        if (!$ordered->save()) {
+            return "Failed to create invoice";
+        }
+
+        $order = Order::findOne(['id' => $ordered->order_id]);
+        $menu = Menu::findOne(['id' => $ordered->menu_id]);
+
+        $order->price += ($ordered->quantity * $menu->price);
+        $order->save();
+    }
+
+    return "All invoices were created successfully";
     }
 }

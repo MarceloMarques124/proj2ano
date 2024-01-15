@@ -89,13 +89,21 @@ return [
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'api/order'
+                    'controller' => 'api/order',
+                    'extraPatterns' => [
+                        'POST createinvoice' => 'createinvoice'
+                    ],
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/orderedmenu'
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/user',
                     'extraPatterns' => [
-                        'POST login' => 'login'
+                        'POST login' => 'login',
+                        'POST signup' => 'signup'
                     ],
                 ],
             ],

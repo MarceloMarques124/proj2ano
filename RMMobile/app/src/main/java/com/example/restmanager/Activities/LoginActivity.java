@@ -40,9 +40,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onClickLogin(View view){
-        String email = binding.etEmailUsername.getText() + "";
-        String pass = binding.etPassword.getText() + "";
-        if (!isUsernameValid(email)){
+        String username = binding.etEmailUsername.getText()+"";
+        String pass = binding.etPassword.getText()+"";
+        if (!isUsernameValid(username)){
             binding.etEmailUsername.setError(getString(R.string.etEmailError));
             return;
         }
@@ -50,9 +50,11 @@ public class LoginActivity extends AppCompatActivity {
             binding.etPassword.setError(getString(R.string.etPasswordError));
             return;
         }else{
-            if (isLoginValid(email, pass)){
+            System.out.println("--> 1 "+ pass);
+            System.out.println("--> 1 "+username);
+            if (isLoginValid(username, pass)){
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra(MainActivity.USERNAME, email);
+                intent.putExtra(MainActivity.USERNAME, username);
                 startActivity(intent);
                 onPause();
             }
@@ -62,25 +64,34 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private boolean isUsernameValid(String email) {
-        if (email.isEmpty())
+    private boolean isUsernameValid(String username) {
+        if (username.isEmpty())
             return false;
         //return consoante equalidade à api
         return true;
     }
 
-    private boolean isLoginValid(String email, String pass){
-        login = new Login(email, pass);
+    public boolean isPasswordValid(String password){
+        if (password.isEmpty())
+            return false;
+        return true;
+    }
+
+    private boolean isLoginValid(String username, String pass){
+        System.out.println("--> 2 "+ pass);
+        System.out.println("--> 2 "+username);
+        login = new Login(username, pass);
+
         SingletonRestaurantManager.getInstance(getApplicationContext()).loginAPI(login, getApplicationContext());
 
-        SharedPreferences sharedPreferences = getApplication().getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
+        /*SharedPreferences sharedPreferences = getApplication().getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
 
         if (sharedPreferences.getString(Public.TOKEN, "TOKEN").matches("TOKEN")){
             return false;
         }else{
             return true;
-        }
-
+        }*/
+return  true;
     }
 
     public boolean isTokenValid(){
@@ -94,12 +105,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    public boolean isPasswordValid(String password){
-        if (password.isEmpty())
-            return false;
-        //return consoante equalidade à api
-        return true;
-    }
 
     public void onClickRegister(View view){
         Intent intent = new Intent(getApplicationContext(), RegistActivity.class);

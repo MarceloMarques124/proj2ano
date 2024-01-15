@@ -19,6 +19,7 @@ import com.example.restmanager.Listeners.ReviewsListener;
 import com.example.restmanager.Model.Login;
 import com.example.restmanager.Model.Menu;
 import com.example.restmanager.Model.OrderedMenu;
+import com.example.restmanager.Model.Signup;
 import com.example.restmanager.Model.Restaurant;
 import com.example.restmanager.Model.Review;
 import com.example.restmanager.Model.User;
@@ -304,13 +305,13 @@ public class SingletonRestaurantManager {
     //region #  #
     //endregion
 
-    //region # LOGIN #
+    //region # USER #
 
     public void loginAPI(final Login login, final Context context){
         if (!JsonParser.isConnectionInternet(context)){
             Toast.makeText(context, "--> No internet conection", Toast.LENGTH_SHORT).show();
         }else{
-            StringRequest request = new StringRequest(Request.Method.POST, apiUrl + "/users/login", new Response.Listener<String>() {
+            StringRequest request = new StringRequest(Request.Method.POST, apiUrl + "/user/login", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     System.out.println("--> " + response);
@@ -334,7 +335,6 @@ public class SingletonRestaurantManager {
                             throw new RuntimeException(e);
                         }
                     }
-
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -353,6 +353,52 @@ public class SingletonRestaurantManager {
             volleyQueue.add(request);
         }
     }
+
+    public void signupAPI(final Signup signup, final Context context){
+        if (!JsonParser.isConnectionInternet(context)){
+            Toast.makeText(context, "--> No internet conection", Toast.LENGTH_SHORT).show();
+        }else{
+            StringRequest request = new StringRequest(Request.Method.POST, apiUrl + "/user/signup", new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    System.out.println("--> " + response);
+
+                    if (response.contains("Denied Access")){
+                        System.out.println("--> DA 1");
+                    }else{
+                        try{
+                            System.out.println("--> DA 2");
+                            JSONObject jsonObject = new JSONObject(response);
+                        } catch (JSONException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    System.out.println("--> Signup error: " + error.getMessage());
+                }
+            }){
+                protected Map<String, String> getParams(){
+                    System.out.println("--> DA 3");
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("name", signup.getName());
+                    params.put("username", signup.getUsername());
+                    params.put("password", signup.getPassword());
+                    params.put("email", signup.getEmail());
+                    params.put("nif", signup.getNif()+"");
+                    params.put("address", signup.getAddress());
+                    params.put("doorNumber", signup.getDoorNumber());
+                    params.put("postalCode", signup.getPostalCode());
+                    return params;
+                }
+            };
+            volleyQueue.add(request);
+        }
+    }
+
 
     public void addUserBD(User l){
         restManagerDBHelper.deleteUsersTable();

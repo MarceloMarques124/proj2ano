@@ -5,8 +5,10 @@ namespace backend\modules\api\controllers;
 use backend\models\AuthAssignment;
 use common\models\LoginForm;
 use common\models\Restaurant;
+use common\models\SignupForm;
 use common\models\User;
 use common\models\UserInfo;
+use Symfony\Component\Console\SignalRegistry\SignalMap;
 use Yii;
 use yii\web\Controller;
 use yii\rest\ActiveController;
@@ -28,8 +30,7 @@ class UserController extends ActiveController
          return $this->render('index');
      }
 
-     public function actionLogin()
-     {
+     public function actionLogin(){
         $form = new LoginForm();
         $form->load(Yii::$app->request->post(), '');
         $user = User::findByUsername($form->username);
@@ -51,6 +52,25 @@ class UserController extends ActiveController
             ];
             return $responseArray;
         }
+        Yii::$app->response->statusCode = 401;
         return "Denied Access";
+    }
+
+    public function actionSignup(){
+        $form = new SignupForm();
+        $form->load(Yii::$app->request->post(), '');
+
+        if($form->signup()){
+            return ["response" => "Sucefull regist"];
+        }else{
+            
+            $errors = $form->getErrors();
+            return ['status' => 'error', 'message' => 'Registration failed', 'errors' => $errors];
+            // $errors=[];
+            // foreach($form->errors as $error){
+            //     $errors[] = $error;
+            // }
+            // return "Denied Access" . $errors;
+        }
     }
 }

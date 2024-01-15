@@ -10,6 +10,7 @@ import com.example.restmanager.Model.Login;
 import com.example.restmanager.Model.Menu;
 import com.example.restmanager.Model.Restaurant;
 import com.example.restmanager.Model.Review;
+import com.example.restmanager.Model.Signup;
 import com.example.restmanager.Model.User;
 
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
     private static final String TABLE_TABLE = "tables";
     private static final String TABLE_USER = "users";
     private static final String TABLE_ZONE = "zones";
+    private static final String TABLE_SIGNUP = "signup";
     private static final String ID = "id";
     private static final String TOKEN = "token";
     private static final String NAME = "name";
@@ -91,6 +93,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
         db.execSQL(deleteUsersTable());
         db.execSQL(deleteReservationsTable());
         db.execSQL(deleteZonesTable());
+        this.onCreate(db);
 
     }
     //endregion
@@ -393,8 +396,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
 
     //endregion
 
-    //region # USER DB METHODS #
-
+    //region # SIGNUP DB METHODS #
 
 
     //endregion
