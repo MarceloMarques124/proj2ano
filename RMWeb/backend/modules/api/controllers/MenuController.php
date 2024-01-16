@@ -34,11 +34,8 @@ class MenuController extends ActiveController
      */
     public function actionCreateSomething()
     {
-        $model = new \common\models\Menu(); // Substitua pelo modelo apropriado
-
-        // Lógica para criar algo no backend
+        $model = new \common\models\Menu(); 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-
             // Envie mensagens MQTT
             $this->enviarMensagensMQTT($model->id);
 
@@ -47,7 +44,6 @@ class MenuController extends ActiveController
             return ['status' => 'error', 'message' => 'Erro ao criar objeto.'];
         }
     }
-
     /**
      * Envia mensagens MQTT.
      * @param int $id ID do objeto criado
@@ -59,11 +55,7 @@ class MenuController extends ActiveController
         if ($mqtt->connect()) {
             // Construa a mensagem MQTT usando dados do objeto criado
             $mensagem = 'Novo menu criado com ID: ' . $id;
-
-            Yii::info("Publicando mensagem no tópico 'INSERT': " . $mensagem);
-            $mqtt->publish('INSERT', $mensagem, 1, false);
-            
-
+            $mqtt->publish('INSERT', $mensagem, 0, false);
             $mqtt->close();
         }
     }

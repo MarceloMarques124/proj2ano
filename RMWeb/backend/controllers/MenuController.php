@@ -139,31 +139,20 @@ class MenuController extends Controller
     {
         // Construa a URL da API que corresponde ao método 'actionCreateSomething'
         $url = Url::to(['api/menu/create-something'], true);
-
         // Faça uma chamada HTTP para a API
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, ['menuId' => $menuId]);
 
-        // Se necessário, configure cabeçalhos adicionais
-        // curl_setopt($ch, CURLOPT_HTTPHEADER, array('Chave: Valor'));
-
-        // Executa a requisição
         $resposta = curl_exec($ch);
-
         // Verifica por erros
         if (curl_errno($ch)) {
             // Lidar com o erro aqui
             Yii::error('Erro na chamada HTTP para a API: ' . curl_error($ch));
         }
-
         // Fecha a sessão cURL
         curl_close($ch);
-
-        // Manipula a resposta da requisição, se necessário
-        // Pode ser necessário validar se a chamada foi bem-sucedida, dependendo da API
-        // Exemplo: if ($resposta == 'Objeto criado com sucesso') { // faça algo }
     }
 
     /**
