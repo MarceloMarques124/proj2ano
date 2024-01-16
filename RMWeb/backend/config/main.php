@@ -102,6 +102,7 @@ return [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/user',
                     'extraPatterns' => [
+                        'POST userbytoken' => 'userbytoken',
                         'POST login' => 'login',
                         'POST signup' => 'signup'
                     ],

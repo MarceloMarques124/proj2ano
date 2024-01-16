@@ -81,15 +81,15 @@ public class HomepageFragment extends Fragment implements RestaurantsListener{
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                ArrayList<Restaurant> tempBook = new ArrayList<>();
-//Search after API and DB
-                /*for (Restaurant r:SingletonRestaurantManager.getInstance(getContext()).getRestaurants()){//Ask help
-                    if (r.getName().toLowerCase().contains(newText.toLowerCase())){
-                        tempBook.add(r);
-                    }
-                }*/
+                ArrayList<Restaurant> tempRest = new ArrayList<>();
 
-                binding.lvRestaurants.setAdapter(new RestaurantsAdapter(getContext(), tempBook));
+                for (Restaurant r:SingletonRestaurantManager.getInstance(getContext()).getRestaurantsDB()){//Ask help
+                    if (r.getName().toLowerCase().contains(newText.toLowerCase())){
+                        tempRest.add(r);
+                    }
+                }
+
+                binding.lvRestaurants.setAdapter(new RestaurantsAdapter(getContext(), tempRest));
                 return true;
             }
         });

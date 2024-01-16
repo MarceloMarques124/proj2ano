@@ -8,6 +8,7 @@ use common\models\Restaurant;
 use common\models\SignupForm;
 use common\models\User;
 use common\models\UserInfo;
+use GuzzleHttp\Psr7\Response;
 use Symfony\Component\Console\SignalRegistry\SignalMap;
 use Yii;
 use yii\web\Controller;
@@ -73,4 +74,21 @@ class UserController extends ActiveController
             // return "Denied Access" . $errors;
         }
     }
+
+    public function actionUserbytoken(){
+        $user = User::findOne(['verification_token' => Yii::$app->request->post()]);
+        
+        $userInfo = UserInfo::findOne(['user_id' => $user->id]);
+        $responseArray =[
+            'id' => $userInfo->id,
+            'name' => $userInfo->name,
+            'address' => $userInfo->address,
+            'door_number' => $userInfo->door_number,
+            'postal_code' => $userInfo->postal_code,
+            'nif' => $userInfo->nif,
+            'token' => $user->verification_token,
+        ];
+        return $responseArray;
+    }
+    
 }

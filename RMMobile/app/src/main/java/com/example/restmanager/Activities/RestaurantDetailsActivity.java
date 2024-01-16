@@ -51,7 +51,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Revi
 
         
         SingletonRestaurantManager.getInstance(getApplicationContext()).setReviewsListener(this);
-        SingletonRestaurantManager.getInstance(getApplicationContext()).getReviewsAPI(getApplicationContext());
+        SingletonRestaurantManager.getInstance(getApplicationContext()).getReviewsByRest(restaurant.getId());
     }
 
     public void onClickReserve(View view){

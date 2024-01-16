@@ -21,6 +21,7 @@ import com.example.restmanager.Fragments.OrdersFragment;
 import com.example.restmanager.Fragments.ProfileFragment;
 import com.example.restmanager.Fragments.ReviewsFragment;
 import com.example.restmanager.R;
+import com.example.restmanager.Singleton.SingletonRestaurantManager;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -80,6 +81,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else if(item.getItemId()== R.id.navProfile){
             fragment = new ProfileFragment();
             setTitle(item.getTitle());
+        }
+        else if(item.getItemId()== R.id.navLogout){
+            SingletonRestaurantManager.getInstance(getApplicationContext()).logout(getApplicationContext());
+            intent = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(intent);
         }
         if (fragment != null)
             fragmentManager.beginTransaction().replace(R.id.contentFragment, fragment).commit();

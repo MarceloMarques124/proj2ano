@@ -95,6 +95,8 @@ public class JsonParser {
         return reviews;
     }
 
+
+
     public static User jsonLoginParser(String response){//user
         User user = null;
 

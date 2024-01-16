@@ -72,13 +72,13 @@
           android:layout_height="wrap_content"
           android:hint="@string/etNIF"
           android:inputType="number"
-          android:text="@string/strEmpty"
-          android:textSize="14sp" />
+          android:text="@string/strEmpty" />
 
       <EditText
           android:id="@+id/etAddress"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:hint="@string/etAddrees"
           android:inputType="text" />
 
       <EditText

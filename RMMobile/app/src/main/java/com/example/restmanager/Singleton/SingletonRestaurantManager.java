@@ -228,7 +228,7 @@ public class SingletonRestaurantManager {
     //endregion
 
     //region # Reviews Methods #
-    public ArrayList<Review> getReviewsDB(int id){
+    public ArrayList<Review> getReviewsByRest(int id){
         ArrayList<Review> restReviews = new ArrayList<>();
 
         reviews.forEach(review -> {
@@ -286,6 +286,17 @@ public class SingletonRestaurantManager {
         }
     }
 
+    public ArrayList<Review> getReviewsById(int $id){
+        ArrayList<Review> userReviews = new ArrayList<>();
+
+        reviews.forEach(review -> {
+            if (review.getUserId() == $id)
+                userReviews.add(review);
+        });
+
+        return userReviews;
+    }
+
     public void addReview(ArrayList<Review> reviews){
         restManagerDBHelper.removeAllReviews();
 
@@ -307,10 +318,10 @@ public class SingletonRestaurantManager {
 
     //region # USER #
 
-    public void loginAPI(final Login login, final Context context){
-        if (!JsonParser.isConnectionInternet(context)){
-            Toast.makeText(context, "--> No internet conection", Toast.LENGTH_SHORT).show();
-        }else{
+    public void loginAPI(final Login login, final Context context) {
+        if (!JsonParser.isConnectionInternet(context)) {
+            Toast.makeText(context, "--> No internet connection", Toast.LENGTH_SHORT).show();
+        } else {
             StringRequest request = new StringRequest(Request.Method.POST, apiUrl + "/user/login", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
@@ -319,18 +330,19 @@ public class SingletonRestaurantManager {
                     SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
 
-                    if (response.contains("Denied Access")){
+                    if (response.contains("Denied Access")) {
                         System.out.println("--> DA 1");
                         editor.putString(Public.TOKEN, "TOKEN");
-                        editor.apply();
-                    }else{
+                        editor.commit(); // Use commit() instead of apply()
+                    } else {
                         addUserBD(JsonParser.jsonLoginParser(response));
-                        try{
+                        try {
                             System.out.println("--> DA 2");
                             JSONObject jsonObject = new JSONObject(response);
 
                             editor.putString(Public.TOKEN, jsonObject.getString("token"));
-                            editor.apply();
+                            editor.commit(); // Use commit() instead of apply()
+                            System.out.println("---> " + Public.TOKEN);
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
                         }
@@ -341,18 +353,24 @@ public class SingletonRestaurantManager {
                 public void onErrorResponse(VolleyError error) {
                     System.out.println("--> Login error: " + error.getMessage());
                 }
-            }){
-                protected Map<String, String> getParams(){
-                    System.out.println("--> DA 3");
-                    Map<String, String> params = new HashMap<String, String>();
+            }) {
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
                     params.put("username", login.getUsername());
                     params.put("password", login.getPassword());
                     return params;
                 }
             };
+
+            // Ensure that volleyQueue is initialized correctly
+            if (volleyQueue == null) {
+                volleyQueue = Volley.newRequestQueue(context.getApplicationContext());
+            }
+
             volleyQueue.add(request);
         }
     }
+
 
     public void signupAPI(final Signup signup, final Context context){
         if (!JsonParser.isConnectionInternet(context)){
@@ -390,8 +408,8 @@ public class SingletonRestaurantManager {
                     params.put("email", signup.getEmail());
                     params.put("nif", signup.getNif()+"");
                     params.put("address", signup.getAddress());
-                    params.put("doorNumber", signup.getDoorNumber());
-                    params.put("postalCode", signup.getPostalCode());
+                    params.put("door_number", signup.getDoorNumber());
+                    params.put("postal_code", signup.getPostalCode());
                     return params;
                 }
             };
@@ -399,10 +417,27 @@ public class SingletonRestaurantManager {
         }
     }
 
+    public User getUserBD(final String token){
+        ArrayList<User> users = restManagerDBHelper.getAllUsers();
+        System.out.println("---> aquilo");
+        for (User u : users) {
+            if (u.getToken() == token)
+                return u;
+        }
+        return null;
+    }
 
     public void addUserBD(User l){
         restManagerDBHelper.deleteUsersTable();
         restManagerDBHelper.addUserDB(l);
+    }
+
+    public void logout(final Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putString(Public.TOKEN, "TOKEN");
+        editor.apply();
     }
 
     //endregion

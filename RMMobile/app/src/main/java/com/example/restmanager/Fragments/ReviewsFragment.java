@@ -1,5 +1,7 @@
 package com.example.restmanager.Fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,15 +16,18 @@ import com.example.restmanager.Adapters.ReviewsAdapter;
 import com.example.restmanager.Listeners.ReviewListener;
 import com.example.restmanager.Listeners.ReviewsListener;
 import com.example.restmanager.Model.Review;
+import com.example.restmanager.Model.User;
 import com.example.restmanager.R;
 import com.example.restmanager.Singleton.SingletonRestaurantManager;
+import com.example.restmanager.Utils.Public;
 import com.example.restmanager.databinding.FragmentReviewsBinding;
 
 import java.util.ArrayList;
 
-public class ReviewsFragment extends Fragment implements ReviewsListener {
+public class ReviewsFragment extends Fragment {
 
     private FragmentReviewsBinding binding;
+    private ArrayList<Review> reviews;
 
     public ReviewsFragment() {
         // Required empty public constructor
@@ -37,20 +42,19 @@ public class ReviewsFragment extends Fragment implements ReviewsListener {
         binding.lvUserReviews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                //dados da review
             }
         });
 
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
+        System.out.println("--->" + Public.TOKEN);
 
-        SingletonRestaurantManager.getInstance(getContext()).setReviewsListener(this);
-        SingletonRestaurantManager.getInstance(getContext()).getReviewsAPI(getContext());
+        User u = SingletonRestaurantManager.getInstance(getContext()).getUserBD(Public.TOKEN);
+
+        reviews = SingletonRestaurantManager.getInstance(getContext()).getReviewsById(u.getId());
+
+        binding.lvUserReviews.setAdapter(new ReviewsAdapter(getContext(), reviews));
+
         return view;
-    }
-
-    @Override
-    public void onRefreshReviewsList(ArrayList<Review> reviews) {
-        if (reviews !=null){
-            binding.lvUserReviews.setAdapter(new ReviewsAdapter(getContext(), reviews));
-        }
     }
 }

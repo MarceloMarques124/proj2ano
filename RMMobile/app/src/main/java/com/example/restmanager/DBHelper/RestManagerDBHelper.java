@@ -49,6 +49,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
     private static final String DESCRIPTION = "description";
     private static final String ORDER_ID = "order_id";
     private static final String CAPACITY = "capacity";
+    private static final String QUANTITY = "quantity";
     private static final String USERNAME = "username";
     private static final String DOOR_NUMBER = "door_number";
     private static final String POSTAL_CODE = "postal_code";
@@ -190,7 +191,8 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
         return "CREATE TABLE " + TABLE_ORDERED_MENU + "(" +
             ID + " INTEGER PRIMARY KEY, " +
             MENU_ID + " INTEGER NOT NULL, " +
-            ORDER_ID + " INTEGER NOT NULL, " +
+            QUANTITY + " INTEGER NOT NULL, " +
+            ORDER_ID + " INTEGER NOT NULL" +
             ");";
     }
 
@@ -356,7 +358,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
                 POSTAL_CODE + " TEXT NOT NULL, " +
                 NIF + " INTEGER NOT NULL, " +
                 EMAIL + " TEXT NOT NULL, " +
-                PASSWORD + " TEXT NOT NULL" +
+                TOKEN + " TEXT NOT NULL" +
                 ");";
     }
 
@@ -375,6 +377,29 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
 
     public String deleteUsersTable() {
         return "DROP TABLE IF EXISTS " + TABLE_USER;
+    }
+
+    public ArrayList<User> getAllUsers(){
+        ArrayList<User> users = new ArrayList<>();
+        Cursor cursor = this.db.query(TABLE_USER, new String[]{ID, USERNAME, ADDRESS, DOOR_NUMBER, POSTAL_CODE, NIF, TOKEN}, null,
+                null,null, null, null);
+
+        if (cursor.moveToFirst()){
+            do {
+                User auxu = new User(
+                    cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getString(3),
+                    cursor.getString(4),
+                    cursor.getInt(5),
+                    cursor.getString(6));
+                System.out.println("--->ID: " + auxu.getId() + ", Username: " + auxu.getUsername() + ", Address: " + auxu.getAddress());
+                users.add(auxu);
+            }while(cursor.moveToNext());
+            cursor.close();
+        }
+        return users;
     }
 
     //endregion

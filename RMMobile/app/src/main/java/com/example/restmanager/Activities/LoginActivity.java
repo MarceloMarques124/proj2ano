@@ -50,8 +50,6 @@ public class LoginActivity extends AppCompatActivity {
             binding.etPassword.setError(getString(R.string.etPasswordError));
             return;
         }else{
-            System.out.println("--> 1 "+ pass);
-            System.out.println("--> 1 "+username);
             if (isLoginValid(username, pass)){
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.putExtra(MainActivity.USERNAME, username);
@@ -78,20 +76,18 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean isLoginValid(String username, String pass){
-        System.out.println("--> 2 "+ pass);
-        System.out.println("--> 2 "+username);
         login = new Login(username, pass);
 
         SingletonRestaurantManager.getInstance(getApplicationContext()).loginAPI(login, getApplicationContext());
 
-        /*SharedPreferences sharedPreferences = getApplication().getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getApplication().getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
 
         if (sharedPreferences.getString(Public.TOKEN, "TOKEN").matches("TOKEN")){
             return false;
         }else{
             return true;
-        }*/
-return  true;
+        }
+
     }
 
     public boolean isTokenValid(){
