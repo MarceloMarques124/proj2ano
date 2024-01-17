@@ -74,24 +74,23 @@ public class LoginActivity extends AppCompatActivity {
         SingletonRestaurantManager.getInstance(getApplicationContext()).loginAPI(login, getApplicationContext(), new Response.Listener(){
             @Override
             public void onResponse(Object response){
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra(MainActivity.USERNAME, username);
-                startActivity(intent);
-                finish();
+                SharedPreferences sharedPreferences = getApplication().getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
+                System.out.println("---> I'm here");
+                if (sharedPreferences.getString(Public.TOKEN, "0").matches("TOKEN")){
+
+                    System.out.println("---> Login not valid;" + sharedPreferences.getString(Public.TOKEN, "0"));
+                    //  return true;
+                }else{
+                    System.out.println("---> Login valido;" + sharedPreferences.getString(Public.TOKEN, "0"));
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.putExtra(MainActivity.USERNAME, username);
+                    startActivity(intent);
+                    finish();
+                    //  return false;
+                }
             }
         });
     }
-        /*SharedPreferences sharedPreferences = getApplication().getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
-
-        if (sharedPreferences.getString(Public.TOKEN, "TOKEN").matches("TOKEN")){
-            System.out.println("---> Login not valid;");
-            return false;
-          //  return true;
-        }else{
-            System.out.println("---> Login valido;");
-            return true;
-          //  return false;
-        }*/
 
 
 

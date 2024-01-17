@@ -158,7 +158,7 @@ public class SingletonRestaurantManager {
     }
 
     public void addRestaurantDB(Restaurant restaurant){
-        restManagerDBHelper.addBookDB(restaurant);
+        restManagerDBHelper.addRestaurantDB(restaurant);
     }
     //endregion
 
@@ -331,8 +331,6 @@ public class SingletonRestaurantManager {
 
                     if (response.contains("Denied Access")) {
                         System.out.println("---> DA 1");
-                        /*editor.putString(Public.TOKEN, "TOKEN");
-                        editor.commit(); // Use commit() instead of apply()*/
                     } else {
                         addUserBD(JsonParser.jsonLoginParser(response));
                         try {
@@ -341,9 +339,12 @@ public class SingletonRestaurantManager {
 
                             System.out.println("---> JSONObject: " + jsonObject);
 
-                            editor.putString(Public.TOKEN, jsonObject.getString("token"));
-                            editor.apply(); // Use commit() instead of apply()
-                            System.out.println("---> Tokens: " + jsonObject.getString("token") + " | " + Public.TOKEN);
+                            String token = jsonObject.getString("token");
+                            System.out.println("---> Token from JSON: " + token);
+
+                            editor.putString(Public.TOKEN, token);
+                            editor.apply(); // Use apply() instead of commit()
+                            System.out.println("---> Tokens: " + token + " | " + sharedPreferences.getString(Public.TOKEN, "0"));
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
                         }
