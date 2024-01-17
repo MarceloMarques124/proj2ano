@@ -47,7 +47,6 @@ public class ReviewsFragment extends Fragment {
         });
 
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
-        System.out.println("--->" + Public.TOKEN);
 
         User u = SingletonRestaurantManager.getInstance(getContext()).getUserBD(Public.TOKEN);
 

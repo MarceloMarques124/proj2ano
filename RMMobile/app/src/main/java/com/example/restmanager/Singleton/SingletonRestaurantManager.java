@@ -318,31 +318,32 @@ public class SingletonRestaurantManager {
 
     //region # USER #
 
-    public void loginAPI(final Login login, final Context context) {
+    public void loginAPI(final Login login, final Context context, Response.Listener listener) {
         if (!JsonParser.isConnectionInternet(context)) {
             Toast.makeText(context, "--> No internet connection", Toast.LENGTH_SHORT).show();
         } else {
             StringRequest request = new StringRequest(Request.Method.POST, apiUrl + "/user/login", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    System.out.println("--> " + response);
-
+                    System.out.println("---> String: " + response);
                     SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
 
                     if (response.contains("Denied Access")) {
-                        System.out.println("--> DA 1");
-                        editor.putString(Public.TOKEN, "TOKEN");
-                        editor.commit(); // Use commit() instead of apply()
+                        System.out.println("---> DA 1");
+                        /*editor.putString(Public.TOKEN, "TOKEN");
+                        editor.commit(); // Use commit() instead of apply()*/
                     } else {
                         addUserBD(JsonParser.jsonLoginParser(response));
                         try {
-                            System.out.println("--> DA 2");
+                            System.out.println("---> Verify point - Check");
                             JSONObject jsonObject = new JSONObject(response);
 
+                            System.out.println("---> JSONObject: " + jsonObject);
+
                             editor.putString(Public.TOKEN, jsonObject.getString("token"));
-                            editor.commit(); // Use commit() instead of apply()
-                            System.out.println("---> " + Public.TOKEN);
+                            editor.apply(); // Use commit() instead of apply()
+                            System.out.println("---> Tokens: " + jsonObject.getString("token") + " | " + Public.TOKEN);
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
                         }
@@ -361,12 +362,6 @@ public class SingletonRestaurantManager {
                     return params;
                 }
             };
-
-            // Ensure that volleyQueue is initialized correctly
-            if (volleyQueue == null) {
-                volleyQueue = Volley.newRequestQueue(context.getApplicationContext());
-            }
-
             volleyQueue.add(request);
         }
     }

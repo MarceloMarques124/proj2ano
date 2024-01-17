@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
 
+import com.android.volley.Response;
 import com.example.restmanager.Model.Login;
 import com.example.restmanager.R;
 import com.example.restmanager.Singleton.SingletonRestaurantManager;
@@ -33,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             intent.putExtra(MainActivity.USERNAME, email);
             startActivity(intent);
+            finish();
         }
 
         binding.etEmailUsername.setText("client");
@@ -48,18 +50,9 @@ public class LoginActivity extends AppCompatActivity {
         }
         if (!isPasswordValid(pass)){
             binding.etPassword.setError(getString(R.string.etPasswordError));
-            return;
-        }else{
-            if (isLoginValid(username, pass)){
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra(MainActivity.USERNAME, username);
-                startActivity(intent);
-                onPause();
-            }
-
-
+        }else {
+            isLoginValid(username, pass);
         }
-
     }
 
     private boolean isUsernameValid(String username) {
@@ -75,20 +68,32 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
 
-    private boolean isLoginValid(String username, String pass){
+    private void isLoginValid(String username, String pass){
         login = new Login(username, pass);
 
-        SingletonRestaurantManager.getInstance(getApplicationContext()).loginAPI(login, getApplicationContext());
-
-        SharedPreferences sharedPreferences = getApplication().getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
+        SingletonRestaurantManager.getInstance(getApplicationContext()).loginAPI(login, getApplicationContext(), new Response.Listener(){
+            @Override
+            public void onResponse(Object response){
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra(MainActivity.USERNAME, username);
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
+        /*SharedPreferences sharedPreferences = getApplication().getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
 
         if (sharedPreferences.getString(Public.TOKEN, "TOKEN").matches("TOKEN")){
+            System.out.println("---> Login not valid;");
             return false;
+          //  return true;
         }else{
+            System.out.println("---> Login valido;");
             return true;
-        }
+          //  return false;
+        }*/
 
-    }
+
 
     public boolean isTokenValid(){
         SharedPreferences sharedPreferences = getApplication().getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
@@ -99,14 +104,10 @@ public class LoginActivity extends AppCompatActivity {
             return true;
         }
     }
-
-
-
     public void onClickRegister(View view){
         Intent intent = new Intent(getApplicationContext(), RegistActivity.class);
         startActivity(intent);
         onPause();
-
     }
 
     public void onClickServer(View view){
