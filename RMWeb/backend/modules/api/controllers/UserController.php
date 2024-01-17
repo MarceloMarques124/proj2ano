@@ -78,6 +78,7 @@ class UserController extends ActiveController
     public function actionUserbytoken(){
         $user = User::findOne(['verification_token' => Yii::$app->request->post()]);
         
+        
         $userInfo = UserInfo::findOne(['user_id' => $user->id]);
         $responseArray =[
             'id' => $userInfo->id,
