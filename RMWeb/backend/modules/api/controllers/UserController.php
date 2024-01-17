@@ -26,8 +26,7 @@ class UserController extends ActiveController
      * @return string
      */
     
-     public function actionIndex()
-     {
+     public function actionIndex(){
          return $this->render('index');
      }
 
@@ -43,8 +42,9 @@ class UserController extends ActiveController
             $userInfo = UserInfo::findOne($user->id);
             $responseArray =[
                 'id' => $userInfo->id,
-             //   int $user_id => $userInfo->,
+                'username' => $user->username,
                 'name' => $userInfo->name,
+                'email' => $user->email,
                 'address' => $userInfo->address,
                 'door_number' => $userInfo->door_number,
                 'postal_code' => $userInfo->postal_code,
@@ -78,12 +78,10 @@ class UserController extends ActiveController
     public function actionUserbytoken(){
         $user = User::findOne(['verification_token' => Yii::$app->request->post()]);
         
-        
         $userInfo = UserInfo::findOne(['user_id' => $user->id]);
         $responseArray =[
             'id' => $userInfo->id,
             'name' => $userInfo->name,
-            'email' => $user->email,
             'address' => $userInfo->address,
             'door_number' => $userInfo->door_number,
             'postal_code' => $userInfo->postal_code,
