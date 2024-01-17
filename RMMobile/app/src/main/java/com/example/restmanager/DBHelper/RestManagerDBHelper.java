@@ -369,6 +369,9 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         //values.put(ID, u.getId());
         values.put(USERNAME, u.getUsername());
+        values.put(NAME, u.getName());
+        values.put(EMAIL, u.getEmail());
+        values.put(USERNAME, u.getUsername());
         values.put(ADDRESS, u.getAddress());
         values.put(DOOR_NUMBER, u.getDoorNumber());
         values.put(POSTAL_CODE, u.getPostalCode());
@@ -389,7 +392,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
 
     public ArrayList<User> getAllUsers(){
         ArrayList<User> users = new ArrayList<>();
-        Cursor cursor = this.db.query(TABLE_USER, new String[]{ID, USERNAME, ADDRESS, DOOR_NUMBER, POSTAL_CODE, NIF, TOKEN}, null,
+        Cursor cursor = this.db.query(TABLE_USER, new String[]{ID, USERNAME, NAME, EMAIL, ADDRESS, DOOR_NUMBER, POSTAL_CODE, NIF, TOKEN}, null,
                 null,null, null, null);
 
         if (cursor.moveToFirst()){
@@ -400,8 +403,10 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
                     cursor.getString(2),
                     cursor.getString(3),
                     cursor.getString(4),
-                    cursor.getInt(5),
-                    cursor.getString(6));
+                    cursor.getString(5),
+                    cursor.getString(6),
+                    cursor.getInt(7),
+                    cursor.getString(8));
                 System.out.println("--->ID: " + auxu.getId() + ", Username: " + auxu.getUsername() + ", Address: " + auxu.getAddress());
                 users.add(auxu);
             }while(cursor.moveToNext());

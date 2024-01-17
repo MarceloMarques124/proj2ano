@@ -322,7 +322,7 @@ public class SingletonRestaurantManager {
         if (!JsonParser.isConnectionInternet(context)) {
             Toast.makeText(context, "--> No internet connection", Toast.LENGTH_SHORT).show();
         } else {
-            StringRequest request = new StringRequest(Request.Method.POST, apiUrl + "/user/login", new Response.Listener<String>() {
+            StringRequest request = new StringRequest(Request.Method.POST, apiUrl + "/users/login", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     System.out.println("---> String: " + response);
