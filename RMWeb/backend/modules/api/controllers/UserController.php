@@ -26,7 +26,8 @@ class UserController extends ActiveController
      * @return string
      */
     
-     public function actionIndex(){
+     public function actionIndex()
+     {
          return $this->render('index');
      }
 
@@ -82,6 +83,7 @@ class UserController extends ActiveController
         $responseArray =[
             'id' => $userInfo->id,
             'name' => $userInfo->name,
+            'email' => $user->email,
             'address' => $userInfo->address,
             'door_number' => $userInfo->door_number,
             'postal_code' => $userInfo->postal_code,
