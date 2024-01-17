@@ -318,7 +318,7 @@ public class SingletonRestaurantManager {
 
     //region # USER #
 
-    public void loginAPI(final Login login, final Context context, Response.Listener listener) {
+    public void loginAPI(final Login login, final Context context, Response.Listener listener, Response.ErrorListener errorListener) {
         if (!JsonParser.isConnectionInternet(context)) {
             Toast.makeText(context, "--> No internet connection", Toast.LENGTH_SHORT).show();
         } else {
@@ -331,6 +331,9 @@ public class SingletonRestaurantManager {
 
                     if (response.contains("Denied Access")) {
                         System.out.println("---> DA 1");
+                        editor.putString(Public.TOKEN, "TOKEN");
+
+                        editor.apply(); // Use apply() instead of commit()
                     } else {
                         addUserBD(JsonParser.jsonLoginParser(response));
                         try {
@@ -348,12 +351,14 @@ public class SingletonRestaurantManager {
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
                         }
+                        listener.onResponse(response);
                     }
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     System.out.println("--> Login error: " + error.getMessage());
+                    errorListener.onErrorResponse(error);
                 }
             }) {
                 protected Map<String, String> getParams() {
