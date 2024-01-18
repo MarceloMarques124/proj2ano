@@ -165,8 +165,8 @@ public class SingletonRestaurantManager {
         }
     }
 
-    public void addRestaurantDB(Restaurant restaurant) {
-        restManagerDBHelper.addBookDB(restaurant);
+    public void addRestaurantDB(Restaurant restaurant){
+        restManagerDBHelper.addRestaurantDB(restaurant);
     }
     //endregion
 
@@ -348,11 +348,11 @@ public class SingletonRestaurantManager {
 
     //region # USER #
 
-    public void loginAPI(final Login login, final Context context, Response.Listener listener) {
+    public void loginAPI(final Login login, final Context context, Response.Listener listener, Response.ErrorListener errorListener) {
         if (!JsonParser.isConnectionInternet(context)) {
             Toast.makeText(context, "--> No internet connection", Toast.LENGTH_SHORT).show();
         } else {
-            StringRequest request = new StringRequest(Request.Method.POST, apiUrl + "/user/login", new Response.Listener<String>() {
+            StringRequest request = new StringRequest(Request.Method.POST, apiUrl + "/users/login", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     System.out.println("---> String: " + response);
@@ -361,8 +361,9 @@ public class SingletonRestaurantManager {
 
                     if (response.contains("Denied Access")) {
                         System.out.println("---> DA 1");
-                        /*editor.putString(Public.TOKEN, "TOKEN");
-                        editor.commit(); // Use commit() instead of apply()*/
+                        editor.putString(Public.TOKEN, "TOKEN");
+
+                        editor.apply(); // Use apply() instead of commit()
                     } else {
                         addUserBD(JsonParser.jsonLoginParser(response));
                         try {
@@ -371,18 +372,23 @@ public class SingletonRestaurantManager {
 
                             System.out.println("---> JSONObject: " + jsonObject);
 
-                            editor.putString(Public.TOKEN, jsonObject.getString("token"));
-                            editor.apply(); // Use commit() instead of apply()
-                            System.out.println("---> Tokens: " + jsonObject.getString("token") + " | " + Public.TOKEN);
+                            String token = jsonObject.getString("token");
+                            System.out.println("---> Token from JSON: " + token);
+
+                            editor.putString(Public.TOKEN, token);
+                            editor.apply(); // Use apply() instead of commit()
+                            System.out.println("---> Tokens: " + token + " | " + sharedPreferences.getString(Public.TOKEN, "0"));
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
                         }
+                        listener.onResponse(response);
                     }
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     System.out.println("--> Login error: " + error.getMessage());
+                    errorListener.onErrorResponse(error);
                 }
             }) {
                 protected Map<String, String> getParams() {

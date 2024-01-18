@@ -4,6 +4,8 @@ public class User {
 
     private int Id;
     private String username;
+    private String name;
+    private String email;
     private String address;
     private String doorNumber;
     private String postalCode;
@@ -13,9 +15,11 @@ public class User {
     public User() {
     }
 
-    public User(int id, String username, String address, String doorNumber, String postalCode, int nif, String token) {
-        this.Id = id;
+    public User(int id, String username, String name, String email, String address, String doorNumber, String postalCode, int nif, String token) {
+        Id = id;
         this.username = username;
+        this.name = name;
+        this.email = email;
         this.address = address;
         this.doorNumber = doorNumber;
         this.postalCode = postalCode;
@@ -73,5 +77,21 @@ public class User {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

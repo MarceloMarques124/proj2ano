@@ -46,10 +46,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Revi
         binding.tvLocal.setText(restaurant.getAddress());
         binding.tvPhone.setText(restaurant.getMobileNumber());
 
-
-
-
-        
         SingletonRestaurantManager.getInstance(getApplicationContext()).setReviewsListener(this);
         SingletonRestaurantManager.getInstance(getApplicationContext()).getReviewsByRest(restaurant.getId());
     }
@@ -69,7 +65,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Revi
 
     public void onClickReview(View view){
         Intent intent = new Intent(getApplicationContext(), ReviewDetailsActivity.class);
-        intent.putExtra(ID_REST, restaurant.getId());
+        intent.putExtra(ID_RESTAURANT, restaurant.getId());
         startActivity(intent);
     }
 

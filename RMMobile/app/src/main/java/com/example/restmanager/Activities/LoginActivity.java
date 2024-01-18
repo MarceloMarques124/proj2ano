@@ -10,6 +10,7 @@ import android.util.Patterns;
 import android.view.View;
 
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.example.restmanager.Model.Login;
 import com.example.restmanager.R;
 import com.example.restmanager.Singleton.SingletonRestaurantManager;
@@ -50,9 +51,9 @@ public class LoginActivity extends AppCompatActivity {
         }
         if (!isPasswordValid(pass)){
             binding.etPassword.setError(getString(R.string.etPasswordError));
-        }else {
-            isLoginValid(username, pass);
         }
+            isLoginValid(username, pass);
+
     }
 
     private boolean isUsernameValid(String username) {
@@ -74,24 +75,28 @@ public class LoginActivity extends AppCompatActivity {
         SingletonRestaurantManager.getInstance(getApplicationContext()).loginAPI(login, getApplicationContext(), new Response.Listener(){
             @Override
             public void onResponse(Object response){
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra(MainActivity.USERNAME, username);
-                startActivity(intent);
-                finish();
+                SharedPreferences sharedPreferences = getApplication().getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
+                System.out.println("---> I'm here" + Public.TOKEN);
+                if (sharedPreferences.getString(Public.TOKEN, "0").matches("TOKEN")){
+
+                    System.out.println("---> Login not valid;" + sharedPreferences.getString(Public.TOKEN, "0"));
+                    //  return true;
+                }else{
+                    System.out.println("---> Login valido;" + sharedPreferences.getString(Public.TOKEN, "0"));
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.putExtra(MainActivity.USERNAME, username);
+                    startActivity(intent);
+                    finish();
+                    //  return false;
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("---> klalsfçna");
             }
         });
     }
-        /*SharedPreferences sharedPreferences = getApplication().getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
-
-        if (sharedPreferences.getString(Public.TOKEN, "TOKEN").matches("TOKEN")){
-            System.out.println("---> Login not valid;");
-            return false;
-          //  return true;
-        }else{
-            System.out.println("---> Login valido;");
-            return true;
-          //  return false;
-        }*/
 
 
 
