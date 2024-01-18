@@ -11,8 +11,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.restmanager.Activities.RestaurantDetailsActivity;
+import com.example.restmanager.Activities.ReviewDetailsActivity;
 import com.example.restmanager.DBHelper.RestManagerDBHelper;
 import com.example.restmanager.Listeners.MenusListener;
+import com.example.restmanager.Listeners.RestReviewsListener;
 import com.example.restmanager.Listeners.RestaurantsListener;
 import com.example.restmanager.Listeners.ReviewListener;
 import com.example.restmanager.Listeners.ReviewsListener;
@@ -23,6 +26,7 @@ import com.example.restmanager.Model.Signup;
 import com.example.restmanager.Model.Restaurant;
 import com.example.restmanager.Model.Review;
 import com.example.restmanager.Model.User;
+import com.example.restmanager.R;
 import com.example.restmanager.Utils.JsonParser;
 import com.example.restmanager.Utils.Public;
 
@@ -33,6 +37,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class SingletonRestaurantManager {
 
@@ -50,6 +55,8 @@ public class SingletonRestaurantManager {
     //region # Reviews variables #
     private ArrayList<Review> reviews;
     private ReviewsListener reviewsListener;
+    private ReviewListener reviewListener;
+    private RestReviewsListener restReviewsListener;
     //endregion
 
     //region # Constants #
@@ -71,6 +78,10 @@ public class SingletonRestaurantManager {
         this.restaurantsListener = restaurantsListener;
     }
 
+    public void setRestReviewsListener(RestReviewsListener restReviewsListener){
+        this.restReviewsListener = restReviewsListener;
+    }
+
     public void setMenusListener(MenusListener menusListener){
         this.menusListener = menusListener;
     }
@@ -80,6 +91,7 @@ public class SingletonRestaurantManager {
     }
 
     public void setReviewListener(ReviewListener reviewListener){
+        this.reviewListener = reviewListener;
     }
 
     private SingletonRestaurantManager(Context context) {
@@ -228,15 +240,16 @@ public class SingletonRestaurantManager {
     //endregion
 
     //region # Reviews Methods #
-    public ArrayList<Review> getReviewsByRest(int id){
+    public void getReviewsByRest(int id){
         ArrayList<Review> restReviews = new ArrayList<>();
 
         reviews.forEach(review -> {
             if (review.getRestId() == id)
                 restReviews.add(review);
         });
-
-        return restReviews;
+        if (restReviewsListener != null){
+            restReviewsListener.onRefreshReviewsList(restReviews);
+        }
     }
 
     public Review getReview(int id){
@@ -258,18 +271,19 @@ public class SingletonRestaurantManager {
         return userReviews;
     }
 
-    public void getReviewsAPI(final Context context){
-        if (!JsonParser.isConnectionInternet(context)){
+    public ArrayList<Review> getReviewsBD(){
+        return reviews;
+    }
 
-            if (menusListener != null){
-                menusListener.onRefreshMenusList(restManagerDBHelper.getAllMenus());
-            }
-        }else{
+    public void getReviewsAPI(final Context context){
+        if (!JsonParser.isConnectionInternet(context)) {
+            Toast.makeText(context, R.string.no_internet, Toast.LENGTH_SHORT).show();
+        } else {
             JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, apiUrl + "/reviews", null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
                     reviews = JsonParser.jsonReviewsParser(response);
-                    //addReviewsDB(reviews);
+                    addReviewsDB(reviews);
 
                     if (reviewsListener != null){
                         reviewsListener.onRefreshReviewsList(reviews);
@@ -297,7 +311,7 @@ public class SingletonRestaurantManager {
         return userReviews;
     }
 
-    public void addReview(ArrayList<Review> reviews){
+    public void addReviewsDB(ArrayList<Review> reviews){
         restManagerDBHelper.removeAllReviews();
 
         for (Review r : reviews){
@@ -307,6 +321,39 @@ public class SingletonRestaurantManager {
 
     public void addReviewDB(Review r){
         restManagerDBHelper.addReview(r);
+    }
+
+    public void addReviewApi(final Review review, final Context context, String token) {
+        if (!JsonParser.isConnectionInternet(context)) {
+            Toast.makeText(context, R.string.no_internet, Toast.LENGTH_SHORT).show();
+        } else {
+            StringRequest req = new StringRequest(Request.Method.POST, apiUrl + "/reviews", new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    System.out.println("---> Response: " + response);
+                    addReviewDB(JsonParser.parserJsonReview(response));
+                    if(reviewListener != null){
+                        reviewListener.onRefreshReviewDetails(RestaurantDetailsActivity.ADD);
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    System.out.println("---> Review data: " + review.getDescription());
+                    System.out.println("---> error add api " + error.getMessage());
+                }
+            }) {
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("user_id", ""+ review.getUserId());
+                    params.put("stars", ""+ review.getStars());
+                    params.put("description", ""+ review.getDescription());
+                    params.put("restaurant_id", "" + review.getRestId());
+                    return params;
+                }
+            };
+            volleyQueue.add(req);
+        }
     }
     //endregion
 
@@ -420,9 +467,9 @@ public class SingletonRestaurantManager {
 
     public User getUserBD(final String token){
         ArrayList<User> users = restManagerDBHelper.getAllUsers();
-        System.out.println("---> aquilo");
         for (User u : users) {
-            if (u.getToken() == token)
+            System.out.println("---> aquilo"+u.getToken());
+            if (Objects.equals(u.getToken(), token))
                 return u;
         }
         return null;

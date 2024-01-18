@@ -95,6 +95,22 @@ public class JsonParser {
         return reviews;
     }
 
+    public static Review parserJsonReview(String response){
+        Review auxReview = null;
+        try{
+            JSONObject review = new JSONObject(response);
+            int idReview = review.getInt("id");
+            int userID = review.getInt("user_id");
+            int restID = review.getInt("restaurant_id");
+            int stars = review.getInt("stars");
+            String description = review.getString("description");
+            auxReview = new Review(idReview, userID, restID, stars, description);
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+        return auxReview;
+    }
+
 
 
     public static User jsonLoginParser(String response){//user
