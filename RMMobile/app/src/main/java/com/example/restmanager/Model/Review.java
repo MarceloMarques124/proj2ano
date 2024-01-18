@@ -6,6 +6,8 @@ public class Review {
     private int restId;
     private int stars;
     private String description;
+    private  static int autoIncrementId = 1;
+
 
     public Review() {
     }
@@ -16,6 +18,10 @@ public class Review {
         this.restId = restId;
         this.stars = stars;
         this.description = description;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getId() {
