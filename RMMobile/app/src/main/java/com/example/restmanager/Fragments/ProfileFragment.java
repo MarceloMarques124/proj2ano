@@ -22,6 +22,7 @@ import com.example.restmanager.databinding.FragmentProfileBinding;
  */
 public class ProfileFragment extends Fragment {
     private FragmentProfileBinding binding;
+    private User u = new User();
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -36,10 +37,8 @@ public class ProfileFragment extends Fragment {
 
 
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
-
-
-
-        User u = SingletonRestaurantManager.getInstance(getContext()).getUserBD(sharedPreferences.getString(Public.TOKEN, "0"));
+        u = SingletonRestaurantManager.getInstance(getContext()).getUserBD(sharedPreferences.getString(Public.TOKEN, "0"));
+        System.out.println("fuck");
 
         binding.etUsername.setText(u.getUsername());
         binding.etName.setText(u.getName());

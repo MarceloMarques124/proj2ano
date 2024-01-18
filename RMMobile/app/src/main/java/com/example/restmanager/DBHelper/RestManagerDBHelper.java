@@ -354,6 +354,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
         return "CREATE TABLE " + TABLE_USER + "(" +
                 ID + " INTEGER PRIMARY KEY, " +
                 USERNAME + " TEXT NOT NULL, " +
+                NAME + " TEXT NOT NULL, " +
                 ADDRESS + " TEXT NOT NULL, " +
                 DOOR_NUMBER + " TEXT NOT NULL, " +
                 POSTAL_CODE + " TEXT NOT NULL, " +
@@ -367,7 +368,6 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
 
 
         ContentValues values = new ContentValues();
-        //values.put(ID, u.getId());
         values.put(USERNAME, u.getUsername());
         values.put(NAME, u.getName());
         values.put(EMAIL, u.getEmail());
@@ -381,39 +381,38 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
         System.out.println("---> VALUES: " + values.toString());
 
         this.db.insert(TABLE_USER, null, values);
-
-
-
     }
 
     public String deleteUsersTable() {
         return "DROP TABLE IF EXISTS " + TABLE_USER;
     }
 
-    public ArrayList<User> getAllUsers(){
+    public ArrayList<User> getAllUsers() {
         ArrayList<User> users = new ArrayList<>();
         Cursor cursor = this.db.query(TABLE_USER, new String[]{ID, USERNAME, NAME, EMAIL, ADDRESS, DOOR_NUMBER, POSTAL_CODE, NIF, TOKEN}, null,
-                null,null, null, null);
+                null, null, null, null);
 
-        if (cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             do {
                 User auxu = new User(
-                    cursor.getInt(0),
-                    cursor.getString(1),
-                    cursor.getString(2),
-                    cursor.getString(3),
-                    cursor.getString(4),
-                    cursor.getString(5),
-                    cursor.getString(6),
-                    cursor.getInt(7),
-                    cursor.getString(8));
-                System.out.println("--->ID: " + auxu.getId() + ", Username: " + auxu.getUsername() + ", Address: " + auxu.getAddress());
+                        cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getString(2), // Adicione esta linha se a coluna NAME existir
+                        cursor.getString(3),
+                        cursor.getString(4),
+                        cursor.getString(5),
+                        cursor.getString(6),
+                        cursor.getInt(7),
+                        cursor.getString(8)
+                );
+                System.out.println("---> ID: " + auxu.getId() + ", Username: " + auxu.getUsername() + ", Address: " + auxu.getAddress());
                 users.add(auxu);
-            }while(cursor.moveToNext());
+            } while (cursor.moveToNext());
             cursor.close();
         }
         return users;
     }
+
 
     //endregion
 
