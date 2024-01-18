@@ -93,4 +93,37 @@ class UserController extends ActiveController
         return $responseArray;
     }
     
+    public function actionEdit()
+    {
+        $userId = Yii::$app->user->id; // Obtém o ID do usuário autenticado
+        $user = User::findOne($userId);
+        $userInfo = UserInfo::findOne(['user_id' => $userId]);
+
+        // Verifica se o usuário e as informações do usuário existem
+        if ($user && $userInfo) {
+            $queryParams = Yii::$app->request->getQueryParams();
+
+            // Define os campos que podem ser atualizados
+            $allowedFields = ['name', 'username', 'email', 'nif', 'address', 'doornumber', 'postal_code'];
+
+            foreach ($queryParams as $key => $value) {
+                // Verifica se o campo está na lista de campos permitidos
+                if (in_array($key, $allowedFields)) {
+                    $user->$key = $value;
+                    if (property_exists($userInfo, $key)) {
+                        $userInfo->$key = $value;
+                    }
+                }
+            }
+
+            // Salva as alterações nos modelos
+            if ($user->save() && $userInfo->save()) {
+                return ['status' => 'success', 'message' => 'Profile updated successfully'];
+            } else {
+                return ['status' => 'error', 'message' => 'Failed to update profile', 'errors' => array_merge($user->errors, $userInfo->errors)];
+            }
+        } else {
+            return ['status' => 'error', 'message' => 'User not found'];
+        }
+    }
 }

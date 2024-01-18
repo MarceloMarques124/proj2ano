@@ -471,7 +471,7 @@ public class SingletonRestaurantManager {
     }
 
     public void editUserBD(User u){
-        restManagerDBHelper.editUserDB(u);
+        restManagerDBHelper.editUserDB(     u);
     }
 
 
