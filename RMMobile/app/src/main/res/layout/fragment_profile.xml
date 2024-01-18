@@ -20,7 +20,7 @@
                 android:id="@+id/tvName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight=".7"
+                android:layout_weight=".4"
                 android:text="@string/etName"
                 android:textSize="16sp" />
 
@@ -28,7 +28,7 @@
                 android:id="@+id/etName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight=".6"
                 android:ems="10"
                 android:inputType="text"
                 android:text="@string/strEmpty"
@@ -44,7 +44,7 @@
                 android:id="@+id/tvUsername"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight=".7"
+                android:layout_weight=".4"
                 android:text="@string/etUsername"
                 android:textSize="16sp" />
 
@@ -52,7 +52,7 @@
                 android:id="@+id/etUsername"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight=".6"
                 android:ems="10"
                 android:inputType="text"
                 android:text="@string/strEmpty"
@@ -68,7 +68,7 @@
                 android:id="@+id/tvEmail"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight=".7"
+                android:layout_weight=".4"
                 android:text="@string/etEmail"
                 android:textSize="16sp" />
 
@@ -76,7 +76,7 @@
                 android:id="@+id/etEmail"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight=".6"
                 android:inputType="textEmailAddress"
                 android:text="@string/strEmpty"
                 android:textSize="14sp" />
@@ -90,7 +90,7 @@
                 android:id="@+id/tvNif"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight=".7"
+                android:layout_weight=".4"
                 android:text="@string/etNIF"
                 android:textSize="16sp" />
 
@@ -98,7 +98,7 @@
                 android:id="@+id/etNif"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight=".6"
                 android:inputType="number"
                 android:text="@string/strEmpty"
                 android:textSize="14sp" />
@@ -112,7 +112,7 @@
                 android:id="@+id/tvAddress"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight=".7"
+                android:layout_weight=".4"
                 android:text="@string/etAddrees"
                 android:textSize="16sp" />
 
@@ -120,7 +120,7 @@
                 android:id="@+id/etAddress"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight=".6"
                 android:inputType="text"
                 android:text="@string/strEmpty"
                 android:textSize="14sp" />
@@ -134,7 +134,7 @@
                 android:id="@+id/tvDoorNumber"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight=".7"
+                android:layout_weight=".4"
                 android:text="@string/etDoorNumber"
                 android:textSize="16sp" />
 
@@ -142,7 +142,7 @@
                 android:id="@+id/etDoorNumber"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight=".6"
                 android:inputType="text"
                 android:text="@string/strEmpty"
                 android:textSize="14sp" />
@@ -156,19 +156,26 @@
                 android:id="@+id/tvPostalCode"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight=".7"
+                android:layout_weight=".4"
                 android:text="@string/etPostalCode"
                 android:textSize="16sp" />
 
             <EditText
                 android:id="@+id/etPostalCode"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight=".6"
                 android:inputType="phone"
                 android:text="@string/strEmpty"
                 android:textSize="14sp" />
         </LinearLayout>
+
+        <Button
+            android:id="@+id/btnSaveUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onClickSaveUser"
+            android:text="@string/btnSave" />
     </LinearLayout>
 
 </FrameLayout>
