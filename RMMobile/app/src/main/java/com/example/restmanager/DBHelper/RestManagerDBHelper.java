@@ -364,8 +364,6 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
     }
 
     public void addUserDB(User u) {
-
-
         ContentValues values = new ContentValues();
         values.put(USERNAME, u.getUsername());
         values.put(NAME, u.getName());
@@ -380,6 +378,22 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
         System.out.println("---> VALUES: " + values);
 
         this.db.insert(TABLE_USER, null, values);
+    }
+
+    public boolean editUserDB(User u){
+        ContentValues values = new ContentValues();
+        values.put(USERNAME, u.getUsername());
+        values.put(NAME, u.getName());
+        values.put(EMAIL, u.getEmail());
+        values.put(USERNAME, u.getUsername());
+        values.put(ADDRESS, u.getAddress());
+        values.put(DOOR_NUMBER, u.getDoorNumber());
+        values.put(POSTAL_CODE, u.getPostalCode());
+        values.put(NIF, u.getNif());
+
+        System.out.println("---> VALUES: " + values.toString());
+
+        return this.db.update(TABLE_USER, values, TOKEN + "= ?", new String[]{"" + u.getToken()}) > 0;
     }
 
     public String deleteUsersTable() {
@@ -411,6 +425,8 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
         }
         return users;
     }
+
+
 
 
     //endregion

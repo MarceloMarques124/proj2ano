@@ -35,6 +35,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class SingletonRestaurantManager {
 
@@ -474,11 +475,47 @@ public class SingletonRestaurantManager {
         }
     }
 
-    public User getUserBD(final String token) {
+    public void editUserAPI(final User user, Context context){
+        if (!JsonParser.isConnectionInternet(context)){
+            Toast.makeText(context, "No Internet Connection", Toast.LENGTH_SHORT).show();
+        }else{
+            StringRequest request = new StringRequest(Request.Method.PUT, apiUrl + "/edit/" + user.getId(), new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    editUserBD(user);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    System.out.println("---> Error editing book (API Singleton method): " + error.getMessage());
+                }
+            }){
+                protected Map<String, String> getParams(){
+                    System.out.println("--> DA 3");
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("name", user.getName());
+                    params.put("username", user.getUsername());
+                    params.put("email", user.getEmail());
+                    params.put("nif", user.getNif()+"");
+                    params.put("address", user.getAddress());
+                    params.put("door_number", user.getDoorNumber());
+                    params.put("postal_code", user.getPostalCode());
+                    return params;
+                }
+            };
+        }
+    }
+
+    public User getUserBD(final String token){
+
+        System.out.println("---> TOKEN (Received on getUserBD()): " + token);
+
         ArrayList<User> users = restManagerDBHelper.getAllUsers();
-        System.out.println("---> aquilo");
         for (User u : users) {
-            if (u.getToken() == token)
+            if (u!=null)
+                System.out.println("---> TOKEN (From u): " + u.getToken());
+
+            if (Objects.equals(u.getToken(), token))
                 return u;
         }
         return null;
@@ -489,7 +526,12 @@ public class SingletonRestaurantManager {
         restManagerDBHelper.addUserDB(l);
     }
 
-    public void logout(final Context context) {
+    public void editUserBD(User u){
+        restManagerDBHelper.editUserDB(     u);
+    }
+
+
+    public void logout(final Context context){
         SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 

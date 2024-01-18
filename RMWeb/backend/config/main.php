@@ -104,7 +104,8 @@ return [
                     'extraPatterns' => [
                         'POST userbytoken' => 'userbytoken',
                         'POST login' => 'login',
-                        'POST signup' => 'signup'
+                        'POST signup' => 'signup',
+                        'PUT {id}' => 'edit'
                     ],
                 ],
             ],
