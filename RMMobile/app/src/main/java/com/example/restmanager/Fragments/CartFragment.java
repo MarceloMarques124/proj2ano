@@ -8,10 +8,15 @@ import android.widget.AdapterView;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.restmanager.Adapters.OrdersAdapter;
+import com.example.restmanager.Listeners.OrdersListener;
+import com.example.restmanager.Model.Order;
 import com.example.restmanager.Singleton.SingletonRestaurantManager;
 import com.example.restmanager.databinding.FragmentCartBinding;
 
-public class CartFragment extends Fragment {
+import java.util.ArrayList;
+
+public class CartFragment extends Fragment implements OrdersListener {
     private FragmentCartBinding binding;
 
     public CartFragment() {
@@ -35,13 +40,18 @@ public class CartFragment extends Fragment {
         binding.lvCartRests.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
             }
         });
 
-
-        SingletonRestaurantManager.getInstance(getContext()).getRestaurantsAPI(getContext());
+        SingletonRestaurantManager.getInstance(getContext()).setOrdersListener(this);
+        SingletonRestaurantManager.getInstance(getContext()).getTakeAwayOrdersAPI(getContext());
 
         return view;
+    }
+
+    @Override
+    public void onRefreshTakeAwayOrdersList(ArrayList<Order> orders) {
+        if (orders != null)
+            binding.lvCartRests.setAdapter(new OrdersAdapter(getContext(), orders));
     }
 }
