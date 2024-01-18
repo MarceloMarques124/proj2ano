@@ -6,11 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.restmanager.Model.Login;
 import com.example.restmanager.Model.Menu;
+import com.example.restmanager.Model.Order;
 import com.example.restmanager.Model.Restaurant;
 import com.example.restmanager.Model.Review;
-import com.example.restmanager.Model.Signup;
 import com.example.restmanager.Model.User;
 
 import java.util.ArrayList;
@@ -101,7 +100,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
 
     //region # MENU DB METHODS #
 
-    public String createMenusTable(){
+    public String createMenusTable() {
         return "CREATE TABLE " + TABLE_MENU + "(" +
                 ID + " INTEGER PRIMARY KEY, " +
                 NAME + " TEXT NOT NULL, " +
@@ -110,16 +109,16 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
                 ");";
     }
 
-    public String deleteMenusTable(){
+    public String deleteMenusTable() {
         return "DROP TABLE IF EXISTS" + TABLE_MENU;
     }
 
-    public ArrayList<Menu> getAllMenus(){
-        ArrayList<Menu> menus =  new ArrayList<>();
+    public ArrayList<Menu> getAllMenus() {
+        ArrayList<Menu> menus = new ArrayList<>();
         Cursor cursor = this.db.query(TABLE_MENU, new String[]{ID, NAME, PRICE, REST_ID}, null, null, null, null, null);
 
-        if (cursor.moveToNext()){
-            do{
+        if (cursor.moveToNext()) {
+            do {
                 Menu menu = new Menu(
                         cursor.getInt(0),
                         cursor.getString(1),
@@ -127,7 +126,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
                         cursor.getInt(3)
                 );
                 menus.add(menu);
-            }while (cursor.moveToNext());
+            } while (cursor.moveToNext());
             cursor.close();
 
         }
@@ -152,7 +151,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
 
     //region # MENU_ITEM DB METHODS #
 
-    public String createMenuItemsTable(){
+    public String createMenuItemsTable() {
         return "CREATE TABLE " + TABLE_MENU_ITEMS + "(" +
                 ID + " INTEGER PRIMARY KEY, " +
                 NAME + " TEXT NOT NULL, " +
@@ -189,11 +188,11 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
 
     public String createOrderedMenusTable() {
         return "CREATE TABLE " + TABLE_ORDERED_MENU + "(" +
-            ID + " INTEGER PRIMARY KEY, " +
-            MENU_ID + " INTEGER NOT NULL, " +
-            QUANTITY + " INTEGER NOT NULL, " +
-            ORDER_ID + " INTEGER NOT NULL" +
-            ");";
+                ID + " INTEGER PRIMARY KEY, " +
+                MENU_ID + " INTEGER NOT NULL, " +
+                QUANTITY + " INTEGER NOT NULL, " +
+                ORDER_ID + " INTEGER NOT NULL" +
+                ");";
     }
 
     public String deleteOrderedMenusTable() {
@@ -204,7 +203,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
 
     //region # RESERVATION DB METHODS #
 
-    public String createReservationsTable(){
+    public String createReservationsTable() {
         return "CREATE TABLE " + TABLE_RESERVATION + "(" +
                 ID + " INTEGER PRIMARY KEY, " +
                 USER_ID + " INTEGER NOT NULL, " +
@@ -226,8 +225,8 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
 
     //region # RESTAURANT DB METHODS #
 
-    public String createRestaurantsTable(){
-        return  "CREATE TABLE " + TABLE_RESTAURANT + "(" +
+    public String createRestaurantsTable() {
+        return "CREATE TABLE " + TABLE_RESTAURANT + "(" +
                 ID + " INTEGER PRIMARY KEY, " +
                 NAME + " TEXT NOT NULL, " +
                 ADDRESS + " TEXT NOT NULL, " +
@@ -243,12 +242,12 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
         return "DROP TABLE IF EXISTS " + TABLE_RESTAURANT;
     }
 
-    public ArrayList<Restaurant> getAllRestaurants(){
+    public ArrayList<Restaurant> getAllRestaurants() {
         ArrayList<Restaurant> restaurants = new ArrayList<>();
         Cursor cursor = this.db.query(TABLE_RESTAURANT, new String[]{ID, NAME, ADDRESS, NIF, EMAIL, MOBILE_NUMBER, IMG_COVER}, null,
-                null,null, null, null);
+                null, null, null, null);
 
-        if (cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             do {
                 Restaurant restaurant = new Restaurant(
                         cursor.getInt(0),
@@ -259,7 +258,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
                         cursor.getString(5)/*,
                               cursor.getString(6)*/);
                 restaurants.add(restaurant);
-            }while (cursor.moveToNext());
+            } while (cursor.moveToNext());
             cursor.close();
         }
         return restaurants;
@@ -285,7 +284,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
 
     //region # REVIEW DB METHODS #
 
-    public  String createReviewsTable() {
+    public String createReviewsTable() {
         return "CREATE TABLE " + TABLE_REVIEW + "(" +
                 ID + " INTEGER PRIMARY KEY, " +
                 USER_ID + " INTEGER NOT NULL, " +
@@ -310,7 +309,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
         this.db.insert(TABLE_REVIEW, null, values);
     }
 
-    public boolean editReview(Review r){
+    public boolean editReview(Review r) {
         ContentValues values = new ContentValues();
 
         values.put(USER_ID, r.getUserId());
@@ -318,14 +317,14 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
         values.put(STARS, r.getStars());
         values.put(DESCRIPTION, r.getDescription());
 
-        return this.db.update(TABLE_REVIEW, values, ID + "= ?",  new String[]{"" + r.getId()}) > 0;
+        return this.db.update(TABLE_REVIEW, values, ID + "= ?", new String[]{"" + r.getId()}) > 0;
     }
 
     public void removeAllReviews() {
         this.db.delete(TABLE_REVIEW, null, null);
     }
 
-    public boolean removeReview(int id){
+    public boolean removeReview(int id) {
         return (this.db.delete(TABLE_REVIEW, ID + "= ?", new String[]{"" + id}) == 1);
     }
 
@@ -333,7 +332,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
 
     //region # TABLE DB METHODS #
 
-    public String createTablesTable(){
+    public String createTablesTable() {
         return "CREATE TABLE " + TABLE_TABLE + "(" +
                 ID + " INTEGER PRIMARY KEY, " +
                 DESCRIPTION + " TEXT NOT NULL, " +
@@ -349,7 +348,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
 
     //region # USER DB METHODS #
 
-    public String createUsersTable(){
+    public String createUsersTable() {
         return "CREATE TABLE " + TABLE_USER + "(" +
                 ID + " INTEGER PRIMARY KEY, " +
                 USERNAME + " TEXT NOT NULL, " +
@@ -379,24 +378,24 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
         return "DROP TABLE IF EXISTS " + TABLE_USER;
     }
 
-    public ArrayList<User> getAllUsers(){
+    public ArrayList<User> getAllUsers() {
         ArrayList<User> users = new ArrayList<>();
         Cursor cursor = this.db.query(TABLE_USER, new String[]{ID, USERNAME, ADDRESS, DOOR_NUMBER, POSTAL_CODE, NIF, TOKEN}, null,
-                null,null, null, null);
+                null, null, null, null);
 
-        if (cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             do {
                 User auxu = new User(
-                    cursor.getInt(0),
-                    cursor.getString(1),
-                    cursor.getString(2),
-                    cursor.getString(3),
-                    cursor.getString(4),
-                    cursor.getInt(5),
-                    cursor.getString(6));
+                        cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getString(3),
+                        cursor.getString(4),
+                        cursor.getInt(5),
+                        cursor.getString(6));
                 System.out.println("--->ID: " + auxu.getId() + ", Username: " + auxu.getUsername() + ", Address: " + auxu.getAddress());
                 users.add(auxu);
-            }while(cursor.moveToNext());
+            } while (cursor.moveToNext());
             cursor.close();
         }
         return users;
@@ -406,7 +405,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
 
     //region # ZONE DB METHODS #
 
-    public String createZonesTable(){
+    public String createZonesTable() {
         return "CREATE TABLE " + TABLE_ZONE + "(" +
                 ID + " INTEGER PRIMARY KEY, " +
                 REST_ID + " INTEGER NOT NULL, " +
@@ -420,6 +419,36 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
     }
 
     //endregion
+
+    //#region # ORDER DB METHODS #
+
+    public ArrayList<Order> getAllOrders() {
+        ArrayList<Order> orders = new ArrayList<>();
+        String[] columns = new String[]{ID, USER_ID, REST_ID, PRICE, STATUS};
+
+        Cursor cursor = this.db.query(TABLE_ORDER, columns, null,
+                null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+
+                Order order = new Order(
+                        cursor.getInt(0),
+                        cursor.getInt(1),
+                        cursor.getInt(2),
+                        cursor.getFloat(3),
+                        cursor.getInt(4)
+                );
+
+                orders.add(order);
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+        return orders;
+    }
+
+    //#endregion # ORDER DB METHODS #
 
     //region # SIGNUP DB METHODS #
 

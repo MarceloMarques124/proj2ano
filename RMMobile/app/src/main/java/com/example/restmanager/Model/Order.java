@@ -4,10 +4,10 @@ public class Order {
     private int id;
     private int userId;
     private int restId;
-    private int price;
-    private String status;
+    private float price;
+    private int status;
 
-    public Order(int id, int userId, int restId, int price, String status) {
+    public Order(int id, int userId, int restId, float price, int status) {
         this.id = id;
         this.userId = userId;
         this.restId = restId;
@@ -38,19 +38,19 @@ public class Order {
         this.restId = restId;
     }
 
-    public int getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 }
