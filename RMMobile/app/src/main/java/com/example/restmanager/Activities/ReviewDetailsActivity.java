@@ -46,6 +46,7 @@ public class ReviewDetailsActivity extends AppCompatActivity implements Restaura
         int id = getIntent().getIntExtra(String.valueOf(ID_REST), 0);
         System.out.println("--->" + id);
         restaurant = SingletonRestaurantManager.getInstance(getApplicationContext()).getRestaurant(id);
+        binding.tvRestName.setText(restaurant.getName());
         binding.tvEmail.setText(restaurant.getEmail());
         binding.tvPhone.setText(restaurant.getMobileNumber());
         binding.tvLocal.setText(restaurant.getAddress());

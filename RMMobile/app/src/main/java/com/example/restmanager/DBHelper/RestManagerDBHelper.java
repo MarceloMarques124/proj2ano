@@ -12,6 +12,7 @@ import com.example.restmanager.Model.Restaurant;
 import com.example.restmanager.Model.Review;
 import com.example.restmanager.Model.Signup;
 import com.example.restmanager.Model.User;
+import com.example.restmanager.Model.Zone;
 
 import java.util.ArrayList;
 
@@ -437,6 +438,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
     public String createZonesTable(){
         return "CREATE TABLE " + TABLE_ZONE + "(" +
                 ID + " INTEGER PRIMARY KEY, " +
+                NAME + " TEXT NOT NULL, " +
                 REST_ID + " INTEGER NOT NULL, " +
                 DESCRIPTION + " TEXT NOT NULL, " +
                 CAPACITY + " INTEGER NOT NULL" +
@@ -445,6 +447,21 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
 
     public String deleteZonesTable() {
         return "DROP TABLE IF EXISTS " + TABLE_ZONE;
+    }
+
+    public void removeAllZones(){
+        this.db.delete(TABLE_ZONE, null, null);
+    }
+
+    public void addZone(Zone z) {
+        ContentValues values = new ContentValues();
+
+        values.put(NAME, z.getName());
+        values.put(REST_ID, z.getRestId());
+        values.put(DESCRIPTION, z.getDescription());
+        values.put(CAPACITY, z.getDescription());
+
+        this.db.insert(TABLE_ZONE, null, values);
     }
 
     //endregion

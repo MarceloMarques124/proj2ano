@@ -63,7 +63,8 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Revi
 
     public void onClickReserve(View view){
         Toast.makeText(this, "Reservation", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(getApplicationContext(), ReserveActivity.class);
+        Intent intent = new Intent(getApplicationContext(), ReserveActivity.class);;
+        intent.putExtra(ID_RESTAURANT, restaurant.getId());
         startActivity(intent);
     }
 

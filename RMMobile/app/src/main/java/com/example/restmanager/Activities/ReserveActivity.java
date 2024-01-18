@@ -20,7 +20,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class ReserveActivity extends AppCompatActivity {
-
+    public final static String ID_REST = "ID_RESTAURANT";
     private ActivityReserveBinding binding;
 
     @Override
@@ -30,6 +30,13 @@ public class ReserveActivity extends AppCompatActivity {
 
         binding = ActivityReserveBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+
+        int id = getIntent().getIntExtra(String.valueOf(ID_REST), 0);
+        System.out.println("---> Id; " + id);
+
+        //meter dados no spinner - nome das zonas
+        //vamos ter de fzr um metodo no sing para dar get as zonas da api. aqui podemos ja fazer por restaurante.?
 
         binding.pickDate.setOnClickListener(new View.OnClickListener() {
             @Override

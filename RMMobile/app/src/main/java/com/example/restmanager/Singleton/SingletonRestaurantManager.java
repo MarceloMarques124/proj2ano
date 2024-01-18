@@ -19,6 +19,7 @@ import com.example.restmanager.Listeners.RestReviewsListener;
 import com.example.restmanager.Listeners.RestaurantsListener;
 import com.example.restmanager.Listeners.ReviewListener;
 import com.example.restmanager.Listeners.ReviewsListener;
+import com.example.restmanager.Listeners.ZonesListener;
 import com.example.restmanager.Model.Login;
 import com.example.restmanager.Model.Menu;
 import com.example.restmanager.Model.OrderedMenu;
@@ -26,6 +27,7 @@ import com.example.restmanager.Model.Signup;
 import com.example.restmanager.Model.Restaurant;
 import com.example.restmanager.Model.Review;
 import com.example.restmanager.Model.User;
+import com.example.restmanager.Model.Zone;
 import com.example.restmanager.R;
 import com.example.restmanager.Utils.JsonParser;
 import com.example.restmanager.Utils.Public;
@@ -59,6 +61,12 @@ public class SingletonRestaurantManager {
     private RestReviewsListener restReviewsListener;
     //endregion
 
+    //region # Zones variables#
+    private ArrayList<Zone> zones;
+    private ZonesListener zonesListener;
+
+    //endregion
+
     //region # Constants #
     private static SingletonRestaurantManager instance = null;
     private static RequestQueue volleyQueue = null;
@@ -72,6 +80,10 @@ public class SingletonRestaurantManager {
             volleyQueue = Volley.newRequestQueue(context);
         }
         return instance;
+    }
+
+    public void setZonesListener(ZonesListener zonesListener){
+        this.zonesListener = zonesListener;
     }
 
     public void setRestaurantsListener(RestaurantsListener restaurantsListener){
@@ -105,6 +117,7 @@ public class SingletonRestaurantManager {
         menus = new ArrayList<>();
         orderedMenus = new ArrayList<>();
         reviews = new ArrayList<>();
+        zones = new ArrayList<>();
 
         /*restaurants.add(new Restaurant(1, "AntiGona", "Rua da cona da tia que é prima", 222635245, "antigona@k.com", "234668994", R.drawable.coloredlogo));
         restaurants.add(new Restaurant(2, "Foda-se", "Rua da cona da tia que é prima", 222089755, "fuck@k.com", "234668998", R.drawable.coloredlogo));
@@ -357,7 +370,41 @@ public class SingletonRestaurantManager {
     }
     //endregion
 
-    //region #  #
+    //region # Zones Methods #
+
+    public void getZonesAPI(final Context context, int id){
+        if (!JsonParser.isConnectionInternet(context)){
+            Toast.makeText(context, R.string.no_internet, Toast.LENGTH_SHORT).show();
+        }else{
+            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, apiUrl + "/zones/zonesbyrest/" + id, null, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+
+                    addZonesDB(JsonParser.jsonZonesParser(response));
+                    if (zonesListener != null) {
+                        zonesListener.onRefreshZonesListener(zones);
+                    }
+                    //pode ser chamado um listner para passar info de sucesso. npt necessary
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    System.out.println("---> Zones error" + error.getMessage());
+                }
+            });
+        }
+    }
+
+    public void addZonesDB(ArrayList<Zone> zones){
+        restManagerDBHelper.removeAllZones();
+
+        for (Zone z : zones){
+            addZoneDB(z);
+        }
+    }
+    public void addZoneDB(Zone z){
+        restManagerDBHelper.addZone(z);
+    }
     //endregion
 
     //region #  #

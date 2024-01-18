@@ -9,12 +9,14 @@ import com.example.restmanager.Model.Restaurant;
 import com.example.restmanager.Model.Review;
 import com.example.restmanager.Model.Signup;
 import com.example.restmanager.Model.User;
+import com.example.restmanager.Model.Zone;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class JsonParser {
 
@@ -162,5 +164,27 @@ public class JsonParser {
         }
 
         return user;
+    }
+
+    public static ArrayList<Zone> jsonZonesParser(JSONArray response) {
+        ArrayList<Zone> zones = new ArrayList<>();
+
+        try {
+            for(int i = 0; i<response.length(); i++){
+                JSONObject zone = (JSONObject) response.get(i);
+
+                int idZone = zone.getInt("id");
+                String name = zone.getString("name");
+                String description = zone.getString("description");
+                int restaurant_id = zone.getInt("restaurant_id");
+                int capacity = zone.getInt("capacity");
+
+                Zone z = new Zone(idZone, name, restaurant_id, description, capacity);
+                zones.add(z);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return zones;
     }
 }
