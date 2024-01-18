@@ -77,7 +77,10 @@ return [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/zone',
                     'extraPatterns' => [
-                        'GET {id}' => 'zonesbyrest'
+                        'GET zonesbyrest/{id}' => 'zonesbyrest'
+                    ],
+                    'tokens' =>[
+                        '{id}' => '<id:\\d+>'
                     ],
                 ],
                 [

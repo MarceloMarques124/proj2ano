@@ -26,23 +26,23 @@ class ReviewController extends ActiveController
  
      public function actionIndex()
      {
-         $reviews = Review::find()
-             ->joinWith(['user', 'restaurant'])
-             ->asArray()
-             ->all();
- 
-         $result = [];
-         foreach ($reviews as $review) {
-             $result[] = [
-                 'id' => $review['id'],
-                 'user_name' => $review['user']['username'],
-                 'restaurant_name' => $review['restaurant']['name'],
-                 'stars' => $review['stars'],
-                 'description' => $review['description'],
-                 // Add other fields as needed
-             ];
-         }
- 
-         return $result;
+        $reviews = Review::find()
+            ->joinWith(['user', 'restaurant'])
+            ->asArray()
+            ->all();
+        
+        $result = [];
+
+        foreach ($reviews as $review) {
+            $result[] = [
+                'id' => $review['id'],
+                'user_name' => $review['user']['username'],
+                'restaurant_name' => $review['restaurant']['name'],
+                'stars' => $review['stars'],
+                'description' => $review['description'],
+                // Add other fields as needed
+            ];
+        }
+        return $result;
      }
 }
