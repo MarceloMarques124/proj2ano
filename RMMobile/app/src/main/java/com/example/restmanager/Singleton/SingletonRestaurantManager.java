@@ -165,7 +165,7 @@ public class SingletonRestaurantManager {
         }
     }
 
-    public void addRestaurantDB(Restaurant restaurant){
+    public void addRestaurantDB(Restaurant restaurant) {
         restManagerDBHelper.addRestaurantDB(restaurant);
     }
     //endregion
@@ -319,6 +319,12 @@ public class SingletonRestaurantManager {
     //endregion
 
     //region # Orders #
+
+    /**
+     * Receber todos os Pedidos TakeAway da API e colocar na base de dados local
+     *
+     * @param context
+     */
     public void getTakeAwayOrdersAPI(final Context context) {
 
         if (!JsonParser.isConnectionInternet(context) && ordersListener != null) {
@@ -328,20 +334,40 @@ public class SingletonRestaurantManager {
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, apiUrl + "/orders", null,
                 response -> {
-                    System.out.println("-->" + response);
-                    orders = JsonParser.jsonRestaurantsParser(response);
-                    addRestaurantsDB(restaurants);
+                    orders = JsonParser.jsonOrdersParser(response);
 
+                    addOrdersDB(orders);
 
-                    if (restaurantsListener != null) {
-                        restaurantsListener.onRefreshRestaurantsList(restaurants);
+                    if (ordersListener != null) {
+                        ordersListener.onRefreshTakeAwayOrdersList(orders);
                     }
                 },
                 error -> System.out.println("--> Restaurants error: " + error));
 
         volleyQueue.add(request);
     }
-    //endregion
+
+    /**
+     * Limpar todos os Pedidos e Adicionar pedidos a base de dados
+     *
+     * @param orders
+     */
+    public void addOrdersDB(ArrayList<Order> orders) {
+        restManagerDBHelper.removeAllOrders();
+
+        orders.forEach(order -> addOrderDB(order));
+    }
+
+    /**
+     * Adicionar pedido a base de dados
+     *
+     * @param order Pedido a Adicionar
+     */
+    public void addOrderDB(Order order) {
+        restManagerDBHelper.addOrderDB(order);
+    }
+
+    //endregion # Orders #
 
     //region #  #
     //endregion

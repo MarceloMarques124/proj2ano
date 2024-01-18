@@ -274,7 +274,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
         values.put(MOBILE_NUMBER, r.getMobileNumber());
 
         this.db.insert(TABLE_RESTAURANT, null, values);
-        System.out.println("---> VALUES: " + values.toString());
+        System.out.println("---> VALUES: " + values);
     }
 
     public void removeAllRestaurants() {
@@ -377,7 +377,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
         values.put(NIF, u.getNif());
         values.put(TOKEN, u.getToken());
 
-        System.out.println("---> VALUES: " + values.toString());
+        System.out.println("---> VALUES: " + values);
 
         this.db.insert(TABLE_USER, null, values);
     }
@@ -434,6 +434,11 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
 
     //#region # ORDER DB METHODS #
 
+    /**
+     * Receber todas os pedidos da base de dados
+     *
+     * @return Todos os pedidos
+     */
     public ArrayList<Order> getAllOrders() {
         ArrayList<Order> orders = new ArrayList<>();
         String[] columns = new String[]{ID, USER_ID, REST_ID, PRICE, STATUS};
@@ -458,6 +463,29 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
             cursor.close();
         }
         return orders;
+    }
+
+    /**
+     * Adicionar pedido à base de dados
+     *
+     * @param order Pedido a Adicionar
+     */
+    public void addOrderDB(Order order) {
+        ContentValues values = new ContentValues();
+
+        values.put(USER_ID, order.getUserId());
+        values.put(REST_ID, order.getRestId());
+        values.put(PRICE, order.getPrice());
+        values.put(STATUS, order.getStatus());
+
+        this.db.insert(TABLE_ORDER, null, values);
+    }
+
+    /**
+     * Apagar todos os pedidos da base de dados
+     */
+    public void removeAllOrders() {
+        this.db.delete(TABLE_ORDER, null, null);
     }
 
     //#endregion # ORDER DB METHODS #

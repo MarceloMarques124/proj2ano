@@ -147,6 +147,12 @@ public class JsonParser {
         return user;
     }
 
+    /**
+     * Converter pedidos de JSON para a Classe Order
+     *
+     * @param response Resposta em JSON com os Pedidos
+     * @return Lista de Pedidos
+     */
     public static ArrayList<Order> jsonOrdersParser(JSONArray response) {
         ArrayList<Order> restaurants = new ArrayList<>();
 
@@ -154,16 +160,15 @@ public class JsonParser {
             for (int i = 0; i < response.length(); i++) {
                 JSONObject restaurant = (JSONObject) response.get(i);
 
-                int idRest = restaurant.getInt("id");
-                String nameRest = restaurant.getString("name");
-                String addressRest = restaurant.getString("address");
-                int nifRest = restaurant.getInt("nif");
-                String email = restaurant.getString("email");
-                int mobileNumberRest = restaurant.getInt("mobile_number");
+                int id = restaurant.getInt("id");
+                int userId = restaurant.getInt("user_id");
+                int restaurantId = restaurant.getInt("restaurant_id");
+                float price = (float) restaurant.getDouble("price");
+                int state = restaurant.getInt("state");
 
-                Order rest = new Order(idRest, nameRest, addressRest, nifRest, email, mobileNumberRest + "");
+                Order order = new Order(id, userId, restaurantId, price, state);
 
-                restaurants.add(rest);
+                restaurants.add(order);
             }
         } catch (JSONException e) {
             e.printStackTrace();
