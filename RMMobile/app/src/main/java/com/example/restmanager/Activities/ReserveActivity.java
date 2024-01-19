@@ -6,13 +6,20 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.example.restmanager.Listeners.ZonesListener;
 import com.example.restmanager.Model.Zone;
 import com.example.restmanager.R;
 import com.example.restmanager.Singleton.SingletonRestaurantManager;
 import com.example.restmanager.databinding.ActivityReserveBinding;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+import com.google.android.material.timepicker.MaterialTimePicker;
+import com.google.android.material.timepicker.TimeFormat;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class ReserveActivity extends AppCompatActivity implements ZonesListener{
@@ -37,29 +44,77 @@ public class ReserveActivity extends AppCompatActivity implements ZonesListener{
 
         SingletonRestaurantManager.getInstance(getApplicationContext()).setZonesListener(this);
         SingletonRestaurantManager.getInstance(getApplicationContext()).getZonesAPI(getApplicationContext(), id);
-
-        binding.autoComplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        binding.pickDate.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println("---> Position: "+ position);
-                System.out.println("---> ID: "+ id);
+            public void onClick(View v) {
+                MaterialDatePicker picker = MaterialDatePicker.Builder
+                        .datePicker()
+                        .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                        .build();
+
+                picker.show(getSupportFragmentManager(), "tag");
 
 
+                picker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
+                    @Override
+                    public void onPositiveButtonClick(Object selection) {
+                        binding.pickDate.setText(new SimpleDateFormat("dd/MM/yyyy").format(picker.getSelection()));
+                    }});
             }
         });
 
+
+
+        binding.pickTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MaterialTimePicker picker = new MaterialTimePicker.Builder()
+                        .setTimeFormat(TimeFormat.CLOCK_24H)
+                        .build();
+
+                picker.show(getSupportFragmentManager(), "tag");
+
+                picker.addOnPositiveButtonClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        picker.setMinute(0000);
+                        binding.pickTime.setText(picker.getHour() + ":" + picker.getMinute() + ":00");
+                    }
+                });
+
+            }
+        });
+        binding.radioZones.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // Handle RadioButton selection here
+                RadioButton selectedRadioButton = findViewById(checkedId);
+                if (selectedRadioButton != null) {
+                    String selectedOption = selectedRadioButton.getText().toString();
+                    // Do something with the selected option
+
+                    System.out.println("---> CheckedId: "+ checkedId + " | " +selectedRadioButton.getText().toString());
+                }
+            }
+        });
     }
 
     @Override
     public void onRefreshZonesListener(ArrayList<Zone> zones) {
 
         this.zones = zones;
-
+        /*String[] x = {"Esplanada", "Dentro", "Fora", "Café", "Restaurante"};
+        for(int i = 0; i<x.length; i++){
+            RadioButton radioButton = new RadioButton(this);
+            radioButton.setText(x[i].toString());
+            binding.radioZones.addView(radioButton);
+        }*/
         for (Zone z : zones) {
-            items = new String[]{z.getName()};
+            RadioButton radioButton = new RadioButton(this);
+            radioButton.setText(z.getName());
+            radioButton.setId(z.getId());
+            binding.radioZones.addView(radioButton);
         }
-        arrayAdapter = new ArrayAdapter<String>(this, R.layout.spiner_item);
 
-        binding.autoComplete.setAdapter(arrayAdapter);
     }
 }

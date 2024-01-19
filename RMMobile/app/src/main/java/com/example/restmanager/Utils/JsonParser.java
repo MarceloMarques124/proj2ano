@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import com.example.restmanager.Model.Menu;
+import com.example.restmanager.Model.Reserve;
 import com.example.restmanager.Model.Restaurant;
 import com.example.restmanager.Model.Review;
 import com.example.restmanager.Model.Signup;
@@ -15,7 +16,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map;
 
 public class JsonParser {
@@ -184,13 +187,39 @@ public class JsonParser {
 
                 Zone z = new Zone(idZone, name, restaurant_id, description, capacity);
                 zones.add(z);
-
-                System.out.println("---> Zone (JsonZonesParser - depos do add): " + zones);
-
             }
+            zones.forEach(zone1 -> {
+                System.out.println("---> " + zone1.getName());
+            });
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return zones;
+    }
+
+    public static ArrayList<Reserve> jsonReservesParser(JSONArray response) {
+        ArrayList<Reserve> reserves = new ArrayList<>();
+
+        try {
+            for (int i = 0; i<response.length(); i++){
+                JSONObject reserve = (JSONObject) response.get(i);
+
+                int id = reserve.getInt("id");
+                int userId = reserve.getInt("user_id");
+                String date = reserve.getString("date");
+                String time = reserve.getString("time");
+                String remarks = reserve.getString("remarks");
+                int restId = reserve.getInt("restaurant_id");
+                int peopleNumber = reserve.getInt("people_number");
+                int tablesNumber = reserve.getInt("tables_number");
+
+                Reserve r = new Reserve(id, userId, date, time, remarks, restId, peopleNumber);
+                reserves.add(r);
+
+            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        return reserves;
     }
 }

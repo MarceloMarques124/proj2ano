@@ -3,20 +3,20 @@ package com.example.restmanager.Model;
 import java.sql.Time;
 import java.util.Date;
 
-public class Reservation {
+public class Reserve {
     private int id;
     private int userId;
-    private Date date;
-    private Time time;
+    private String date;
+    private String time;
     private String remarks;
     private int restId;
     private int peopleNumber;
     private int tablesNumber;
 
-    public Reservation() {
+    public Reserve() {
     }
 
-    public Reservation(int id, int userId, Date date, Time time, String remarks, int restId, int peopleNumber) {
+    public Reserve(int id, int userId, String date, String time, String remarks, int restId, int peopleNumber) {
         this.id = id;
         this.userId = userId;
         this.date = date;
@@ -38,19 +38,19 @@ public class Reservation {
         this.userId = userId;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
-    public Time getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(Time time) {
+    public void setTime(String time) {
         this.time = time;
     }
 

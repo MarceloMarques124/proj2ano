@@ -111,6 +111,13 @@ return [
                         'PUT {id}' => 'edit'
                     ],
                 ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/reservation',
+                    'extraPatterns' => [
+                        'GET index' => 'index'
+                    ],
+                ],
             ],
         ],
 

@@ -15,6 +15,7 @@ import com.example.restmanager.Activities.RestaurantDetailsActivity;
 import com.example.restmanager.Activities.ReviewDetailsActivity;
 import com.example.restmanager.DBHelper.RestManagerDBHelper;
 import com.example.restmanager.Listeners.MenusListener;
+import com.example.restmanager.Listeners.ReservesListener;
 import com.example.restmanager.Listeners.RestReviewsListener;
 import com.example.restmanager.Listeners.RestaurantsListener;
 import com.example.restmanager.Listeners.ReviewListener;
@@ -23,6 +24,7 @@ import com.example.restmanager.Listeners.ZonesListener;
 import com.example.restmanager.Model.Login;
 import com.example.restmanager.Model.Menu;
 import com.example.restmanager.Model.OrderedMenu;
+import com.example.restmanager.Model.Reserve;
 import com.example.restmanager.Model.Signup;
 import com.example.restmanager.Model.Restaurant;
 import com.example.restmanager.Model.Review;
@@ -67,6 +69,12 @@ public class SingletonRestaurantManager {
 
     //endregion
 
+    //region # Zones variables#
+    private ArrayList<Reserve> reserves;
+    private ReservesListener reservesListener;
+
+    //endregion
+
     //region # Constants #
     private static SingletonRestaurantManager instance = null;
     private static RequestQueue volleyQueue = null;
@@ -82,6 +90,7 @@ public class SingletonRestaurantManager {
         return instance;
     }
 
+    //region # Listeners Setters #
     public void setZonesListener(ZonesListener zonesListener){
         this.zonesListener = zonesListener;
     }
@@ -106,11 +115,16 @@ public class SingletonRestaurantManager {
         this.reviewListener = reviewListener;
     }
 
+    public void setReservesListener(ReservesListener reservesListener){
+        this.reservesListener = reservesListener;
+    }
+
+    //endregion
+
     private SingletonRestaurantManager(Context context) {
         generateDinamicData();
         restManagerDBHelper = new RestManagerDBHelper(context);
     }
-
 
     private void generateDinamicData() {
         restaurants = new ArrayList<>();
@@ -118,14 +132,8 @@ public class SingletonRestaurantManager {
         orderedMenus = new ArrayList<>();
         reviews = new ArrayList<>();
         zones = new ArrayList<>();
+        reserves = new ArrayList<>();
 
-        /*restaurants.add(new Restaurant(1, "AntiGona", "Rua da cona da tia que é prima", 222635245, "antigona@k.com", "234668994", R.drawable.coloredlogo));
-        restaurants.add(new Restaurant(2, "Foda-se", "Rua da cona da tia que é prima", 222089755, "fuck@k.com", "234668998", R.drawable.coloredlogo));
-        menus.add(new Menu(1, "Big Mc", "Pão, Carne de Porco, Alface, Picles, Tomate e Maionese", 5.9, 1));
-        menus.add(new Menu(2, "MenuTeste", "Pão, Carne de Porco, Alface, Picles, Tomate e Maionese", 4, 2));
-        menus.add(new Menu(3, "MenuTeste2", "Pão, Carne de Porco, Alface, Picles, Tomate e Maionese", 4, 2));
-        menus.add(new Menu(4, "MenuTeste3", "Pão, Carne de Porco, Alface, Picles, Tomate e Maionese", 4, 2));
-        menus.add(new Menu(5, "Big Mc11", "Pão, Carne de Porco, Alface, Picles, Tomate e Maionese", 8.9, 1));*/
     }
 
     //region # Restaurants Methods #
@@ -290,7 +298,6 @@ public class SingletonRestaurantManager {
         if (!JsonParser.isConnectionInternet(context)) {
             Toast.makeText(context, R.string.no_internet, Toast.LENGTH_SHORT).show();
         } else {
-
             JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, apiUrl + "/reviews", null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
@@ -371,6 +378,10 @@ public class SingletonRestaurantManager {
 
     //region # Zones Methods #
 
+    public ArrayList<Zone> getZonesDB(){
+        return new ArrayList<>(zones);
+    }
+
     public void getZonesAPI(final Context context, int id){
         if (!JsonParser.isConnectionInternet(context)){
             Toast.makeText(context, R.string.no_internet, Toast.LENGTH_SHORT).show();
@@ -379,6 +390,7 @@ public class SingletonRestaurantManager {
                 @Override
                 public void onResponse(JSONArray response) {
 
+                    zones = JsonParser.jsonZonesParser(response);
                     addZonesDB(JsonParser.jsonZonesParser(response));
                     if (zonesListener != null) {
                         zonesListener.onRefreshZonesListener(zones);
@@ -392,7 +404,6 @@ public class SingletonRestaurantManager {
                     System.out.println("---> Zones error" + error.getMessage());
                 }
             });
-            System.out.println("---> Request: " + request);
             volleyQueue.add(request);
         }
     }
@@ -411,9 +422,6 @@ public class SingletonRestaurantManager {
     public ArrayList<Zone> getZonesBD(){
         return zones;
     }
-    //endregion
-
-    //region #  #
     //endregion
 
     //region # User Methods #
@@ -565,7 +573,7 @@ public class SingletonRestaurantManager {
     }
 
     public void editUserBD(User u){
-        restManagerDBHelper.editUserDB(     u);
+        restManagerDBHelper.editUserDB(u);
     }
 
 
@@ -575,6 +583,53 @@ public class SingletonRestaurantManager {
 
         editor.putString(Public.TOKEN, "TOKEN");
         editor.apply();
+    }
+
+    //endregion
+
+    //region # Reserves Methods #
+    public void getReservesAPI(final Context context){
+        if (!JsonParser.isConnectionInternet(context)){
+            Toast.makeText(context, R.string.no_internet, Toast.LENGTH_SHORT).show();
+        }else{
+            SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
+            String token = sharedPreferences.getString(Public.TOKEN, "token");
+            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, apiUrl + "/reserves", null, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    reserves = JsonParser.jsonReservesParser(response);
+                    addReservesDB(reserves);
+
+                    if (reservesListener != null){
+                        reservesListener.onRefreshReservesList(reserves);
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    System.out.println("--> Review error: " + error);
+                }
+            }){
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("token", token);
+                    return params;
+                }
+            };
+        }
+    }
+
+    public void addReservesDB(ArrayList<Reserve> reserves){
+        restManagerDBHelper.removeAllReserves();
+
+        for (Reserve r : reserves){
+            addReserveDB(r);
+        }
+    }
+
+    public void addReserveDB(Reserve r){
+        System.out.println("---> R.ID: " + r.getUserId());
+        restManagerDBHelper.addReserve(r);
     }
 
     //endregion

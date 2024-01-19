@@ -44,8 +44,8 @@ public class HomepageFragment extends Fragment implements RestaurantsListener{
 
        // restaurants = SingletonRestaurantManager.getInstance(getContext()).getRestaurants();
 
-       // restaurants = SingletonRestaurantManager.getInstance(getContext()).getRestaurantsAPI();r
-//        binding.lvRestaurants.setAdapter(new RestaurantsAdapter(getContext(), restaurants));
+       // restaurants = SingletonRestaurantManager.getInstance(getContext()).getRestaurantsAPI();
+        // binding.lvRestaurants.setAdapter(new RestaurantsAdapter(getContext(), restaurants));
 
         binding.lvRestaurants.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -88,7 +88,6 @@ public class HomepageFragment extends Fragment implements RestaurantsListener{
                         tempRest.add(r);
                     }
                 }
-
                 binding.lvRestaurants.setAdapter(new RestaurantsAdapter(getContext(), tempRest));
                 return true;
             }

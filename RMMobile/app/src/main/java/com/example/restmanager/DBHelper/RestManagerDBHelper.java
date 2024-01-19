@@ -6,11 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.restmanager.Model.Login;
 import com.example.restmanager.Model.Menu;
+import com.example.restmanager.Model.Reserve;
 import com.example.restmanager.Model.Restaurant;
 import com.example.restmanager.Model.Review;
-import com.example.restmanager.Model.Signup;
 import com.example.restmanager.Model.User;
 import com.example.restmanager.Model.Zone;
 
@@ -26,7 +25,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
     private static final String TABLE_MENU_ITEMS = "menuitems";
     private static final String TABLE_ORDER = "orders";
     private static final String TABLE_ORDERED_MENU = "orderedmenus";
-    private static final String TABLE_RESERVATION = "reservations";
+    private static final String TABLE_RESERVES = "reserves";
     private static final String TABLE_RESTAURANT = "restaurants";
     private static final String TABLE_REVIEW = "reviews";
     private static final String TABLE_TABLE = "tables";
@@ -79,7 +78,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
         db.execSQL(createReviewsTable());
         db.execSQL(createTablesTable());
         db.execSQL(createUsersTable());
-        db.execSQL(createReservationsTable());
+        db.execSQL(createResereTable());
         db.execSQL(createZonesTable());
     }
 
@@ -93,7 +92,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
         db.execSQL(deleteReviewsTable());
         db.execSQL(deleteTablesTable());
         db.execSQL(deleteUsersTable());
-        db.execSQL(deleteReservationsTable());
+        db.execSQL(deleteReserveTable());
         db.execSQL(deleteZonesTable());
         this.onCreate(db);
 
@@ -203,10 +202,10 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
 
     //endregion
 
-    //region # RESERVATION DB METHODS #
+    //region # RESERVE DB METHODS #
 
-    public String createReservationsTable(){
-        return "CREATE TABLE " + TABLE_RESERVATION + "(" +
+    public String createResereTable(){
+        return "CREATE TABLE " + TABLE_RESERVES + "(" +
                 ID + " INTEGER PRIMARY KEY, " +
                 USER_ID + " INTEGER NOT NULL, " +
                 DATE + " TEXT NOT NULL, " +
@@ -218,8 +217,28 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
                 ");";
     }
 
-    public String deleteReservationsTable() {
-        return "DROP TABLE IF EXISTS " + TABLE_RESERVATION;
+    public String deleteReserveTable() {
+        return "DROP TABLE IF EXISTS " + TABLE_RESERVES;
+    }
+
+    public void removeAllReserves(){
+        this.db.delete(TABLE_RESERVES, null, null);
+    }
+
+    public void addReserve(Reserve r) {
+        ContentValues values = new ContentValues();
+
+        values.put(ID, r.getId());
+        values.put(USER_ID, r.getUserId());
+        values.put(DATE, r.getDate());
+        values.put(TIME, r.getTime());
+        values.put(REMARKS, r.getRemarks());
+        values.put(REST_ID, r.getRestId());
+        values.put(PEOPLE_NUMBER, r.getPeopleNumber());
+        values.put(TABLES_NUMBER, r.getTablesNumber());
+
+
+        this.db.insert(TABLE_RESERVES, null, values);
     }
 
 
@@ -384,6 +403,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
     public boolean editUserDB(User u){
         ContentValues values = new ContentValues();
 
+        values.put(ID, u.getId());
         values.put(USERNAME, u.getUsername());
         values.put(NAME, u.getName());
         values.put(EMAIL, u.getEmail());
@@ -427,9 +447,6 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
         return users;
     }
 
-
-
-
     //endregion
 
     //region # ZONE DB METHODS #
@@ -459,6 +476,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
         values.put(REST_ID, z.getRestId());
         values.put(DESCRIPTION, z.getDescription());
         values.put(CAPACITY, z.getDescription());
+
 
         this.db.insert(TABLE_ZONE, null, values);
     }
