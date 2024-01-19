@@ -58,11 +58,13 @@
             android:layout_weight="1"
             android:text="@string/tvZones" />
 
-        <Spinner
-            android:id="@+id/spinnerZones"
+        <Button
+            android:id="@+id/btnSelectZone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:text="@string/btnSelect"
+            android:textSize="14sp"/>
 
     </LinearLayout>
 

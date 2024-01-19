@@ -384,6 +384,7 @@ public class SingletonRestaurantManager {
                     if (zonesListener != null) {
                         zonesListener.onRefreshZonesListener(zones);
                     }
+                    System.out.println("---> Zones: " + zones);
                     //pode ser chamado um listner para passar info de sucesso. npt necessary
                 }
             }, new Response.ErrorListener() {
@@ -392,6 +393,8 @@ public class SingletonRestaurantManager {
                     System.out.println("---> Zones error" + error.getMessage());
                 }
             });
+            System.out.println("---> Request: " + request);
+            volleyQueue.add(request);
         }
     }
 
@@ -404,6 +407,10 @@ public class SingletonRestaurantManager {
     }
     public void addZoneDB(Zone z){
         restManagerDBHelper.addZone(z);
+    }
+
+    public ArrayList<Zone> getZonesBD(){
+        return zones;
     }
     //endregion
 

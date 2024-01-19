@@ -173,6 +173,8 @@ public class JsonParser {
             for(int i = 0; i<response.length(); i++){
                 JSONObject zone = (JSONObject) response.get(i);
 
+                System.out.println("---> Zone (JsonZonesParser - antes do add): " + zone);
+
                 int idZone = zone.getInt("id");
                 String name = zone.getString("name");
                 String description = zone.getString("description");
@@ -181,6 +183,9 @@ public class JsonParser {
 
                 Zone z = new Zone(idZone, name, restaurant_id, description, capacity);
                 zones.add(z);
+
+                System.out.println("---> Zone (JsonZonesParser - depos do add): " + zones);
+
             }
         } catch (JSONException e) {
             e.printStackTrace();
