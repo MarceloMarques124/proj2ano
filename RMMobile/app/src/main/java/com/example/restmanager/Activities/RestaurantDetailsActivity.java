@@ -110,7 +110,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Revi
         ArrayList<Review> auxReviews = new ArrayList<>();
         if (reviews != null) {
             int id = getIntent().getIntExtra(String.valueOf(ID_RESTAURANT), 0);
-            System.out.println("---> Id; " + id);
             reviews.forEach(review ->{
                 if (review.getRestId() == getIntent().getIntExtra(String.valueOf(ID_RESTAURANT), 0))
                     auxReviews.add(review);

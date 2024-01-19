@@ -132,12 +132,13 @@ public class JsonParser {
             int nif = login.getInt("nif");
             String token = login.getString("token");
 
+
             user = new User(id, username, name, email, address, door_number, postal_code, nif, token);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-
         return user;
+
     }
 
     public static Signup jsonSignupParser(String response) {

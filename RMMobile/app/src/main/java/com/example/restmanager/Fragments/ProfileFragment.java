@@ -36,9 +36,8 @@ public class ProfileFragment extends Fragment {
 
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
         u = SingletonRestaurantManager.getInstance(getContext()).getUserBD(sharedPreferences.getString(Public.TOKEN, "0"));
-        System.out.println("---> TOKEN (After get u on ProfileFragment): " + u.getToken());
         if (u == null)
-            System.out.println("---> fuck");
+            System.out.println("---> User Null");
 
         binding.etUsername.setText(u.getUsername());
         binding.etName.setText(u.getName());
@@ -59,6 +58,7 @@ public class ProfileFragment extends Fragment {
                     u.setEmail(binding.etEmail.getText().toString());
                     u.setNif(Integer.parseInt(binding.etNif.getText().toString()));
                     u.setPostalCode(binding.etPostalCode.getText().toString());
+
 
 
                     SingletonRestaurantManager.getInstance(getContext()).editUserAPI(u, getContext());

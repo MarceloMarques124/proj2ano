@@ -276,7 +276,6 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
         values.put(MOBILE_NUMBER, r.getMobileNumber());
 
         this.db.insert(TABLE_RESTAURANT, null, values);
-        System.out.println("---> VALUES: " + values.toString());
     }
 
     public void removeAllRestaurants() {
@@ -367,6 +366,8 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
 
     public void addUserDB(User u) {
         ContentValues values = new ContentValues();
+        System.out.println("---> ID BDHELPER " + u.getId());
+        values.put(ID, u.getId());
         values.put(USERNAME, u.getUsername());
         values.put(NAME, u.getName());
         values.put(EMAIL, u.getEmail());
@@ -377,13 +378,12 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
         values.put(NIF, u.getNif());
         values.put(TOKEN, u.getToken());
 
-        System.out.println("---> VALUES: " + values.toString());
-
         this.db.insert(TABLE_USER, null, values);
     }
 
     public boolean editUserDB(User u){
         ContentValues values = new ContentValues();
+
         values.put(USERNAME, u.getUsername());
         values.put(NAME, u.getName());
         values.put(EMAIL, u.getEmail());
@@ -420,7 +420,6 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
                         cursor.getInt(7),
                         cursor.getString(8)
                 );
-                System.out.println("---> ID: " + auxu.getId() + ", Username: " + auxu.getUsername() + ", Address: " + auxu.getAddress());
                 users.add(auxu);
             } while (cursor.moveToNext());
             cursor.close();
