@@ -3,6 +3,7 @@ package com.example.restmanager.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -114,6 +115,8 @@ public class ReserveActivity extends AppCompatActivity implements ZonesListener{
                 //id pedido a cima é rest
 
                 Reserve r = new Reserve(0, u.getName(), date, time, remark, idzone, id, 0);
+
+                startActivity(new Intent(getApplicationContext(),MainActivity.class));
             }
         });
     }

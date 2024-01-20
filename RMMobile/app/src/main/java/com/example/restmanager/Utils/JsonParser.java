@@ -211,7 +211,7 @@ public class JsonParser {
                 int peopleNumber = reserve.getInt("people_number");
                 int tablesNumber = reserve.getInt("tables_number");
 
-                Reserve r = new Reserve(id, userId, date, time, remarks, zone, restId, peopleNumber);
+                Reserve r = new Reserve(id, userId, date, time, remarks, Integer.parseInt(zone), restId, peopleNumber);
                 reserves.add(r);
 
             }
