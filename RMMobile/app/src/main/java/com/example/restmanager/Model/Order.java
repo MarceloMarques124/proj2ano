@@ -7,6 +7,8 @@ public class Order {
     private float price;
     private int status;
 
+    private Restaurant restaurant;
+
     public Order(int id, int userId, int restId, float price, int status) {
         this.id = id;
         this.userId = userId;
@@ -52,5 +54,13 @@ public class Order {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
     }
 }

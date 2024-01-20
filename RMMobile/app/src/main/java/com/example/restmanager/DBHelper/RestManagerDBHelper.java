@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.restmanager.Model.Menu;
 import com.example.restmanager.Model.Order;
+import com.example.restmanager.Model.OrderedMenu;
 import com.example.restmanager.Model.Restaurant;
 import com.example.restmanager.Model.Review;
 import com.example.restmanager.Model.User;
@@ -380,7 +381,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
         this.db.insert(TABLE_USER, null, values);
     }
 
-    public boolean editUserDB(User u){
+    public boolean editUserDB(User u) {
         ContentValues values = new ContentValues();
         values.put(USERNAME, u.getUsername());
         values.put(NAME, u.getName());
@@ -391,7 +392,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
         values.put(POSTAL_CODE, u.getPostalCode());
         values.put(NIF, u.getNif());
 
-        System.out.println("---> VALUES: " + values.toString());
+        System.out.println("---> VALUES: " + values);
 
         return this.db.update(TABLE_USER, values, TOKEN + "= ?", new String[]{"" + u.getToken()}) > 0;
     }
@@ -425,8 +426,6 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
         }
         return users;
     }
-
-
 
 
     //endregion
@@ -502,6 +501,45 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
      */
     public void removeAllOrders() {
         this.db.delete(TABLE_ORDER, null, null);
+    }
+
+    public ArrayList<OrderedMenu> getAllOrderedMenus() {
+        ArrayList<OrderedMenu> orderedMenus = new ArrayList<>();
+        String[] columns = new String[]{ID, MENU_ID, QUANTITY, ORDER_ID};
+
+        Cursor cursor = this.db.query(TABLE_ORDERED_MENU, columns, null,
+                null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+
+                OrderedMenu orderedMenu = new OrderedMenu(
+                        cursor.getInt(0),
+                        cursor.getInt(1),
+                        cursor.getInt(3),
+                        cursor.getInt(2)
+                );
+
+                orderedMenus.add(orderedMenu);
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+        return orderedMenus;
+    }
+
+    public void addOrderedMenuDB(OrderedMenu orderedMenu) {
+        ContentValues values = new ContentValues();
+
+        values.put(MENU_ID, orderedMenu.getMenuId());
+        values.put(QUANTITY, orderedMenu.getQuantity());
+        values.put(ORDER_ID, orderedMenu.getOrderId());
+
+        this.db.insert(TABLE_ORDERED_MENU, null, values);
+    }
+
+    public void removeAllOrderedMenus() {
+        this.db.delete(TABLE_ORDERED_MENU, null, null);
     }
 
     //#endregion # ORDER DB METHODS #

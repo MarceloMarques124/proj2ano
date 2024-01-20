@@ -6,6 +6,7 @@ import android.net.NetworkInfo;
 
 import com.example.restmanager.Model.Menu;
 import com.example.restmanager.Model.Order;
+import com.example.restmanager.Model.OrderedMenu;
 import com.example.restmanager.Model.Restaurant;
 import com.example.restmanager.Model.Review;
 import com.example.restmanager.Model.Signup;
@@ -154,25 +155,53 @@ public class JsonParser {
      * @return Lista de Pedidos
      */
     public static ArrayList<Order> jsonOrdersParser(JSONArray response) {
-        ArrayList<Order> restaurants = new ArrayList<>();
+        ArrayList<Order> orders = new ArrayList<>();
 
         try {
             for (int i = 0; i < response.length(); i++) {
-                JSONObject restaurant = (JSONObject) response.get(i);
+                JSONObject orderObject = (JSONObject) response.get(i);
 
-                int id = restaurant.getInt("id");
-                int userId = restaurant.getInt("user_id");
-                int restaurantId = restaurant.getInt("restaurant_id");
-                float price = (float) restaurant.getDouble("price");
-                int state = restaurant.getInt("state");
+                int id = orderObject.getInt("id");
+                int userId = orderObject.getInt("user_id");
+                int restaurantId = orderObject.getInt("restaurant_id");
+                float price = (float) orderObject.getDouble("price");
+                int state = orderObject.getInt("state");
 
                 Order order = new Order(id, userId, restaurantId, price, state);
 
-                restaurants.add(order);
+                orders.add(order);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return restaurants;
+        return orders;
+    }
+
+    /**
+     * Converter pedidos de JSON para a Classe OrderedMenu
+     *
+     * @param response Resposta em JSON com os detalhes dos pedidos
+     * @return Lista de dos detalhes dos Pedidos
+     */
+    public static ArrayList<OrderedMenu> jsonOrderedMenusParser(JSONArray response) {
+        ArrayList<OrderedMenu> orderedMenus = new ArrayList<>();
+
+        try {
+            for (int i = 0; i < response.length(); i++) {
+                JSONObject orderedMenuObject = (JSONObject) response.get(i);
+
+                int id = orderedMenuObject.getInt("id");
+                int menuId = orderedMenuObject.getInt("menu_id");
+                int quantity = orderedMenuObject.getInt("quantity");
+                int orderId = orderedMenuObject.getInt("order_id");
+
+                OrderedMenu orderedMenu = new OrderedMenu(id, menuId, orderId, quantity);
+
+                orderedMenus.add(orderedMenu);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return orderedMenus;
     }
 }

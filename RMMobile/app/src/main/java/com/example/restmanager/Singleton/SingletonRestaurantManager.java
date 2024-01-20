@@ -42,7 +42,7 @@ public class SingletonRestaurantManager {
     //region # Constants #
     private static SingletonRestaurantManager instance = null;
     private static RequestQueue volleyQueue = null;
-    private static final String apiUrl = "http://172.22.21.221:8080/api";
+    private static final String apiUrl = "http://192.168.1.69/api";
     //endregion
 
     //region # Restaurants variables #
@@ -372,7 +372,52 @@ public class SingletonRestaurantManager {
         restManagerDBHelper.addOrderDB(order);
     }
 
+    public ArrayList<Order> getOrdersDB() {
+        return new ArrayList<>(orders);
+    }
+
     //endregion # Orders #
+
+    //#region # OrderedMenus #
+
+
+    public void getOrderedMenusAPI(final Context context) {
+
+        if (!JsonParser.isConnectionInternet(context) && ordersListener != null) {
+            ordersListener.onRefreshOrderedMenusList(restManagerDBHelper.getAllOrderedMenus());
+            return;
+        }
+
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, apiUrl + "/orderedmenus", null,
+                response -> {
+                    orderedMenus = JsonParser.jsonOrderedMenusParser(response);
+
+                    addOrderedMenusDB(orderedMenus);
+
+                    if (ordersListener != null) {
+                        ordersListener.onRefreshOrderedMenusList(orderedMenus);
+                    }
+                },
+                error -> System.out.println("--> OrderedMenus error: " + error));
+
+        volleyQueue.add(request);
+    }
+
+    public void addOrderedMenusDB(ArrayList<OrderedMenu> orderedMenus) {
+        restManagerDBHelper.removeAllOrders();
+
+        orderedMenus.forEach(orderedMenu -> addOrderedMenuDB(orderedMenu));
+    }
+
+    public void addOrderedMenuDB(OrderedMenu orderedMenu) {
+        restManagerDBHelper.addOrderedMenuDB(orderedMenu);
+    }
+
+    public ArrayList<OrderedMenu> getOrderedMenusDB() {
+        return new ArrayList<>(orderedMenus);
+    }
+
+    //endregion # OrderedMenus #
 
     //region #  #
     //endregion
