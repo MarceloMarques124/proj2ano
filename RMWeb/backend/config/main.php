@@ -71,7 +71,10 @@ return [
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'api/review'
+                    'controller' => 'api/review',
+                    'extraPatterns' => [
+                        'POST create' => 'create'
+                    ],
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',

@@ -86,12 +86,12 @@ public class JsonParser {
                 JSONObject review = (JSONObject) response.get(i);
 
                 int idReview = review.getInt("id");
-                int userID = review.getInt("user_id");
-                int restID = review.getInt("restaurant_id");
+                String user = review.getString("user_name");
+                String restaurant = review.getString("restaurant_name");
                 int stars = review.getInt("stars");
                 String description = review.getString("description");
 
-                Review r = new Review(idReview, userID, restID, stars, description);
+                Review r = new Review(idReview, user, restaurant, stars, description);
                 reviews.add(r);
             }
         } catch (JSONException e) {
@@ -105,11 +105,11 @@ public class JsonParser {
         try{
             JSONObject review = new JSONObject(response);
             int idReview = review.getInt("id");
-            int userID = review.getInt("user_id");
-            int restID = review.getInt("restaurant_id");
+            String user = review.getString("user_name");
+            String restaurant = review.getString("restaurant_name");
             int stars = review.getInt("stars");
             String description = review.getString("description");
-            auxReview = new Review(idReview, userID, restID, stars, description);
+            auxReview = new Review(idReview, user, restaurant, stars, description);
         }catch (JSONException e){
             e.printStackTrace();
         }

@@ -125,11 +125,11 @@ class UserController extends ActiveController
                 return "User and UserInfo updated successfully";
             } else {
                 Yii::$app->response->statusCode = 422;
-                return "Failed to update User and UserInfo";
+                return "Denied Access";
             }
         } else {
             Yii::$app->response->statusCode = 422;
-            return "Invalid data provided";
+            return "Denied Access";
         }
     }
 

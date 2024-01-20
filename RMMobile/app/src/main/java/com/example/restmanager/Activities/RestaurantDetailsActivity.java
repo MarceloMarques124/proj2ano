@@ -25,6 +25,7 @@ import com.example.restmanager.databinding.ActivityReviewDetailsBinding;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class RestaurantDetailsActivity extends AppCompatActivity implements ReviewsListener {
     public final static String ID_RESTAURANT = "ID_RESTAURANT";
@@ -44,9 +45,11 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Revi
 
         binding = ActivityRestaurantDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        int id = getIntent().getIntExtra(String.valueOf(ID_RESTAURANT), 0);
-        restaurant = SingletonRestaurantManager.getInstance(getApplicationContext()).getRestaurant(id);
+        System.out.println("---> ID"  + ID_RESTAURANT);
+        String name = getIntent().getStringExtra(ID_RESTAURANT);
+        System.out.println("---> name " + name);
+        restaurant = SingletonRestaurantManager.getInstance(getApplicationContext()).getRestaurantByName(name);
+        System.out.println("---> resta  " + restaurant);
       //  binding.imgCover.setImageResource(restaurant.getCover());
         binding.tvEmail.setText(restaurant.getEmail());
         binding.tvRestName.setText(restaurant.getName());
@@ -87,7 +90,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Revi
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == ReviewDetailsActivity.ADD || requestCode == ReviewDetailsActivity.EDIT) {
-                SingletonRestaurantManager.getInstance(getApplicationContext()).getReviewsByRest(restaurant.getId());
+                SingletonRestaurantManager.getInstance(getApplicationContext()).getReviewsByRest(restaurant.getName());
                 switch (requestCode) {
                     case ReviewDetailsActivity.ADD:
                         // Snackbar.make(get(), "livro add com succ", Snackbar.LENGTH_SHORT).show();
@@ -109,11 +112,13 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Revi
     public void onRefreshReviewsList(ArrayList<Review> reviews) {
         ArrayList<Review> auxReviews = new ArrayList<>();
         if (reviews != null) {
-            int id = getIntent().getIntExtra(String.valueOf(ID_RESTAURANT), 0);
+
+            String name = getIntent().getStringExtra(ID_RESTAURANT);
             reviews.forEach(review ->{
-                if (review.getRestId() == getIntent().getIntExtra(String.valueOf(ID_RESTAURANT), 0))
+                if (Objects.equals(review.getRestId(), name))
                     auxReviews.add(review);
             });
+
             binding.lvReviews.setAdapter(new ReviewsAdapter(getApplicationContext(), auxReviews));
         }
     }

@@ -2,8 +2,8 @@ package com.example.restmanager.Model;
 
 public class Review {
     private int id;
-    private int userId;
-    private int restId;
+    private String userId;
+    private String restId;
     private int stars;
     private String description;
     private  static int autoIncrementId = 1;
@@ -12,7 +12,7 @@ public class Review {
     public Review() {
     }
 
-    public Review(int id, int userId, int restId, int stars, String description) {
+    public Review(int id, String userId, String restId, int stars, String description) {
         this.id = id;
         this.userId = userId;
         this.restId = restId;
@@ -28,19 +28,19 @@ public class Review {
         return id;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
-    public int getRestId() {
+    public String getRestId() {
         return restId;
     }
 
-    public void setRestId(int restId) {
+    public void setRestId(String restId) {
         this.restId = restId;
     }
 

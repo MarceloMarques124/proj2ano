@@ -48,9 +48,9 @@ public class ReviewsFragment extends Fragment {
 
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
 
-        User u = SingletonRestaurantManager.getInstance(getContext()).getUserBD(Public.TOKEN);
+        User u = SingletonRestaurantManager.getInstance(getContext()).getUserBD(sharedPreferences.getString(Public.TOKEN, "0"));
 
-        reviews = SingletonRestaurantManager.getInstance(getContext()).getReviewsById(u.getId());
+        reviews = SingletonRestaurantManager.getInstance(getContext()).getReviewsById(u.getName());
 
         binding.lvUserReviews.setAdapter(new ReviewsAdapter(getContext(), reviews));
 

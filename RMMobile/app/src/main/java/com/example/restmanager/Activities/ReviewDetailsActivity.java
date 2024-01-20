@@ -44,7 +44,6 @@ public class ReviewDetailsActivity extends AppCompatActivity implements Restaura
         setContentView(binding.getRoot());
 
         int id = getIntent().getIntExtra(String.valueOf(ID_REST), 0);
-        System.out.println("--->" + id);
         restaurant = SingletonRestaurantManager.getInstance(getApplicationContext()).getRestaurant(id);
         binding.tvRestName.setText(restaurant.getName());
         binding.tvEmail.setText(restaurant.getEmail());
@@ -55,23 +54,22 @@ public class ReviewDetailsActivity extends AppCompatActivity implements Restaura
 
     public void onClickSaveReview(View view){
 
-        System.out.println("-->" + binding.etDescription.getText());
-        System.out.println("-->" + binding.ratingBar.getRating());
-
         int id = getIntent().getIntExtra(String.valueOf(ID_REST), 0);
-        System.out.println("--->" + id);
         restaurant = SingletonRestaurantManager.getInstance(getApplicationContext()).getRestaurant(id);
 
         SharedPreferences sharedPreferences = getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
         String token = sharedPreferences.getString(Public.TOKEN, "0");
+
         user = SingletonRestaurantManager.getInstance(getApplicationContext()).getUserBD(token);
-        int userId = user.getId();
+        restaurant = SingletonRestaurantManager.getInstance(getApplicationContext()).getRestaurant(id);
+
+        String userId = user.getName();
         float stars = binding.ratingBar.getRating();
         String description = binding.etDescription.getText().toString();
-        int restId = id;
-        System.out.println("-->user id"+ userId + stars + description + restId);
+        String restId = restaurant.getName();
 
         Toast.makeText(ReviewDetailsActivity.this, "AddApi", Toast.LENGTH_SHORT).show();
+
         Review review = new Review(0,userId, restId, (int)stars, description);
         SingletonRestaurantManager.getInstance(getApplicationContext()).addReviewApi(review, getApplicationContext(), token);
         Intent intent = new Intent();

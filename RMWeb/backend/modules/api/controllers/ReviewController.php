@@ -4,6 +4,9 @@ namespace backend\modules\api\controllers;
 
 use yii\rest\ActiveController;
 use common\models\Review;
+use common\models\User;
+use common\models\Restaurant;
+use Yii;
 
 class ReviewController extends ActiveController
 {
@@ -44,5 +47,23 @@ class ReviewController extends ActiveController
             ];
         }
         return $result;
-     }
+    }
+
+    public function actionCreate()
+    {
+        $request = Yii::$app->request->post()();
+
+        $review = new Review();
+        $review->user_id = $request->user_id;
+        $review->restaurant_id = $request->restaurant_id;
+        $review->stars = $request->stars;
+        $review->description = $request->description;
+
+        // Verificar se os atributos estão corretamente atribuídos
+        if ($review->validate() && $review->save()) {
+            return ['status' => 'success', 'message' => 'Review created successfully.'];
+        } else {
+            return ['status' => 'error', 'message' => 'Failed to create review.', 'errors' => $review->errors];
+        }
+        }
 }

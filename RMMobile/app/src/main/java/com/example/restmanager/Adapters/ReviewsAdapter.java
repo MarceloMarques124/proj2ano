@@ -79,7 +79,7 @@ public class ReviewsAdapter extends BaseAdapter {
             imgView = view.findViewById(R.id.imgStar);
         }
         public void update(Review review){
-            tvUseNam.setText("" + review.getUserId());
+            tvUseNam.setText(review.getUserId());
             tvStars.setText(review.getStars() + "/5");
             reviewText.setText(review.getDescription());
             imgView.setImageResource(R.drawable.ic_star);

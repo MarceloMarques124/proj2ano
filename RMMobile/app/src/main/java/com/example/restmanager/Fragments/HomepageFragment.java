@@ -50,8 +50,10 @@ public class HomepageFragment extends Fragment implements RestaurantsListener{
         binding.lvRestaurants.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Restaurant rest = SingletonRestaurantManager.getInstance(getContext()).getRestaurant((int) id);
                 Intent intent = new Intent(getContext(), RestaurantDetailsActivity.class); //Details de Restaurant
-                intent.putExtra(ID_RESTAURANT, (int)id);
+
+                intent.putExtra(ID_RESTAURANT, rest.getName());
                 startActivity(intent);
 
             }

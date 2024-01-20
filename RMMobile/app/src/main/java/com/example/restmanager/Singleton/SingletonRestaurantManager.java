@@ -12,7 +12,6 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.restmanager.Activities.RestaurantDetailsActivity;
-import com.example.restmanager.Activities.ReviewDetailsActivity;
 import com.example.restmanager.DBHelper.RestManagerDBHelper;
 import com.example.restmanager.Listeners.MenusListener;
 import com.example.restmanager.Listeners.ReservesListener;
@@ -38,6 +37,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -78,7 +78,7 @@ public class SingletonRestaurantManager {
     //region # Constants #
     private static SingletonRestaurantManager instance = null;
     private static RequestQueue volleyQueue = null;
-    private static final String apiUrl = "http://172.22.21.221:8080/api";
+    private String apiUrl = "http://17/api";
     //endregion
 
     private ArrayList<OrderedMenu> orderedMenus;
@@ -122,11 +122,13 @@ public class SingletonRestaurantManager {
     //endregion
 
     private SingletonRestaurantManager(Context context) {
-        generateDinamicData();
+        generateDinamicData(context);
         restManagerDBHelper = new RestManagerDBHelper(context);
     }
 
-    private void generateDinamicData() {
+    private void generateDinamicData(Context context) {
+
+
         restaurants = new ArrayList<>();
         menus = new ArrayList<>();
         orderedMenus = new ArrayList<>();
@@ -150,6 +152,16 @@ public class SingletonRestaurantManager {
         return null;
     }
 
+    public Restaurant getRestaurantByName(String name){
+        for (Restaurant r : restaurants) {
+            System.out.println("---> r: " + r.getName() + "/" + name);
+            if (Objects.equals(r.getName(), name)){
+                return r;
+            }
+        }
+        return null;
+    }
+
     public void getRestaurantsAPI(final Context context){
         if (!JsonParser.isConnectionInternet(context)){
             Toast.makeText(context, "--> No internet conection", Toast.LENGTH_SHORT).show();
@@ -159,7 +171,8 @@ public class SingletonRestaurantManager {
 
             }
         }else{
-            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, apiUrl + "/restaurants", null, new Response.Listener<JSONArray>() {
+            SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
+            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, sharedPreferences.getString(Public.IP, "0") + "/restaurants", null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
                     restaurants = JsonParser.jsonRestaurantsParser(response);
@@ -225,7 +238,8 @@ public class SingletonRestaurantManager {
                 menusListener.onRefreshMenusList(restManagerDBHelper.getAllMenus());
             }
         }else {
-            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, apiUrl + "/menus", null, new Response.Listener<JSONArray>() {
+            SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
+            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, sharedPreferences.getString(Public.IP, "0") + "/menus", null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
                     menus = JsonParser.jsonMenusParser(response);
@@ -259,11 +273,11 @@ public class SingletonRestaurantManager {
     //endregion
 
     //region # Reviews Methods #
-    public void getReviewsByRest(int id){
+    public void getReviewsByRest(String name){
         ArrayList<Review> restReviews = new ArrayList<>();
 
         reviews.forEach(review -> {
-            if (review.getRestId() == id)
+            if (review.getRestId() == name)
                 restReviews.add(review);
         });
         if (restReviewsListener != null){
@@ -298,15 +312,18 @@ public class SingletonRestaurantManager {
         if (!JsonParser.isConnectionInternet(context)) {
             Toast.makeText(context, R.string.no_internet, Toast.LENGTH_SHORT).show();
         } else {
-            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, apiUrl + "/reviews", null, new Response.Listener<JSONArray>() {
+            SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
+            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, sharedPreferences.getString(Public.IP, "0") + "/reviews", null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
+                    System.out.println("---> ReviewsResponse: " + response);
                     reviews = JsonParser.jsonReviewsParser(response);
                     addReviewsDB(reviews);
 
                     if (reviewsListener != null){
                         reviewsListener.onRefreshReviewsList(reviews);
                     }
+                    System.out.println("---> Reviews: " + reviews);
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -314,16 +331,15 @@ public class SingletonRestaurantManager {
                     System.out.println("--> Review error: " + error);
                 }
             });
-
             volleyQueue.add(request);
         }
     }
 
-    public ArrayList<Review> getReviewsById(int $id){
+    public ArrayList<Review> getReviewsById(String name){
         ArrayList<Review> userReviews = new ArrayList<>();
 
         reviews.forEach(review -> {
-            if (review.getUserId() == $id)
+            if (review.getUserId() == name)
                 userReviews.add(review);
         });
 
@@ -339,7 +355,6 @@ public class SingletonRestaurantManager {
     }
 
     public void addReviewDB(Review r){
-        System.out.println("---> R.ID: " + r.getUserId());
         restManagerDBHelper.addReview(r);
     }
 
@@ -348,7 +363,8 @@ public class SingletonRestaurantManager {
             Toast.makeText(context, R.string.no_internet, Toast.LENGTH_SHORT).show();
         } else {
 
-            StringRequest req = new StringRequest(Request.Method.POST, apiUrl + "/reviews", new Response.Listener<String>() {
+            SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
+            StringRequest req = new StringRequest(Request.Method.POST, sharedPreferences.getString(Public.IP, "0") + "/review", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     addReviewDB(JsonParser.parserJsonReview(response));
@@ -363,11 +379,14 @@ public class SingletonRestaurantManager {
                 }
             }) {
                 protected Map<String, String> getParams() {
+                    Restaurant rest = SingletonRestaurantManager.getInstance(context).getRestaurantByName(review.getRestId());
+                    User u = SingletonRestaurantManager.getInstance(context).getUserBD(sharedPreferences.getString(Public.TOKEN, "0"));
                     Map<String, String> params = new HashMap<String, String>();
-                    params.put("user_id", ""+ review.getUserId());
-                    params.put("stars", ""+ review.getStars());
-                    params.put("description", ""+ review.getDescription());
-                    params.put("restaurant_id", "" + review.getRestId());
+                    System.out.println("---> Review: " +u.getId() + "|" + review.getStars() + "|" +review.getDescription() + "|" +rest.getId());
+                    params.put("user_id", "" + u.getId());
+                    params.put("stars", "" + review.getStars());
+                    params.put("description", "" + review.getDescription());
+                    params.put("restaurant_id", "" + rest.getId());
                     return params;
                 }
             };
@@ -386,7 +405,8 @@ public class SingletonRestaurantManager {
         if (!JsonParser.isConnectionInternet(context)){
             Toast.makeText(context, R.string.no_internet, Toast.LENGTH_SHORT).show();
         }else{
-            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, apiUrl + "/zones/zonesbyrest/" + id, null, new Response.Listener<JSONArray>() {
+            SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
+            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, sharedPreferences.getString(Public.IP, "0") + "/zones/zonesbyrest/" + id, null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
 
@@ -396,7 +416,7 @@ public class SingletonRestaurantManager {
                         zonesListener.onRefreshZonesListener(zones);
                     }
                     System.out.println("---> Zones: " + zones);
-                    //pode ser chamado um listner para passar info de sucesso. npt necessary
+
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -430,10 +450,10 @@ public class SingletonRestaurantManager {
         if (!JsonParser.isConnectionInternet(context)) {
             Toast.makeText(context, "--> No internet connection", Toast.LENGTH_SHORT).show();
         } else {
-            StringRequest request = new StringRequest(Request.Method.POST, apiUrl + "/users/login", new Response.Listener<String>() {
+            SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
+            StringRequest request = new StringRequest(Request.Method.POST, sharedPreferences.getString(Public.IP, "0") + "/users/login", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    System.out.println("---> String: " + response);
                     SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
 
@@ -443,7 +463,6 @@ public class SingletonRestaurantManager {
 
                         editor.apply(); // Use apply() instead of commit()
                     } else {
-                        System.out.println("---> Response: " + response);
                         addUserBD(JsonParser.jsonLoginParser(response));
                         try {
                             JSONObject jsonObject = new JSONObject(response);
@@ -477,11 +496,13 @@ public class SingletonRestaurantManager {
     }
 
 
+
     public void signupAPI(final Signup signup, final Context context){
         if (!JsonParser.isConnectionInternet(context)){
             Toast.makeText(context, "--> No internet conection", Toast.LENGTH_SHORT).show();
         }else{
-            StringRequest request = new StringRequest(Request.Method.POST, apiUrl + "/user/signup", new Response.Listener<String>() {
+            SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
+            StringRequest request = new StringRequest(Request.Method.POST, sharedPreferences.getString(Public.IP, "0") + "/user/signup", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     System.out.println("--> " + response);
@@ -522,14 +543,19 @@ public class SingletonRestaurantManager {
         }
     }
 
-    public void editUserAPI(final User user, Context context){
+    public void editUserAPI(final User user, Context context, Response.Listener listener){
         if (!JsonParser.isConnectionInternet(context)){
             Toast.makeText(context, "No Internet Connection", Toast.LENGTH_SHORT).show();
         }else{
-            StringRequest request = new StringRequest(Request.Method.PUT, apiUrl + "/user/edit/" + user.getId(), new Response.Listener<String>() {
+            SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
+            StringRequest request = new StringRequest(Request.Method.PUT, sharedPreferences.getString(Public.IP, "0") + "/users/edit/" + user.getId(), new Response.Listener<String>() {
+
                 @Override
                 public void onResponse(String response) {
+                    System.out.println("---> Deu fixe");
+                    Toast.makeText(context, "dpo+dsjf", Toast.LENGTH_SHORT).show();
                     editUserBD(user);
+                    listener.onResponse(response);
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -540,16 +566,18 @@ public class SingletonRestaurantManager {
                 protected Map<String, String> getParams(){
                     System.out.println("--> DA 3");
                     Map<String, String> params = new HashMap<String, String>();
+                    params.put("id", user.getId() + "");
                     params.put("name", user.getName());
                     params.put("username", user.getUsername());
                     params.put("email", user.getEmail());
-                    params.put("nif", user.getNif()+"");
+                    params.put("nif", user.getNif() + "");
                     params.put("address", user.getAddress());
                     params.put("door_number", user.getDoorNumber());
                     params.put("postal_code", user.getPostalCode());
                     return params;
                 }
             };
+            volleyQueue.add(request);
         }
     }
 
@@ -594,7 +622,7 @@ public class SingletonRestaurantManager {
         }else{
             SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
             String token = sharedPreferences.getString(Public.TOKEN, "token");
-            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, apiUrl + "/reserves", null, new Response.Listener<JSONArray>() {
+            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, sharedPreferences.getString(Public.IP, "0") + "/reserves", null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
                     reserves = JsonParser.jsonReservesParser(response);
