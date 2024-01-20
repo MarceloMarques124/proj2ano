@@ -49,7 +49,7 @@ public class SingletonRestaurantManager {
     //region # Constants #
     private static SingletonRestaurantManager instance = null;
     private static RequestQueue volleyQueue = null;
-    private static final String apiUrl = "http://192.168.1.69/api";
+    private static final String apiUrl = "http://172.22.21.221:8080/api";
     //endregion
 
     //region # Restaurants variables #
@@ -183,7 +183,7 @@ public class SingletonRestaurantManager {
             }
         } else {
             SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
-            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, sharedPreferences.getString(Public.IP, "0") + "/restaurants", null, new Response.Listener<JSONArray>() {
+            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, sharedPreferences.getString(Public.IP, "http://172.22.21.221:8080/api") + "/restaurants", null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
                     restaurants = JsonParser.jsonRestaurantsParser(response);
@@ -516,19 +516,41 @@ public class SingletonRestaurantManager {
             return;
         }
 
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, apiUrl + "/orders", null,
+        JsonArrayRequest requestOrders = new JsonArrayRequest(Request.Method.GET, apiUrl + "/orders", null,
                 response -> {
                     orders = JsonParser.jsonOrdersParser(response);
 
                     addOrdersDB(orders);
-
-                    if (ordersListener != null) {
-                        ordersListener.onRefreshTakeAwayOrdersList(orders);
-                    }
+                    onRequestsCompleted();
                 },
                 error -> System.out.println("--> Restaurants error: " + error));
 
-        volleyQueue.add(request);
+
+        JsonArrayRequest requestOrderedMenus = new JsonArrayRequest(Request.Method.GET, apiUrl + "/orderedmenus", null,
+                response -> {
+                    orderedMenus = JsonParser.jsonOrderedMenusParser(response);
+
+                    addOrderedMenusDB(orderedMenus);
+                    onRequestsCompleted();
+                },
+                error -> System.out.println("--> OrderedMenus error: " + error));
+
+        volleyQueue.add(requestOrders);
+        volleyQueue.add(requestOrderedMenus);
+    }
+
+    int completedRequestsCount = 0;
+
+    private void onRequestsCompleted() {
+        completedRequestsCount++;
+
+        if (completedRequestsCount == 2) {
+
+            if (ordersListener != null) {
+                ordersListener.onRefreshTakeAwayOrdersList(orders);
+            }
+            completedRequestsCount = 0;
+        }
     }
 
     /**
@@ -593,7 +615,7 @@ public class SingletonRestaurantManager {
     }
 
     public ArrayList<OrderedMenu> getOrderedMenusDB() {
-        return new ArrayList<>(orderedMenus);
+        return orderedMenus != null && orderedMenus.size() > 0 ? new ArrayList<>(orderedMenus) : null;
     }
 
     //endregion # OrderedMenus #
