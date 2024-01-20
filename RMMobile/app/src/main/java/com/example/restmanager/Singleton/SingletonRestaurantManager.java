@@ -126,6 +126,10 @@ public class SingletonRestaurantManager {
         this.reservesListener = reservesListener;
     }
 
+    public void setOrdersListener(OrdersListener ordersListener) {
+        this.ordersListener = ordersListener;
+    }
+
     //endregion
 
     private SingletonRestaurantManager(Context context) {
