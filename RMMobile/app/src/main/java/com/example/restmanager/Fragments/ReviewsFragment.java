@@ -1,5 +1,6 @@
 package com.example.restmanager.Fragments;
 
+import static android.app.Activity.RESULT_OK;
 import static android.content.Intent.getIntent;
 
 import static com.example.restmanager.Activities.ReviewDetailsActivity.ID_REST;
@@ -60,12 +61,23 @@ public class ReviewsFragment extends Fragment implements ReviewsListener {
                 Intent intent = new Intent(getContext(), ReviewDetailsActivity.class);
                 intent.putExtra(ID_REVIEW, (int) id);
                 startActivityForResult(intent, ReviewDetailsActivity.EDIT);
+
+
             }
         });
 
 
 
         return view;
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == ReviewDetailsActivity.EDIT && resultCode == RESULT_OK) {
+            // Atualize a lista de revisões aqui
+            SingletonRestaurantManager.getInstance(getContext()).getReviewsAPI(getContext());
+        }
     }
 
     @Override

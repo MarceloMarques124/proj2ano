@@ -164,10 +164,12 @@ public class SingletonRestaurantManager {
     public void getRestaurantsAPI(final Context context){
         if (!JsonParser.isConnectionInternet(context)){
             Toast.makeText(context, "--> No internet conection", Toast.LENGTH_SHORT).show();
+            //carregar mesmo sem net!
+            restaurants  = restManagerDBHelper.getAllRestaurants();
+
 
             if (restaurantsListener != null){
-                restaurantsListener.onRefreshRestaurantsList(restManagerDBHelper.getAllRestaurants());
-
+                restaurantsListener.onRefreshRestaurantsList(restaurants);
             }
         }else{
             SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
