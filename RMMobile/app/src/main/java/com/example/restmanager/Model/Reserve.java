@@ -1,27 +1,26 @@
 package com.example.restmanager.Model;
 
-import java.sql.Time;
-import java.util.Date;
-
 public class Reserve {
     private int id;
-    private int userId;
+    private String userId;
+    private String restId;
     private String date;
+    private int zone;
     private String time;
     private String remarks;
-    private int restId;
     private int peopleNumber;
     private int tablesNumber;
 
-    public Reserve() {
+    public Reserve(int id, String name, String date, String time, String remark, int idzone, int i, int peopleNumber) {
     }
 
-    public Reserve(int id, int userId, String date, String time, String remarks, int restId, int peopleNumber) {
+    public Reserve(int id, String userId, String date, String time, String remarks, int zone, String restId, int peopleNumber) {
         this.id = id;
         this.userId = userId;
         this.date = date;
         this.time = time;
         this.remarks = remarks;
+        this.zone = zone;
         this.restId = restId;
         this.peopleNumber = peopleNumber;
     }
@@ -30,11 +29,11 @@ public class Reserve {
         return id;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
@@ -62,11 +61,11 @@ public class Reserve {
         this.remarks = remarks;
     }
 
-    public int getRestId() {
+    public String getRestId() {
         return restId;
     }
 
-    public void setRestId(int restId) {
+    public void setRestId(String restId) {
         this.restId = restId;
     }
 
@@ -78,11 +77,19 @@ public class Reserve {
         this.peopleNumber = peopleNumber;
     }
 
-    public int getTablesNumber() {
-        return tablesNumber;
+    public String getTablesNumber() {
+        return String.valueOf(tablesNumber);
     }
 
     public void setTablesNumber(int tablesNumber) {
         this.tablesNumber = tablesNumber;
+    }
+
+    public int getZone() {
+        return zone;
+    }
+
+    public void setZone(int zone) {
+        this.zone = zone;
     }
 }

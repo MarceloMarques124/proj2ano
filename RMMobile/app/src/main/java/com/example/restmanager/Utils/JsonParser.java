@@ -202,15 +202,16 @@ public class JsonParser {
                 JSONObject reserve = (JSONObject) response.get(i);
 
                 int id = reserve.getInt("id");
-                int userId = reserve.getInt("user_id");
+                String userId = reserve.getString("user_id");
                 String date = reserve.getString("date");
                 String time = reserve.getString("time");
+                String zone = reserve.getString("zone_id");
                 String remarks = reserve.getString("remarks");
-                int restId = reserve.getInt("restaurant_id");
+                String restId = reserve.getString("restaurant_id");
                 int peopleNumber = reserve.getInt("people_number");
                 int tablesNumber = reserve.getInt("tables_number");
 
-                Reserve r = new Reserve(id, userId, date, time, remarks, restId, peopleNumber);
+                Reserve r = new Reserve(id, userId, date, time, remarks, zone, restId, peopleNumber);
                 reserves.add(r);
 
             }

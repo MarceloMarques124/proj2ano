@@ -125,7 +125,8 @@ return [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/reservation',
                     'extraPatterns' => [
-                        'GET index' => 'index'
+                        'GET index' => 'index',
+                        'POST create' => 'create'
                     ],
                 ],
             ],

@@ -2,6 +2,8 @@ package com.example.restmanager.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,9 +12,12 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.example.restmanager.Listeners.ZonesListener;
+import com.example.restmanager.Model.Reserve;
+import com.example.restmanager.Model.User;
 import com.example.restmanager.Model.Zone;
 import com.example.restmanager.R;
 import com.example.restmanager.Singleton.SingletonRestaurantManager;
+import com.example.restmanager.Utils.Public;
 import com.example.restmanager.databinding.ActivityReserveBinding;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
@@ -63,8 +68,6 @@ public class ReserveActivity extends AppCompatActivity implements ZonesListener{
             }
         });
 
-
-
         binding.pickTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,6 +98,22 @@ public class ReserveActivity extends AppCompatActivity implements ZonesListener{
 
                     System.out.println("---> CheckedId: "+ checkedId + " | " +selectedRadioButton.getText().toString());
                 }
+            }
+        });
+
+        binding.fabFinish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
+                User u = SingletonRestaurantManager.getInstance(getApplicationContext()).getUserBD(sharedPreferences.getString(Public.TOKEN, "55"));
+                int people = Integer.parseInt(binding.etnPeopleNumber.getText()+"");
+                String time = binding.pickTime.toString();
+                String date = binding.pickDate.toString();
+                int idzone = binding.radioZones.getCheckedRadioButtonId();
+                String remark = "Comidaa";
+                //id pedido a cima é rest
+
+                Reserve r = new Reserve(0, u.getName(), date, time, remark, idzone, id, 0);
             }
         });
     }

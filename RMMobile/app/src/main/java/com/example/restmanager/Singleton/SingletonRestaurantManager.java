@@ -830,7 +830,7 @@ public class SingletonRestaurantManager {
         } else {
             SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
             String token = sharedPreferences.getString(Public.TOKEN, "token");
-            JsonArrayRequest request = new JsonArrayRequest(Request.Method.POST, sharedPreferences.getString(Public.IP, "0") + "/reserves", null, new Response.Listener<JSONArray>() {
+            JsonArrayRequest request = new JsonArrayRequest(Request.Method.POST, sharedPreferences.getString(Public.IP, "0") + "/reserves/create", null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
                     reserves = JsonParser.jsonReservesParser(response);
@@ -848,11 +848,31 @@ public class SingletonRestaurantManager {
             }) {
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<>();
-                    params.put("token", token);
+
+                    User u = SingletonRestaurantManager.instance.getUserBD(token);
+                    Restaurant r = SingletonRestaurantManager.instance.getRestaurantByName(reserve.getRestId());
+                    Zone z = SingletonRestaurantManager.instance.getZone(reserve.getZone());
+                    reserve.setTablesNumber(reserve.getPeopleNumber()/4);
+                    params.put("tables_number", reserve.getTablesNumber());
+                    params.put("date_time", reserve.getDate() + reserve.getTime()+"");
+                    params.put("people_number", reserve.getPeopleNumber()+"");
+                    params.put("remarks", reserve.getRemarks());
+                    params.put("user_id", u.getId()+"");
+                    params.put("restaurant_id", r.getId()+"");
+                    params.put("zone_id", z.getId()+"");
                     return params;
                 }
             };
         }
+    }
+
+    private Zone getZone(int zone) {
+        for(Zone z : zones){
+            if (z.getId() == zone){
+                return z;
+            }
+        }
+        return null;
     }
 
     public void addReservesDB(ArrayList<Reserve> reserves) {
