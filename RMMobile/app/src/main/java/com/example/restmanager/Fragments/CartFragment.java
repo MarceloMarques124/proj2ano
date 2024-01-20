@@ -48,8 +48,8 @@ public class CartFragment extends Fragment implements OrdersListener {
         });
 
         SingletonRestaurantManager.getInstance(getContext()).setOrdersListener(this);
-        SingletonRestaurantManager.getInstance(getContext()).getTakeAwayOrdersAPI(getContext());
         SingletonRestaurantManager.getInstance(getContext()).getOrderedMenusAPI(getContext());
+        SingletonRestaurantManager.getInstance(getContext()).getTakeAwayOrdersAPI(getContext());
 
         return view;
     }
