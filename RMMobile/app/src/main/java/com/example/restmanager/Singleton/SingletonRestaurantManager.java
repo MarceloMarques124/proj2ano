@@ -37,7 +37,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -285,7 +284,7 @@ public class SingletonRestaurantManager {
         }
     }
 
-    public Review getReview(int id){
+    public Review getReviewById(int id){
         for (Review r : reviews){
             if (r.getId() == id){
                 return r;
@@ -335,13 +334,20 @@ public class SingletonRestaurantManager {
         }
     }
 
-    public ArrayList<Review> getReviewsById(String name){
+    public ArrayList<Review> getReviewsByName(String name){
         ArrayList<Review> userReviews = new ArrayList<>();
 
+        System.out.println("---> name: " + name + "| reviews: " + reviews);
+
         reviews.forEach(review -> {
-            if (review.getUserId() == name)
+            if (Objects.equals(review.getUserId(), name)) {
+                System.out.println("---> Review: " + review.getUserId());
                 userReviews.add(review);
+            }
         });
+        if (restReviewsListener != null){
+            restReviewsListener.onRefreshReviewsList(userReviews);
+        }
 
         return userReviews;
     }
@@ -358,16 +364,56 @@ public class SingletonRestaurantManager {
         restManagerDBHelper.addReview(r);
     }
 
+    public void editReviewDB(Review r){
+        restManagerDBHelper.editReview(r);
+    }
+
     public void addReviewApi(final Review review, final Context context, String token) {
         if (!JsonParser.isConnectionInternet(context)) {
             Toast.makeText(context, R.string.no_internet, Toast.LENGTH_SHORT).show();
         } else {
 
             SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
-            StringRequest req = new StringRequest(Request.Method.POST, sharedPreferences.getString(Public.IP, "0") + "/review", new Response.Listener<String>() {
+            StringRequest req = new StringRequest(Request.Method.POST, sharedPreferences.getString(Public.IP, "0") + "/review/create", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     addReviewDB(JsonParser.parserJsonReview(response));
+                    if(reviewListener != null){
+                        reviewListener.onRefreshReviewDetails(RestaurantDetailsActivity.ADD);
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    System.out.println("---> error add api " + error.getMessage());
+                }
+            }) {
+                protected Map<String, String> getParams() {
+                    Restaurant rest = SingletonRestaurantManager.getInstance(context).getRestaurantByName(review.getRestId());
+                    User u = SingletonRestaurantManager.getInstance(context).getUserBD(sharedPreferences.getString(Public.TOKEN, "0"));
+                    Map<String, String> params = new HashMap<String, String>();
+                    System.out.println("---> Review: " +u.getId() + "|" + review.getStars() + "|" +review.getDescription() + "|" +rest.getId());
+                    params.put("user_id", "" + u.getId());
+                    params.put("stars", "" + review.getStars());
+                    params.put("description", "" + review.getDescription());
+                    params.put("restaurant_id", "" + rest.getId());
+                    return params;
+                }
+            };
+            volleyQueue.add(req);
+        }
+    }
+
+    public void editReviewAPI(final Review review, Context context){
+        if (!JsonParser.isConnectionInternet(context)) {
+            Toast.makeText(context, R.string.no_internet, Toast.LENGTH_SHORT).show();
+        } else {
+
+            SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
+            StringRequest req = new StringRequest(Request.Method.PUT, sharedPreferences.getString(Public.IP, "0") + "/review/edit/" + review.getId(), new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    editReviewDB(JsonParser.parserJsonReview(response));
                     if(reviewListener != null){
                         reviewListener.onRefreshReviewDetails(RestaurantDetailsActivity.ADD);
                     }

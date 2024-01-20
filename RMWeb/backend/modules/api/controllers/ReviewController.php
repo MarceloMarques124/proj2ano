@@ -51,7 +51,7 @@ class ReviewController extends ActiveController
 
     public function actionCreate()
     {
-        $request = Yii::$app->request->post()();
+        $request = Yii::$app->request->post();
 
         $review = new Review();
         $review->user_id = $request->user_id;
@@ -65,5 +65,25 @@ class ReviewController extends ActiveController
         } else {
             return ['status' => 'error', 'message' => 'Failed to create review.', 'errors' => $review->errors];
         }
+    }
+
+    public function actionEdit($id)
+    {
+        $request = Yii::$app->getRequest()->getBodyParams();
+
+        $review = Review::findOne($id);
+        $review->user_id = $request['user_id'];
+        $review->restaurant_id = $request['restaurant_id'];
+        $review->stars = $request['stars'];
+        $review->description = $request['description'];
+
+
+        // Verificar se os atributos estão corretamente atribuídos
+        if ($review->validate() && $review->save()) {
+            return ['status' => 'success', 'message' => 'Review updated successfully.'];
+        } else {
+            return ['status' => 'error', 'message' => 'Failed to update review.', 'errors' => $review->errors];
         }
+
+    }
 }

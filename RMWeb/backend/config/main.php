@@ -73,7 +73,11 @@ return [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/review',
                     'extraPatterns' => [
-                        'POST create' => 'create'
+                        'POST create' => 'create',
+                        'POST edit/{id}' => 'edit'
+                    ],
+                    'tokens' =>[
+                        '{id}' => '<id:\\d+>'
                     ],
                 ],
                 [

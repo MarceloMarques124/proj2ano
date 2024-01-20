@@ -2,7 +2,7 @@ package com.example.restmanager.Model;
 
 public class Review {
     private int id;
-    private String userId;
+    private String userName;
     private String restId;
     private int stars;
     private String description;
@@ -14,7 +14,7 @@ public class Review {
 
     public Review(int id, String userId, String restId, int stars, String description) {
         this.id = id;
-        this.userId = userId;
+        this.userName = userId;
         this.restId = restId;
         this.stars = stars;
         this.description = description;
@@ -29,11 +29,11 @@ public class Review {
     }
 
     public String getUserId() {
-        return userId;
+        return userName;
     }
 
     public void setUserId(String userId) {
-        this.userId = userId;
+        this.userName = userId;
     }
 
     public String getRestId() {

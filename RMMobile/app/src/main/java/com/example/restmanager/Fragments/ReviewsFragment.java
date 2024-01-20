@@ -1,6 +1,12 @@
 package com.example.restmanager.Fragments;
 
+import static android.content.Intent.getIntent;
+
+import static com.example.restmanager.Activities.ReviewDetailsActivity.ID_REST;
+import static com.example.restmanager.Activities.ReviewDetailsActivity.ID_REVIEW;
+
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -11,23 +17,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
-import com.example.restmanager.Adapters.RestaurantsAdapter;
+import com.android.volley.Response;
+import com.example.restmanager.Activities.RestaurantDetailsActivity;
+import com.example.restmanager.Activities.ReviewDetailsActivity;
 import com.example.restmanager.Adapters.ReviewsAdapter;
-import com.example.restmanager.Listeners.ReviewListener;
 import com.example.restmanager.Listeners.ReviewsListener;
+import com.example.restmanager.Model.Restaurant;
 import com.example.restmanager.Model.Review;
 import com.example.restmanager.Model.User;
-import com.example.restmanager.R;
 import com.example.restmanager.Singleton.SingletonRestaurantManager;
 import com.example.restmanager.Utils.Public;
 import com.example.restmanager.databinding.FragmentReviewsBinding;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
-public class ReviewsFragment extends Fragment {
+public class ReviewsFragment extends Fragment implements ReviewsListener {
 
     private FragmentReviewsBinding binding;
     private ArrayList<Review> reviews;
+    private ArrayList<Review> userReviews;
+    private Restaurant restaurant;
 
     public ReviewsFragment() {
         // Required empty public constructor
@@ -39,21 +49,38 @@ public class ReviewsFragment extends Fragment {
         binding = FragmentReviewsBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
+
+        SingletonRestaurantManager.getInstance(getContext()).setReviewsListener(this);
+        SingletonRestaurantManager.getInstance(getContext()).getReviewsAPI(getContext());
+
         binding.lvUserReviews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //dados da review
+                Review r = SingletonRestaurantManager.getInstance(getContext()).getReviewById((int) id);
+                Intent intent = new Intent(getContext(), ReviewDetailsActivity.class);
+                intent.putExtra(ID_REVIEW, (int) id);
+                startActivityForResult(intent, ReviewDetailsActivity.EDIT);
             }
         });
 
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
 
-        User u = SingletonRestaurantManager.getInstance(getContext()).getUserBD(sharedPreferences.getString(Public.TOKEN, "0"));
-
-        reviews = SingletonRestaurantManager.getInstance(getContext()).getReviewsById(u.getName());
-
-        binding.lvUserReviews.setAdapter(new ReviewsAdapter(getContext(), reviews));
 
         return view;
+    }
+
+    @Override
+    public void onRefreshReviewsList(ArrayList<Review> reviews) {
+        ArrayList<Review> auxReviews = new ArrayList<>();
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
+        User u = SingletonRestaurantManager.getInstance(getContext()).getUserBD(sharedPreferences.getString(Public.TOKEN, "0"));
+        if (reviews != null) {
+
+            reviews.forEach(review ->{
+                if (Objects.equals(review.getUserId(), u.getName()))
+                    auxReviews.add(review);
+            });
+
+            binding.lvUserReviews.setAdapter(new ReviewsAdapter(getContext(), auxReviews));
+        }
     }
 }

@@ -31,8 +31,10 @@ public class ReviewDetailsActivity extends AppCompatActivity implements Restaura
     private ActivityReviewDetailsBinding binding;
     Restaurant restaurant;
     User user;
+    Review review;
 
     public final static String ID_REST = "ID_RESTAURANT";
+    public final static String ID_REVIEW = "ID_REVIEW";
 
 
     @Override
@@ -43,12 +45,70 @@ public class ReviewDetailsActivity extends AppCompatActivity implements Restaura
         binding = ActivityReviewDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        int id = getIntent().getIntExtra(String.valueOf(ID_REST), 0);
-        restaurant = SingletonRestaurantManager.getInstance(getApplicationContext()).getRestaurant(id);
-        binding.tvRestName.setText(restaurant.getName());
-        binding.tvEmail.setText(restaurant.getEmail());
-        binding.tvPhone.setText(restaurant.getMobileNumber());
-        binding.tvLocal.setText(restaurant.getAddress());
+        int reviewid = getIntent().getIntExtra(String.valueOf(ID_REVIEW), 0);
+        review = SingletonRestaurantManager.getInstance(getApplicationContext()).getReviewById(reviewid);
+
+        if (review != null){
+            int idRest = SingletonRestaurantManager.getInstance(getApplicationContext()).getRestaurantByName(review.getRestId()).getId();
+            restaurant = SingletonRestaurantManager.getInstance(getApplicationContext()).getRestaurant(idRest);
+            binding.tvRestName.setText(restaurant.getName());
+            binding.tvEmail.setText(restaurant.getEmail());
+            binding.tvPhone.setText(restaurant.getMobileNumber());
+            binding.tvLocal.setText(restaurant.getAddress());
+
+            System.out.println("rwview det " + review);
+
+            binding.ratingBar.setRating(review.getStars());
+            binding.etDescription.setText(review.getDescription());
+        }else{
+            int id = getIntent().getIntExtra(String.valueOf(ID_REST), 0);
+            restaurant = SingletonRestaurantManager.getInstance(getApplicationContext()).getRestaurant(id);
+            binding.tvRestName.setText(restaurant.getName());
+            binding.tvEmail.setText(restaurant.getEmail());
+            binding.tvPhone.setText(restaurant.getMobileNumber());
+            binding.tvLocal.setText(restaurant.getAddress());
+
+            //binding.etDescription.setText(review.getDescription());
+            //binding.ratingBar.setRating((float) review.getStars());
+        }
+
+        binding.btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (review != null){
+                    review.setStars((int)binding.ratingBar.getRating());
+                    review.setDescription(String.valueOf(binding.etDescription.getText()));
+
+                    SingletonRestaurantManager.getInstance(getApplicationContext()).editReviewAPI(review, getApplicationContext());
+
+                    Intent intent = new Intent();
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }else{
+                    int id = getIntent().getIntExtra(String.valueOf(ID_REST), 0);
+                    restaurant = SingletonRestaurantManager.getInstance(getApplicationContext()).getRestaurant(id);
+
+                    SharedPreferences sharedPreferences = getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
+                    String token = sharedPreferences.getString(Public.TOKEN, "0");
+
+                    user = SingletonRestaurantManager.getInstance(getApplicationContext()).getUserBD(token);
+                    restaurant = SingletonRestaurantManager.getInstance(getApplicationContext()).getRestaurant(id);
+
+                    String userId = user.getName();
+                    float stars = binding.ratingBar.getRating();
+                    String description = binding.etDescription.getText().toString();
+                    String restId = restaurant.getName();
+
+                    Toast.makeText(ReviewDetailsActivity.this, "AddApi", Toast.LENGTH_SHORT).show();
+
+                    Review review = new Review(0,userId, restId, (int)stars, description);
+                    SingletonRestaurantManager.getInstance(getApplicationContext()).addReviewApi(review, getApplicationContext(), token);
+                    Intent intent = new Intent();
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
+            }
+        });
 
     }
 
