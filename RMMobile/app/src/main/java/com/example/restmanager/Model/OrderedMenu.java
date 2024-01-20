@@ -6,6 +6,9 @@ public class OrderedMenu {
     private int orderId;
     private int quantity;
 
+    private Menu menu;
+    private Order order;
+
     public OrderedMenu() {
     }
 
@@ -42,5 +45,21 @@ public class OrderedMenu {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public void setMenu(Menu menu) {
+        this.menu = menu;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 }

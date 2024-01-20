@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.restmanager.Model.Menu;
 import com.example.restmanager.Model.Reserve;
+import com.example.restmanager.Model.Order;
+import com.example.restmanager.Model.OrderedMenu;
 import com.example.restmanager.Model.Restaurant;
 import com.example.restmanager.Model.Review;
 import com.example.restmanager.Model.User;
@@ -101,7 +103,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
 
     //region # MENU DB METHODS #
 
-    public String createMenusTable(){
+    public String createMenusTable() {
         return "CREATE TABLE " + TABLE_MENU + "(" +
                 ID + " INTEGER PRIMARY KEY, " +
                 NAME + " TEXT NOT NULL, " +
@@ -110,16 +112,16 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
                 ");";
     }
 
-    public String deleteMenusTable(){
+    public String deleteMenusTable() {
         return "DROP TABLE IF EXISTS" + TABLE_MENU;
     }
 
-    public ArrayList<Menu> getAllMenus(){
-        ArrayList<Menu> menus =  new ArrayList<>();
+    public ArrayList<Menu> getAllMenus() {
+        ArrayList<Menu> menus = new ArrayList<>();
         Cursor cursor = this.db.query(TABLE_MENU, new String[]{ID, NAME, PRICE, REST_ID}, null, null, null, null, null);
 
-        if (cursor.moveToNext()){
-            do{
+        if (cursor.moveToNext()) {
+            do {
                 Menu menu = new Menu(
                         cursor.getInt(0),
                         cursor.getString(1),
@@ -127,7 +129,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
                         cursor.getInt(3)
                 );
                 menus.add(menu);
-            }while (cursor.moveToNext());
+            } while (cursor.moveToNext());
             cursor.close();
 
         }
@@ -152,7 +154,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
 
     //region # MENU_ITEM DB METHODS #
 
-    public String createMenuItemsTable(){
+    public String createMenuItemsTable() {
         return "CREATE TABLE " + TABLE_MENU_ITEMS + "(" +
                 ID + " INTEGER PRIMARY KEY, " +
                 NAME + " TEXT NOT NULL, " +
@@ -189,11 +191,11 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
 
     public String createOrderedMenusTable() {
         return "CREATE TABLE " + TABLE_ORDERED_MENU + "(" +
-            ID + " INTEGER PRIMARY KEY, " +
-            MENU_ID + " INTEGER NOT NULL, " +
-            QUANTITY + " INTEGER NOT NULL, " +
-            ORDER_ID + " INTEGER NOT NULL" +
-            ");";
+                ID + " INTEGER PRIMARY KEY, " +
+                MENU_ID + " INTEGER NOT NULL, " +
+                QUANTITY + " INTEGER NOT NULL, " +
+                ORDER_ID + " INTEGER NOT NULL" +
+                ");";
     }
 
     public String deleteOrderedMenusTable() {
@@ -246,8 +248,8 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
 
     //region # RESTAURANT DB METHODS #
 
-    public String createRestaurantsTable(){
-        return  "CREATE TABLE " + TABLE_RESTAURANT + "(" +
+    public String createRestaurantsTable() {
+        return "CREATE TABLE " + TABLE_RESTAURANT + "(" +
                 ID + " INTEGER PRIMARY KEY, " +
                 NAME + " TEXT NOT NULL, " +
                 ADDRESS + " TEXT NOT NULL, " +
@@ -263,12 +265,12 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
         return "DROP TABLE IF EXISTS " + TABLE_RESTAURANT;
     }
 
-    public ArrayList<Restaurant> getAllRestaurants(){
+    public ArrayList<Restaurant> getAllRestaurants() {
         ArrayList<Restaurant> restaurants = new ArrayList<>();
         Cursor cursor = this.db.query(TABLE_RESTAURANT, new String[]{ID, NAME, ADDRESS, NIF, EMAIL, MOBILE_NUMBER, IMG_COVER}, null,
-                null,null, null, null);
+                null, null, null, null);
 
-        if (cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             do {
                 Restaurant restaurant = new Restaurant(
                         cursor.getInt(0),
@@ -279,7 +281,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
                         cursor.getString(5)/*,
                               cursor.getString(6)*/);
                 restaurants.add(restaurant);
-            }while (cursor.moveToNext());
+            } while (cursor.moveToNext());
             cursor.close();
         }
         return restaurants;
@@ -305,7 +307,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
 
     //region # REVIEW DB METHODS #
 
-    public  String createReviewsTable() {
+    public String createReviewsTable() {
         return "CREATE TABLE " + TABLE_REVIEW + "(" +
                 ID + " INTEGER PRIMARY KEY, " +
                 USER_ID + " INTEGER NOT NULL, " +
@@ -330,7 +332,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
         this.db.insert(TABLE_REVIEW, null, values);
     }
 
-    public boolean editReview(Review r){
+    public boolean editReview(Review r) {
         ContentValues values = new ContentValues();
 
         values.put(USER_ID, r.getUserId());
@@ -338,14 +340,14 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
         values.put(STARS, r.getStars());
         values.put(DESCRIPTION, r.getDescription());
 
-        return this.db.update(TABLE_REVIEW, values, ID + "= ?",  new String[]{"" + r.getId()}) > 0;
+        return this.db.update(TABLE_REVIEW, values, ID + "= ?", new String[]{"" + r.getId()}) > 0;
     }
 
     public void removeAllReviews() {
         this.db.delete(TABLE_REVIEW, null, null);
     }
 
-    public boolean removeReview(int id){
+    public boolean removeReview(int id) {
         return (this.db.delete(TABLE_REVIEW, ID + "= ?", new String[]{"" + id}) == 1);
     }
 
@@ -353,7 +355,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
 
     //region # TABLE DB METHODS #
 
-    public String createTablesTable(){
+    public String createTablesTable() {
         return "CREATE TABLE " + TABLE_TABLE + "(" +
                 ID + " INTEGER PRIMARY KEY, " +
                 DESCRIPTION + " TEXT NOT NULL, " +
@@ -369,7 +371,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
 
     //region # USER DB METHODS #
 
-    public String createUsersTable(){
+    public String createUsersTable() {
         return "CREATE TABLE " + TABLE_USER + "(" +
                 ID + " INTEGER PRIMARY KEY, " +
                 USERNAME + " TEXT NOT NULL, " +
@@ -400,7 +402,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
         this.db.insert(TABLE_USER, null, values);
     }
 
-    public boolean editUserDB(User u){
+    public boolean editUserDB(User u) {
         ContentValues values = new ContentValues();
 
         values.put(ID, u.getId());
@@ -413,7 +415,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
         values.put(POSTAL_CODE, u.getPostalCode());
         values.put(NIF, u.getNif());
 
-        System.out.println("---> VALUES: " + values.toString());
+        System.out.println("---> VALUES: " + values);
 
         return this.db.update(TABLE_USER, values, TOKEN + "= ?", new String[]{"" + u.getToken()}) > 0;
     }
@@ -451,7 +453,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
 
     //region # ZONE DB METHODS #
 
-    public String createZonesTable(){
+    public String createZonesTable() {
         return "CREATE TABLE " + TABLE_ZONE + "(" +
                 ID + " INTEGER PRIMARY KEY, " +
                 NAME + " TEXT NOT NULL, " +
@@ -482,6 +484,103 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
     }
 
     //endregion
+
+    //#region # ORDER DB METHODS #
+
+    /**
+     * Receber todas os pedidos da base de dados
+     *
+     * @return Todos os pedidos
+     */
+    public ArrayList<Order> getAllOrders() {
+        ArrayList<Order> orders = new ArrayList<>();
+        String[] columns = new String[]{ID, USER_ID, REST_ID, PRICE, STATUS};
+
+        Cursor cursor = this.db.query(TABLE_ORDER, columns, null,
+                null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+
+                Order order = new Order(
+                        cursor.getInt(0),
+                        cursor.getInt(1),
+                        cursor.getInt(2),
+                        cursor.getFloat(3),
+                        cursor.getInt(4)
+                );
+
+                orders.add(order);
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+        return orders;
+    }
+
+    /**
+     * Adicionar pedido à base de dados
+     *
+     * @param order Pedido a Adicionar
+     */
+    public void addOrderDB(Order order) {
+        ContentValues values = new ContentValues();
+
+        values.put(USER_ID, order.getUserId());
+        values.put(REST_ID, order.getRestId());
+        values.put(PRICE, order.getPrice());
+        values.put(STATUS, order.getStatus());
+
+        this.db.insert(TABLE_ORDER, null, values);
+    }
+
+    /**
+     * Apagar todos os pedidos da base de dados
+     */
+    public void removeAllOrders() {
+        this.db.delete(TABLE_ORDER, null, null);
+    }
+
+    public ArrayList<OrderedMenu> getAllOrderedMenus() {
+        ArrayList<OrderedMenu> orderedMenus = new ArrayList<>();
+        String[] columns = new String[]{ID, MENU_ID, QUANTITY, ORDER_ID};
+
+        Cursor cursor = this.db.query(TABLE_ORDERED_MENU, columns, null,
+                null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+
+                OrderedMenu orderedMenu = new OrderedMenu(
+                        cursor.getInt(0),
+                        cursor.getInt(1),
+                        cursor.getInt(3),
+                        cursor.getInt(2)
+                );
+
+                orderedMenus.add(orderedMenu);
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+        return orderedMenus;
+    }
+
+    public void addOrderedMenuDB(OrderedMenu orderedMenu) {
+        ContentValues values = new ContentValues();
+
+        values.put(MENU_ID, orderedMenu.getMenuId());
+        values.put(QUANTITY, orderedMenu.getQuantity());
+        values.put(ORDER_ID, orderedMenu.getOrderId());
+
+        this.db.insert(TABLE_ORDERED_MENU, null, values);
+    }
+
+    public void removeAllOrderedMenus() {
+        this.db.delete(TABLE_ORDERED_MENU, null, null);
+    }
+
+    //#endregion # ORDER DB METHODS #
 
     //region # SIGNUP DB METHODS #
 
