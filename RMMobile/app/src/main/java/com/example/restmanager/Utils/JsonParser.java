@@ -7,10 +7,12 @@ import android.net.NetworkInfo;
 import com.example.restmanager.Model.Menu;
 import com.example.restmanager.Model.Order;
 import com.example.restmanager.Model.OrderedMenu;
+import com.example.restmanager.Model.Reserve;
 import com.example.restmanager.Model.Restaurant;
 import com.example.restmanager.Model.Review;
 import com.example.restmanager.Model.Signup;
 import com.example.restmanager.Model.User;
+import com.example.restmanager.Model.Zone;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -82,18 +84,34 @@ public class JsonParser {
                 JSONObject review = (JSONObject) response.get(i);
 
                 int idReview = review.getInt("id");
-                int userID = review.getInt("user_id");
-                int restID = review.getInt("restaurant_id");
+                String user = review.getString("user_name");
+                String restaurant = review.getString("restaurant_name");
                 int stars = review.getInt("stars");
                 String description = review.getString("description");
 
-                Review r = new Review(idReview, userID, restID, stars, description);
+                Review r = new Review(idReview, user, restaurant, stars, description);
                 reviews.add(r);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return reviews;
+    }
+
+    public static Review parserJsonReview(String response) {
+        Review auxReview = null;
+        try {
+            JSONObject review = new JSONObject(response);
+            int idReview = review.getInt("id");
+            String user = review.getString("user_name");
+            String restaurant = review.getString("restaurant_name");
+            int stars = review.getInt("stars");
+            String description = review.getString("description");
+            auxReview = new Review(idReview, user, restaurant, stars, description);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return auxReview;
     }
 
 
@@ -114,12 +132,13 @@ public class JsonParser {
             int nif = login.getInt("nif");
             String token = login.getString("token");
 
+
             user = new User(id, username, name, email, address, door_number, postal_code, nif, token);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-
         return user;
+
     }
 
     public static Signup jsonSignupParser(String response) {
@@ -148,6 +167,59 @@ public class JsonParser {
         return user;
     }
 
+    public static ArrayList<Zone> jsonZonesParser(JSONArray response) {
+        ArrayList<Zone> zones = new ArrayList<>();
+
+        try {
+            for (int i = 0; i < response.length(); i++) {
+                JSONObject zone = (JSONObject) response.get(i);
+
+                System.out.println("---> Zone (JsonZonesParser - antes do add): " + zone);
+
+                int idZone = zone.getInt("id");
+                String name = zone.getString("name");
+                String description = zone.getString("description");
+                int restaurant_id = zone.getInt("restaurant_id");
+                int capacity = zone.getInt("capacity");
+
+                Zone z = new Zone(idZone, name, restaurant_id, description, capacity);
+                zones.add(z);
+            }
+            zones.forEach(zone1 -> {
+                System.out.println("---> " + zone1.getName());
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return zones;
+    }
+
+    public static ArrayList<Reserve> jsonReservesParser(JSONArray response) {
+        ArrayList<Reserve> reserves = new ArrayList<>();
+
+        try {
+            for (int i = 0; i < response.length(); i++) {
+                JSONObject reserve = (JSONObject) response.get(i);
+
+                int id = reserve.getInt("id");
+                int userId = reserve.getInt("user_id");
+                String date = reserve.getString("date");
+                String time = reserve.getString("time");
+                String remarks = reserve.getString("remarks");
+                int restId = reserve.getInt("restaurant_id");
+                int peopleNumber = reserve.getInt("people_number");
+                int tablesNumber = reserve.getInt("tables_number");
+
+                Reserve r = new Reserve(id, userId, date, time, remarks, restId, peopleNumber);
+                reserves.add(r);
+
+            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        return reserves;
+    }
+    
     /**
      * Converter pedidos de JSON para a Classe Order
      *

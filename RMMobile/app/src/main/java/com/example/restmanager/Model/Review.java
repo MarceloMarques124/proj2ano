@@ -2,39 +2,45 @@ package com.example.restmanager.Model;
 
 public class Review {
     private int id;
-    private int userId;
-    private int restId;
+    private String userName;
+    private String restId;
     private int stars;
     private String description;
+    private  static int autoIncrementId = 1;
+
 
     public Review() {
     }
 
-    public Review(int id, int userId, int restId, int stars, String description) {
+    public Review(int id, String userId, String restId, int stars, String description) {
         this.id = id;
-        this.userId = userId;
+        this.userName = userId;
         this.restId = restId;
         this.stars = stars;
         this.description = description;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getId() {
         return id;
     }
 
-    public int getUserId() {
-        return userId;
+    public String getUserId() {
+        return userName;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUserId(String userId) {
+        this.userName = userId;
     }
 
-    public int getRestId() {
+    public String getRestId() {
         return restId;
     }
 
-    public void setRestId(int restId) {
+    public void setRestId(String restId) {
         this.restId = restId;
     }
 

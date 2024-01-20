@@ -44,14 +44,16 @@ public class HomepageFragment extends Fragment implements RestaurantsListener{
 
        // restaurants = SingletonRestaurantManager.getInstance(getContext()).getRestaurants();
 
-       // restaurants = SingletonRestaurantManager.getInstance(getContext()).getRestaurantsAPI();r
-//        binding.lvRestaurants.setAdapter(new RestaurantsAdapter(getContext(), restaurants));
+       // restaurants = SingletonRestaurantManager.getInstance(getContext()).getRestaurantsAPI();
+        // binding.lvRestaurants.setAdapter(new RestaurantsAdapter(getContext(), restaurants));
 
         binding.lvRestaurants.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Restaurant rest = SingletonRestaurantManager.getInstance(getContext()).getRestaurant((int) id);
                 Intent intent = new Intent(getContext(), RestaurantDetailsActivity.class); //Details de Restaurant
-                intent.putExtra(ID_RESTAURANT, (int)id);
+
+                intent.putExtra(ID_RESTAURANT, rest.getName());
                 startActivity(intent);
 
             }
@@ -88,7 +90,6 @@ public class HomepageFragment extends Fragment implements RestaurantsListener{
                         tempRest.add(r);
                     }
                 }
-
                 binding.lvRestaurants.setAdapter(new RestaurantsAdapter(getContext(), tempRest));
                 return true;
             }

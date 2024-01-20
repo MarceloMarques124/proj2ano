@@ -71,13 +71,23 @@ return [
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'api/review'
+                    'controller' => 'api/review',
+                    'extraPatterns' => [
+                        'POST create' => 'create',
+                        'POST edit/{id}' => 'edit'
+                    ],
+                    'tokens' =>[
+                        '{id}' => '<id:\\d+>'
+                    ],
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/zone',
                     'extraPatterns' => [
-                        'GET {id}' => 'zonesbyrest'
+                        'GET zonesbyrest/{id}' => 'zonesbyrest'
+                    ],
+                    'tokens' =>[
+                        '{id}' => '<id:\\d+>'
                     ],
                 ],
                 [
@@ -105,7 +115,17 @@ return [
                         'POST userbytoken' => 'userbytoken',
                         'POST login' => 'login',
                         'POST signup' => 'signup',
-                        'PUT {id}' => 'edit'
+                        'PUT edit/{id}' => 'edit'
+                    ],
+                    'tokens' =>[
+                        '{id}' => '<id:\\d+>'
+                    ],
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/reservation',
+                    'extraPatterns' => [
+                        'GET index' => 'index'
                     ],
                 ],
             ],

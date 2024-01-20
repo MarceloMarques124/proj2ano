@@ -76,13 +76,11 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Object response){
                 SharedPreferences sharedPreferences = getApplication().getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
-                System.out.println("---> I'm here" + Public.TOKEN);
                 if (sharedPreferences.getString(Public.TOKEN, "0").matches("TOKEN")){
 
                     System.out.println("---> Login not valid;" + sharedPreferences.getString(Public.TOKEN, "0"));
                     //  return true;
                 }else{
-                    System.out.println("---> Login valido;" + sharedPreferences.getString(Public.TOKEN, "0"));
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.putExtra(MainActivity.USERNAME, username);
                     startActivity(intent);

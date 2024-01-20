@@ -39,42 +39,19 @@ public class ServerConnectionActivity extends AppCompatActivity {
     }
 
     public void onClickConnect(View view){
-        Toast.makeText(this, "CONAN OSIRIS DA WISH", Toast.LENGTH_SHORT).show();
-        /*if (isValid((EditText) binding.etFirstThree, 3)){
-            System.out.println("---> AQUI: " + binding.etFirstThree.getText());
-            if (isValid((EditText) binding.etSecondThree, 2)){
-                System.out.println("---> AQUI: " + binding.etSecondThree.getText());
-                if (isValid((EditText) binding.etThirdThree, 2)){
-                    System.out.println("---> AQUI: " + binding.etThirdThree.getText());
-                    if (isValid((EditText) binding.etFourthThree, 3)){*/
-                        System.out.println("---> AQUI: " + binding.etFourthThree.getText());
-                        System.out.println("---> AQUIº");
-                        ip = binding.etFirstThree.getText().toString() + "." + binding.etSecondThree.getText() + "." +
-                                binding.etThirdThree.getText().toString() + "." + binding.etFourthThree.getText().toString() + ":" + binding.etPort.getText();
-                        System.out.println("--->" + ip + ":" + binding.etPort.getText().toString());
-                        SharedPreferences sharedPreferences = getApplication().getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
+        System.out.println("---> AQUI: " + binding.etFourthThree.getText());
+        System.out.println("---> AQUIº");
+        ip = binding.etFirstThree.getText().toString() + "." + binding.etSecondThree.getText() + "." +
+                binding.etThirdThree.getText().toString() + "." + binding.etFourthThree.getText().toString() + ":" + binding.etPort.getText();
+        System.out.println("--->" + ip + ":" + binding.etPort.getText().toString());
+        SharedPreferences sharedPreferences = getApplication().getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
 
-                        editor.putString(Public.IP, ip);
-                        editor.apply();
-                        System.out.println("---> Public.IP: " + Public.IP + "\n ---> ip: " + ip);
+        editor.putString(Public.IP, "http://" + ip + "/api");
+        editor.apply();
+        System.out.println("---> Public.IP: " + Public.IP + "\n ---> ip: " + ip);
 
-                        //verifica se user logged. Se sim, vai para main page
-                        /*Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                        startActivity(intent);
-                        onStop();*/
-                    /*}else{
-                        binding.etFourthThree.setError("Not Valid");
-                    }
-                }else{
-                    binding.etThirdThree.setError("Not Valid");
-                }
-            }else{
-                binding.etSecondThree.setError("Not Valid");
-            }
-        }else{
-            binding.etFirstThree.setError("Not Valid");
-        }*/
+
     }
 
     private boolean isValid(EditText number, int max){

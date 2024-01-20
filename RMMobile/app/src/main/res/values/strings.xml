@@ -52,4 +52,6 @@
     <string name="review">Review</string>
     <string name="addreview">Add Review</string>
     <string name="navLogout">Sign out</string>
+    <string name="no_internet">no internet</string>
+    <string name="btnSelect">Select Zone</string>
 </resources>
