@@ -7,6 +7,6 @@ import java.util.ArrayList;
 
 public interface OrdersListener {
     void onRefreshTakeAwayOrdersList(ArrayList<Order> orders);
-
     void onRefreshOrderedMenusList(ArrayList<OrderedMenu> orderedMenus);
+
 }

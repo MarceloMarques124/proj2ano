@@ -7,7 +7,7 @@ use common\models\Reservation;
 use common\models\User;
 use Yii;
 
-class ReviewController extends ActiveController
+class ReservationController extends ActiveController
 {
     public $modelClass = 'common\models\Reservation';
 
@@ -28,9 +28,9 @@ class ReviewController extends ActiveController
  
      public function actionIndex()
      {
-        $data = Yii::$app->request->get(); // Removido o 'load', pois 'get()' já retorna um array
-        $user = User::findOne(['token' => $data->token]);
-
+        $data = Yii::$app->request->get('token');
+        $user = User::findByVerificationToken($data);
+        var_dump($user);die;
         if ($user) {
             $reserves = Reservation::find()->where(['user_id' => $user->id])->all();
 

@@ -483,6 +483,30 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
         this.db.insert(TABLE_ZONE, null, values);
     }
 
+    public ArrayList<Zone> getAllZones(){
+        ArrayList<Zone> zones = new ArrayList<>();
+        String[] columns = new String[]{ID, NAME, USER_ID, REST_ID, CAPACITY};
+
+        Cursor cursor = this.db.query(TABLE_ZONE, columns, null,
+                null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Zone zone = new Zone(
+                        cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getInt(2),
+                        cursor.getString(3),
+                        cursor.getInt(4)
+                );
+                zones.add(zone);
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+        return zones;
+    }
+
     //endregion
 
     //#region # ORDER DB METHODS #
