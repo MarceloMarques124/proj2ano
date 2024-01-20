@@ -110,6 +110,9 @@ return [
                         'POST signup' => 'signup',
                         'PUT {id}' => 'edit'
                     ],
+                    'tokens' =>[
+                        '{id}' => '<id:\\d+>'
+                    ],
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',

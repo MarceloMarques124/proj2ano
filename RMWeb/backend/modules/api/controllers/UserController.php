@@ -28,8 +28,27 @@ class UserController extends ActiveController
     
      public function actionIndex()
      {
-         return $this->render('index');
+         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+         $users = User::find()->all();
+         $responseArray = [];
+     
+         foreach ($users as $user) {
+             $userInfo = UserInfo::findOne($user->id);
+     
+             $responseArray[] = [
+                 'id' => $userInfo->id,
+                 'username' => $user->username,
+                 'name' => $userInfo->name,
+                 'email' => $user->email,
+                 'address' => $userInfo->address,
+                 'door_number' => $userInfo->door_number,
+                 'postal_code' => $userInfo->postal_code,
+                 'nif' => $userInfo->nif,
+             ];
+         }
+         return $responseArray;
      }
+     
 
      public function actionLogin(){
         $form = new LoginForm();
@@ -76,54 +95,36 @@ class UserController extends ActiveController
         }
     }
 
-    public function actionUserbytoken(){
-        $user = User::findOne(['verification_token' => Yii::$app->request->post()]);
-        
-        $userInfo = UserInfo::findOne(['user_id' => $user->id]);
-        $responseArray =[
-            'id' => $userInfo->id,
-            'name' => $userInfo->name,
-            'email' => $user->email,
-            'address' => $userInfo->address,
-            'door_number' => $userInfo->door_number,
-            'postal_code' => $userInfo->postal_code,
-            'nif' => $userInfo->nif,
-            'token' => $user->verification_token,
-        ];
-        return $responseArray;
-    }
-    
-    public function actionEdit()
+    public function actionEditUser($id)
     {
-        $userId = Yii::$app->user->id; // Obtém o ID do usuário autenticado
-        $user = User::findOne($userId);
-        $userInfo = UserInfo::findOne(['user_id' => $userId]);
+        $user = User::findOne($id);
+        
+        if (!$user) {
+            Yii::$app->response->statusCode = 404;
+            return "User not found";
+        }
 
-        // Verifica se o usuário e as informações do usuário existem
-        if ($user && $userInfo) {
-            $queryParams = Yii::$app->request->getQueryParams();
+        $userInfo = UserInfo::findOne($id);
 
-            // Define os campos que podem ser atualizados
-            $allowedFields = ['name', 'username', 'email', 'nif', 'address', 'doornumber', 'postal_code'];
+        if (!$userInfo) {
+            Yii::$app->response->statusCode = 404;
+            return "UserInfo not found";
+        }
 
-            foreach ($queryParams as $key => $value) {
-                // Verifica se o campo está na lista de campos permitidos
-                if (in_array($key, $allowedFields)) {
-                    $user->$key = $value;
-                    if (property_exists($userInfo, $key)) {
-                        $userInfo->$key = $value;
-                    }
-                }
-            }
+        $postData = Yii::$app->request->post();
 
-            // Salva as alterações nos modelos
+        if ($user->load($postData, '') && $userInfo->load($postData, '')) {
             if ($user->save() && $userInfo->save()) {
-                return ['status' => 'success', 'message' => 'Profile updated successfully'];
+                Yii::$app->response->statusCode = 200;
+                return "User and UserInfo updated successfully";
             } else {
-                return ['status' => 'error', 'message' => 'Failed to update profile', 'errors' => array_merge($user->errors, $userInfo->errors)];
+                Yii::$app->response->statusCode = 422;
+                return "Failed to update User and UserInfo";
             }
         } else {
-            return ['status' => 'error', 'message' => 'User not found'];
+            Yii::$app->response->statusCode = 422;
+            return "Invalid data provided";
         }
     }
+
 }
