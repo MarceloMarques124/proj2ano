@@ -25,6 +25,12 @@ class UserController extends ActiveController
      * Renders the index view for the module
      * @return string
      */
+
+     public function actions(){
+        $actions = parent::actions();         //sem utilização
+        unset($actions['index']);
+     }
+
     
      public function actionIndex()
      {
@@ -95,7 +101,7 @@ class UserController extends ActiveController
         }
     }
 
-    public function actionEditUser($id)
+    public function actionEdit($id)
     {
         $user = User::findOne($id);
         

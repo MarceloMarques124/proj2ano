@@ -108,7 +108,7 @@ return [
                         'POST userbytoken' => 'userbytoken',
                         'POST login' => 'login',
                         'POST signup' => 'signup',
-                        'PUT {id}' => 'edit'
+                        'PUT edit/{id}' => 'edit'
                     ],
                     'tokens' =>[
                         '{id}' => '<id:\\d+>'
