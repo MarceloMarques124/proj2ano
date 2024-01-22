@@ -54,4 +54,5 @@
     <string name="navLogout">Sign out</string>
     <string name="no_internet">no internet</string>
     <string name="btnSelect">Select Zone</string>
+    <string name="txtRemark">Remarks</string>
 </resources>

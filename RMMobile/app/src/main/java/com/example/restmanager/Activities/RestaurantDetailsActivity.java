@@ -45,11 +45,8 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Revi
 
         binding = ActivityRestaurantDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        System.out.println("---> ID"  + ID_RESTAURANT);
         String name = getIntent().getStringExtra(ID_RESTAURANT);
-        System.out.println("---> name " + name);
         restaurant = SingletonRestaurantManager.getInstance(getApplicationContext()).getRestaurantByName(name);
-        System.out.println("---> resta  " + restaurant);
       //  binding.imgCover.setImageResource(restaurant.getCover());
         binding.tvEmail.setText(restaurant.getEmail());
         binding.tvRestName.setText(restaurant.getName());
@@ -65,7 +62,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Revi
 
 
     public void onClickReserve(View view){
-        Toast.makeText(this, "Reservation", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getApplicationContext(), ReserveActivity.class);;
         intent.putExtra(ID_RESTAURANT, restaurant.getId());
         startActivity(intent);

@@ -5,6 +5,7 @@ namespace backend\modules\api\controllers;
 use yii\rest\ActiveController;
 use common\models\Reservation;
 use \common\models\User;
+use DateTime;
 use Yii;
 
 class ReservationController extends ActiveController
@@ -49,19 +50,25 @@ class ReservationController extends ActiveController
                 ];
             }
 
-            return $result;
         } else {
             return ['error' => 'User not found'];
         }
+            return $result;
     }
 
     public function actionCreate()
     {
         $request = Yii::$app->getRequest()->getBodyParams();
 
+        $dateTimeString = $request['date'] . ' ' . $request['time'];
+
+        // Create a DateTime object
+        $dateTime = DateTime::createFromFormat('Y-m-d H:i:s', $dateTimeString);
+
+
         $reserve = new Reservation();
         $reserve->tables_number = $request['tables_number'];
-        $reserve->date_time = $request['datetime'];
+        $reserve->date_time = $dateTime->format('Y-m-d H:i:s'); // Format as per your database column type
         $reserve->people_number = $request['people_number'];
         $reserve->remarks = $request['remarks'];
         $reserve->user_id = $request['user_id'];

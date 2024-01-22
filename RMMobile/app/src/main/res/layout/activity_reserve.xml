@@ -72,7 +72,14 @@
             android:inputType="time"
             android:textSize="14sp" />
 
-        <!-- ... Restante do layout ... -->
+        <EditText
+            android:id="@+id/etRemark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:gravity="start|top"
+            android:inputType="textMultiLine"
+            android:hint="@string/txtRemark" />
 
     </LinearLayout>
 
@@ -83,7 +90,6 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:backgroundTint="@color/green"
-        android:src="@drawable/ic_check"
-        tools:ignore="SpeakableTextPresentCheck" />
+        android:src="@drawable/ic_check" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

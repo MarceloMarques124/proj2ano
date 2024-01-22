@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.restmanager.Listeners.ZonesListener;
 import com.example.restmanager.Model.Reserve;
+import com.example.restmanager.Model.Restaurant;
 import com.example.restmanager.Model.User;
 import com.example.restmanager.Model.Zone;
 import com.example.restmanager.R;
@@ -118,16 +119,19 @@ public class ReserveActivity extends AppCompatActivity implements ZonesListener{
             public void onClick(View v) {
                 SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
                 User u = SingletonRestaurantManager.getInstance(getApplicationContext()).getUserBD(sharedPreferences.getString(Public.TOKEN, "55"));
+                Restaurant rest = SingletonRestaurantManager.getInstance(getApplicationContext()).getRestaurant(id);
                 int people = Integer.parseInt(binding.etnPeopleNumber.getText()+"");
                 String time = binding.pickTime.getText().toString();
                 String date = binding.pickDate.getText().toString();
                 int idzone = binding.radioZones.getCheckedRadioButtonId();
                 Toast.makeText(ReserveActivity.this, idzone+"", Toast.LENGTH_SHORT).show();
-                String remark = "Comidaa";
+                String remark = binding.etRemark.getText().toString();
                 //id pedido a cima é rest
-                System.out.println("---> fgsea" + 0+ "\\" + u.getId()+"\\" + date+"\\" + time+remark+"\\" +idzone+"\\" + id+ "\\" +0);
-                Reserve r = new Reserve(0, u.getId()+"", date, time, remark, idzone, id, 0);
+                System.out.println("---> fgsea" + 0 + " | " + u.getId() + " | " + date + " | " + time + " | " + remark + " | " + idzone + " | " + id + " | " + 0);
+                Reserve r = new Reserve(0, u.getId()+"", date, time, remark, idzone, rest.getId()+"", people);
 
+                System.out.println("---> Reserve: " + r.getId() + " | " + r.getDate() + " | " + r.getTime() + " | " + r.getTablesNumber() + " | " +
+                        r.getUserId() + " | " + r.getZone() + " | " + r.getRestId() + " | " + r.getRemarks() + " | " + r.getPeopleNumber());
                 SingletonRestaurantManager.getInstance(getApplicationContext()).addReserveAPI(r, getApplicationContext());
 
                 startActivity(new Intent(getApplicationContext(),MainActivity.class));

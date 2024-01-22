@@ -546,7 +546,11 @@ public class SingletonRestaurantManager {
             ordersListener.onRefreshOrderedMenusList(orderedMenus);
         }
 
-        JsonArrayRequest requestOrders = new JsonArrayRequest(Request.Method.GET, apiUrl + "/orders", null,
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
+        String token = sharedPreferences.getString(Public.TOKEN, "token");
+
+
+        JsonArrayRequest requestOrders = new JsonArrayRequest(Request.Method.GET, apiUrl + "/orders/?token=" + token, null,
                 response -> {
                     orders = JsonParser.jsonOrdersParser(response);
 
@@ -555,18 +559,7 @@ public class SingletonRestaurantManager {
                 },
                 error -> System.out.println("--> Restaurants error: " + error));
 
-
-        JsonArrayRequest requestOrderedMenus = new JsonArrayRequest(Request.Method.GET, apiUrl + "/orderedmenus", null,
-                response -> {
-                    orderedMenus = JsonParser.jsonOrderedMenusParser(response);
-
-                    addOrderedMenusDB(orderedMenus);
-                    onRequestsCompleted();
-                },
-                error -> System.out.println("--> OrderedMenus error: " + error));
-
         volleyQueue.add(requestOrders);
-        volleyQueue.add(requestOrderedMenus);
     }
 
     int completedRequestsCount = 0;
@@ -854,8 +847,10 @@ public class SingletonRestaurantManager {
         }
     }
 
-    public void addReserveAPI(Reserve reserve, Context context){
+    public void addReserveAPI(final Reserve reserve, Context context){
         System.out.println("---> Entrei aqui");
+        System.out.println("---> Reserve: " + reserve.getId() + " | " + reserve.getDate() + " | " + reserve.getTime() + " | " + reserve.getTablesNumber() + " | " +
+                reserve.getUserId() + " | " + reserve.getZone() + " | " + reserve.getRestId() + " | " + reserve.getRemarks() + " | " + reserve.getPeopleNumber());
         if (!JsonParser.isConnectionInternet(context)) {
             Toast.makeText(context, R.string.no_internet, Toast.LENGTH_SHORT).show();
 
@@ -863,7 +858,7 @@ public class SingletonRestaurantManager {
         } else {
             SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
             String token = sharedPreferences.getString(Public.TOKEN, "TOKEN");
-            StringRequest request = new StringRequest(Request.Method.POST, sharedPreferences.getString(Public.IP, "0") + "/reservations/create/?token=" + token, new Response.Listener<String>() {
+            StringRequest request = new StringRequest(Request.Method.POST, sharedPreferences.getString(Public.IP, "0") + "/reservations/create", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     System.out.println("---> Reserves response: " + response.toString());
@@ -883,7 +878,7 @@ public class SingletonRestaurantManager {
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<>();
             //        Zone z = SingletonRestaurantManager.instance.getZone();
-                    reserve.setTablesNumber((int)Math.floor((double)reserve.getPeopleNumber()/4));
+                    reserve.setTablesNumber((int)Math.round((double)reserve.getPeopleNumber()/4));
                     params.put("tables_number", reserve.getTablesNumber());
                     params.put("date_time", JsonParser.formatDateAndTime(reserve.getDate(), reserve.getTime()));
                     params.put("people_number", reserve.getPeopleNumber()+"");
@@ -892,6 +887,8 @@ public class SingletonRestaurantManager {
                     params.put("restaurant_id", reserve.getRestId());
                     params.put("zone_id", reserve.getZone()+"");
 
+                    System.out.println("---> Reserve: " + reserve.getId() + " | " + reserve.getDate() + " | " + reserve.getTime() + " | " + reserve.getTablesNumber() + " | " +
+                            reserve.getUserId() + " | " + reserve.getZone() + " | " + reserve.getRestId() + " | " + reserve.getRemarks() + " | " + reserve.getPeopleNumber());
 
                     System.out.println("---> params: " + params);
                     return params;
