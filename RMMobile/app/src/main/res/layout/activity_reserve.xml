@@ -83,6 +83,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:backgroundTint="@color/green"
-        android:src="@drawable/ic_check" />
+        android:src="@drawable/ic_check"
+        tools:ignore="SpeakableTextPresentCheck" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -11,10 +11,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.restmanager.Activities.MainActivity;
 import com.example.restmanager.Activities.RestaurantDetailsActivity;
 import com.example.restmanager.DBHelper.RestManagerDBHelper;
 import com.example.restmanager.Listeners.MenusListener;
 import com.example.restmanager.Listeners.OrdersListener;
+import com.example.restmanager.Listeners.ReserveListener;
 import com.example.restmanager.Listeners.ReservesListener;
 import com.example.restmanager.Listeners.RestReviewsListener;
 import com.example.restmanager.Listeners.RestaurantsListener;
@@ -34,14 +36,17 @@ import com.example.restmanager.Model.Zone;
 import com.example.restmanager.R;
 import com.example.restmanager.Utils.JsonParser;
 import com.example.restmanager.Utils.Public;
+import com.google.android.material.timepicker.TimeFormat;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.IllegalFormatCodePointException;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -80,6 +85,7 @@ public class SingletonRestaurantManager {
     //region # Zones variables#
     private ArrayList<Reserve> reserves;
     private ReservesListener reservesListener;
+    private ReserveListener reserveListener;
 
     //endregion
 
@@ -99,6 +105,10 @@ public class SingletonRestaurantManager {
     }
 
     //region # Listeners Setters #
+    public void setReserveListener(ReserveListener reserveListener){
+        this.reserveListener = reserveListener;
+    }
+
     public void setZonesListener(ZonesListener zonesListener) {
         this.zonesListener = zonesListener;
     }
@@ -486,7 +496,7 @@ public class SingletonRestaurantManager {
                 public void onResponse(JSONArray response) {
 
                     zones = JsonParser.jsonZonesParser(response);
-                    addZonesDB(JsonParser.jsonZonesParser(response));
+                    addZonesDB(zones);
                     if (zonesListener != null) {
                         zonesListener.onRefreshZonesListener(zones);
                     }
@@ -845,46 +855,49 @@ public class SingletonRestaurantManager {
     }
 
     public void addReserveAPI(Reserve reserve, Context context){
+        System.out.println("---> Entrei aqui");
         if (!JsonParser.isConnectionInternet(context)) {
             Toast.makeText(context, R.string.no_internet, Toast.LENGTH_SHORT).show();
 
 
         } else {
             SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
-            String token = sharedPreferences.getString(Public.TOKEN, "token");
-            JsonArrayRequest request = new JsonArrayRequest(Request.Method.POST, sharedPreferences.getString(Public.IP, "0") + "/reserves/create", null, new Response.Listener<JSONArray>() {
+            String token = sharedPreferences.getString(Public.TOKEN, "TOKEN");
+            StringRequest request = new StringRequest(Request.Method.POST, sharedPreferences.getString(Public.IP, "0") + "/reservations/create/?token=" + token, new Response.Listener<String>() {
                 @Override
-                public void onResponse(JSONArray response) {
-                    reserves = JsonParser.jsonReservesParser(response);
-                    addReservesDB(reserves);
+                public void onResponse(String response) {
+                    System.out.println("---> Reserves response: " + response.toString());
+                    Reserve r = JsonParser.jsonReserveParser(response);
+                    addReserveDB(r);
 
-                    if (reservesListener != null) {
-                        reservesListener.onRefreshReservesList(reserves);
+                    if (reserveListener != null) {
+                        reserveListener.onRefreshReviewDetails(MainActivity.ADD);
                     }
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    System.out.println("--> Review error: " + error);
+                    System.out.println("---> Reserve error: " + error);
                 }
             }) {
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<>();
-
-                    User u = SingletonRestaurantManager.instance.getUserBD(token);
-                    Restaurant r = SingletonRestaurantManager.instance.getRestaurantByName(reserve.getRestId());
-                    Zone z = SingletonRestaurantManager.instance.getZone(reserve.getZone());
-                    reserve.setTablesNumber(reserve.getPeopleNumber()/4);
+            //        Zone z = SingletonRestaurantManager.instance.getZone();
+                    reserve.setTablesNumber((int)Math.floor((double)reserve.getPeopleNumber()/4));
                     params.put("tables_number", reserve.getTablesNumber());
-                    params.put("date_time", reserve.getDate() + reserve.getTime()+"");
+                    params.put("date_time", JsonParser.formatDateAndTime(reserve.getDate(), reserve.getTime()));
                     params.put("people_number", reserve.getPeopleNumber()+"");
                     params.put("remarks", reserve.getRemarks());
-                    params.put("user_id", u.getId()+"");
-                    params.put("restaurant_id", r.getId()+"");
-                    params.put("zone_id", z.getId()+"");
+                    params.put("user_id", reserve.getUserId());
+                    params.put("restaurant_id", reserve.getRestId());
+                    params.put("zone_id", reserve.getZone()+"");
+
+
+                    System.out.println("---> params: " + params);
                     return params;
                 }
             };
+            volleyQueue.add(request);
         }
     }
 

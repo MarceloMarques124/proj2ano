@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.example.restmanager.Listeners.ZonesListener;
 import com.example.restmanager.Model.Reserve;
@@ -65,6 +66,7 @@ public class ReserveActivity extends AppCompatActivity implements ZonesListener{
                     @Override
                     public void onPositiveButtonClick(Object selection) {
                         binding.pickDate.setText(new SimpleDateFormat("dd/MM/yyyy").format(picker.getSelection()));
+                        picker.dismiss();
                     }});
             }
         });
@@ -81,8 +83,17 @@ public class ReserveActivity extends AppCompatActivity implements ZonesListener{
                 picker.addOnPositiveButtonClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        picker.setMinute(0000);
-                        binding.pickTime.setText(picker.getHour() + ":" + picker.getMinute() + ":00");
+                        // Aqui você pode obter os minutos e horas selecionados
+                        int selectedHour = picker.getHour();
+                        int selectedMinute = picker.getMinute();
+
+                        // Configura os minutos para 0
+                        picker.setMinute(0);
+
+                        // Atualiza o texto no seu botão ou onde quer que você queira exibir o tempo
+                        binding.pickTime.setText(String.format("%02d:%02d:00", selectedHour, selectedMinute));
+                        System.out.println("---> hora: " + binding.pickTime.getText().toString());
+                        picker.dismiss();
                     }
                 });
 
@@ -108,13 +119,16 @@ public class ReserveActivity extends AppCompatActivity implements ZonesListener{
                 SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
                 User u = SingletonRestaurantManager.getInstance(getApplicationContext()).getUserBD(sharedPreferences.getString(Public.TOKEN, "55"));
                 int people = Integer.parseInt(binding.etnPeopleNumber.getText()+"");
-                String time = binding.pickTime.toString();
-                String date = binding.pickDate.toString();
+                String time = binding.pickTime.getText().toString();
+                String date = binding.pickDate.getText().toString();
                 int idzone = binding.radioZones.getCheckedRadioButtonId();
+                Toast.makeText(ReserveActivity.this, idzone+"", Toast.LENGTH_SHORT).show();
                 String remark = "Comidaa";
                 //id pedido a cima é rest
+                System.out.println("---> fgsea" + 0+ "\\" + u.getId()+"\\" + date+"\\" + time+remark+"\\" +idzone+"\\" + id+ "\\" +0);
+                Reserve r = new Reserve(0, u.getId()+"", date, time, remark, idzone, id, 0);
 
-                Reserve r = new Reserve(0, u.getName(), date, time, remark, idzone, id, 0);
+                SingletonRestaurantManager.getInstance(getApplicationContext()).addReserveAPI(r, getApplicationContext());
 
                 startActivity(new Intent(getApplicationContext(),MainActivity.class));
             }

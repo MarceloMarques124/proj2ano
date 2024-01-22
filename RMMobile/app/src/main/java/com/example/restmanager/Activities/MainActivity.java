@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public static final String USERNAME = "username";
     public static final int DELETE = 30;
+    public static final int ADD = 10;
     private NavigationView navigationView;
     private DrawerLayout drawer;
     private FragmentManager fragmentManager;
@@ -63,10 +64,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragment = new HomepageFragment();
             setTitle(item.getTitle());
         }
-        else if(item.getItemId()== R.id.navOrder){
+        /*else if(item.getItemId()== R.id.navOrder){
             fragment = new OrdersFragment();
             setTitle(item.getTitle());
-        }
+        }*/
         else if(item.getItemId()== R.id.navCart){
             fragment = new CartFragment();
             setTitle(item.getTitle());

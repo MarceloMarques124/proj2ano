@@ -18,7 +18,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class JsonParser {
 
@@ -220,6 +223,30 @@ public class JsonParser {
         }
         return reserves;
     }
+
+    public static Reserve jsonReserveParser(String response) {
+        Reserve r = null;
+
+        try {
+            JSONObject reserve = new JSONObject(response);
+
+            int id = reserve.getInt("id");
+            String userId = reserve.getString("user_id");
+            String date = reserve.getString("date");
+            String time = reserve.getString("time");
+            String zone = reserve.getString("zone_id");
+            String remarks = reserve.getString("remarks");
+            String restId = reserve.getString("restaurant_id");
+            int peopleNumber = reserve.getInt("people_number");
+            int tablesNumber = reserve.getInt("tables_number");
+
+            r = new Reserve(id, userId, date, time, remarks, Integer.parseInt(zone), restId, peopleNumber);
+
+        } catch (JSONException ex) {
+            throw new RuntimeException(ex);
+        }
+        return r;
+    }
     
     /**
      * Converter pedidos de JSON para a Classe Order
@@ -276,5 +303,24 @@ public class JsonParser {
             e.printStackTrace();
         }
         return orderedMenus;
+    }
+
+    public static String formatDateAndTime(String date, String time) {
+        try {
+            // Formato original: "y-mm-dd hh-MM-ss"
+            SimpleDateFormat inputFormat = new SimpleDateFormat("y-MM-dd HH:mm:ss", Locale.getDefault());
+
+            // Convertendo a data e a hora para um objeto Date
+            Date dateObject = inputFormat.parse(date + " " + time);
+
+            // Novo formato desejado: "y-mm-dd hh-MM-ss"
+            SimpleDateFormat outputFormat = new SimpleDateFormat("y-MM-dd HH:mm:ss", Locale.getDefault());
+
+            // Formatando a data e a hora no novo estilo
+            return outputFormat.format(dateObject);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ""; // Tratamento de erro, você pode ajustar conforme necessário
+        }
     }
 }
