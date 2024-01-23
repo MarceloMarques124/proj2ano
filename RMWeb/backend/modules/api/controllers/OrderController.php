@@ -5,6 +5,7 @@ namespace backend\modules\api\controllers;
 use common\models\Menu;
 use common\models\Order;
 use common\models\OrderedMenu;
+use common\models\User;
 use Yii;
 use yii\web\Controller;
 use yii\rest\ActiveController;
@@ -23,7 +24,27 @@ class OrderController extends ActiveController
     
     public function actionIndex()
     {
-        return $this->render('index');
+        $data = Yii::$app->request->get('token');
+        $user = User::findByVerificationToken($data);
+
+        if ($user) {
+            $orders = Order::find()->where(['user_id' => $user->id])->all();
+
+            $result = [];
+
+            foreach ($orders as $order) {
+                $result[] = [
+                    'order_id' => $order->id,
+                    'user' => $user->username, 
+                    'restaurant' => $order->restaurant->name,
+                    'price' => $order->zone->name 
+                ];
+            }
+
+        } else {
+            return ['error' => 'User not found'];
+        }
+            return $result;
     }
 
     public function actionPay($id)
