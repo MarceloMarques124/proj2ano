@@ -8,27 +8,50 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.restmanager.Adapters.OrdersAdapter;
+import com.example.restmanager.Listeners.OrdersListener;
+import com.example.restmanager.Model.Order;
+import com.example.restmanager.Model.OrderedMenu;
+import com.example.restmanager.Model.Reviews;
 import com.example.restmanager.R;
+import com.example.restmanager.Singleton.SingletonRestaurantManager;
+import com.example.restmanager.databinding.FragmentOrdersBinding;
+import com.example.restmanager.databinding.FragmentReviewsBinding;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link OrdersFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class OrdersFragment extends Fragment {
+import java.util.ArrayList;
+
+public class OrdersFragment extends Fragment implements OrdersListener {
+    private FragmentOrdersBinding binding;
 
 
 
     public OrdersFragment() {
         // Required empty public constructor
+
+
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentOrdersBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
 
+        SingletonRestaurantManager.getInstance(getContext()).setOrdersListener(this);
+        SingletonRestaurantManager.getInstance(getContext()).getTakeAwayOrdersAPI(getContext());
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_orders, container, false);
+        return view;
+    }
+
+    @Override
+    public void onRefreshTakeAwayOrdersList(ArrayList<Order> orders) {
+        if (orders != null){
+            binding.lvDoneOrders.setAdapter(new OrdersAdapter(getContext(), orders));
+        }
+    }
+
+    @Override
+    public void onRefreshOrderedMenusList(ArrayList<OrderedMenu> orderedMenus) {
+
     }
 }

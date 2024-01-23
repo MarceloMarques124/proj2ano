@@ -55,7 +55,7 @@ public class SingletonRestaurantManager {
     //region # Constants #
     private static SingletonRestaurantManager instance = null;
     private static RequestQueue volleyQueue = null;
-    private static final String apiUrl = "http://172.22.21.221:8080/api";
+    private static final String apiUrl = "http://192.168.1.227/proj2ano/proj2ano/RMWeb/backend/web/api";
     //endregion
 
     //region # Restaurants variables #
@@ -196,7 +196,7 @@ public class SingletonRestaurantManager {
             }
         } else {
             SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
-            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, sharedPreferences.getString(Public.IP, "http://172.22.21.221:8080/api") + "/restaurants", null, new Response.Listener<JSONArray>() {
+            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, sharedPreferences.getString(Public.IP, "http://192.168.1.227/proj2ano/proj2ano/RMWeb/backend/web/api") + "/restaurants", null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
                     restaurants = JsonParser.jsonRestaurantsParser(response);
@@ -265,7 +265,7 @@ public class SingletonRestaurantManager {
             }
         } else {
             SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
-            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, sharedPreferences.getString(Public.IP, "0") + "/menus", null, new Response.Listener<JSONArray>() {
+            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, sharedPreferences.getString(Public.IP, "http://192.168.1.227/proj2ano/proj2ano/RMWeb/backend/web/api") + "/menus", null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
                     menus = JsonParser.jsonMenusParser(response);
@@ -346,7 +346,7 @@ public class SingletonRestaurantManager {
 
         } else {
             SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
-            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, sharedPreferences.getString(Public.IP, "0") + "/reviews", null, new Response.Listener<JSONArray>() {
+            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, sharedPreferences.getString(Public.IP, "http://192.168.1.227/proj2ano/proj2ano/RMWeb/backend/web/api") + "/reviews", null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
                     System.out.println("---> ReviewsResponse: " + response);
@@ -408,7 +408,7 @@ public class SingletonRestaurantManager {
         } else {
 
             SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
-            StringRequest req = new StringRequest(Request.Method.POST, sharedPreferences.getString(Public.IP, "0") + "/review/create", new Response.Listener<String>() {
+            StringRequest req = new StringRequest(Request.Method.POST, sharedPreferences.getString(Public.IP, "http://192.168.1.227/proj2ano/proj2ano/RMWeb/backend/web/api") + "/review/create", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     addReviewDB(JsonParser.parserJsonReview(response));
@@ -444,7 +444,7 @@ public class SingletonRestaurantManager {
         } else {
 
             SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
-            StringRequest req = new StringRequest(Request.Method.PUT, sharedPreferences.getString(Public.IP, "0") + "/review/edit/" + review.getId(), new Response.Listener<String>() {
+            StringRequest req = new StringRequest(Request.Method.PUT, sharedPreferences.getString(Public.IP, "http://192.168.1.227/proj2ano/proj2ano/RMWeb/backend/web/api") + "/review/edit/" + review.getId(), new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     editReviewDB(JsonParser.parserJsonReview(response));
@@ -491,7 +491,7 @@ public class SingletonRestaurantManager {
 
         } else {
             SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
-            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, sharedPreferences.getString(Public.IP, "0") + "/zones/zonesbyrest/" + id, null, new Response.Listener<JSONArray>() {
+            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, sharedPreferences.getString(Public.IP, "http://192.168.1.227/proj2ano/proj2ano/RMWeb/backend/web/api") + "/zones/zonesbyrest/" + id, null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
 
@@ -650,7 +650,7 @@ public class SingletonRestaurantManager {
             Toast.makeText(context, "--> No internet connection", Toast.LENGTH_SHORT).show();
         } else {
             SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
-            StringRequest request = new StringRequest(Request.Method.POST, sharedPreferences.getString(Public.IP, "0") + "/users/login", new Response.Listener<String>() {
+            StringRequest request = new StringRequest(Request.Method.POST, sharedPreferences.getString(Public.IP, "http://192.168.1.227/proj2ano/proj2ano/RMWeb/backend/web/api") + "/users/login", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
@@ -700,7 +700,7 @@ public class SingletonRestaurantManager {
             Toast.makeText(context, "--> No internet conection", Toast.LENGTH_SHORT).show();
         } else {
             SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
-            StringRequest request = new StringRequest(Request.Method.POST, sharedPreferences.getString(Public.IP, "0") + "/user/signup", new Response.Listener<String>() {
+            StringRequest request = new StringRequest(Request.Method.POST, sharedPreferences.getString(Public.IP, "http://192.168.1.227/proj2ano/proj2ano/RMWeb/backend/web/api") + "/user/signup", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     System.out.println("--> " + response);
@@ -746,7 +746,7 @@ public class SingletonRestaurantManager {
             Toast.makeText(context, "No Internet Connection", Toast.LENGTH_SHORT).show();
         } else {
             SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
-            StringRequest request = new StringRequest(Request.Method.PUT, sharedPreferences.getString(Public.IP, "0") + "/users/edit/" + user.getId(), new Response.Listener<String>() {
+            StringRequest request = new StringRequest(Request.Method.PUT, sharedPreferences.getString(Public.IP, "http://192.168.1.227/proj2ano/proj2ano/RMWeb/backend/web/api") + "/users/edit/" + user.getId(), new Response.Listener<String>() {
 
                 @Override
                 public void onResponse(String response) {
@@ -822,7 +822,7 @@ public class SingletonRestaurantManager {
         } else {
             SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
             String token = sharedPreferences.getString(Public.TOKEN, "token");
-            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, sharedPreferences.getString(Public.IP, "0") + "/reserves", null, new Response.Listener<JSONArray>() {
+            JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, sharedPreferences.getString(Public.IP, "http://192.168.1.227/proj2ano/proj2ano/RMWeb/backend/web/api") + "/reserves", null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
                     reserves = JsonParser.jsonReservesParser(response);
@@ -858,7 +858,7 @@ public class SingletonRestaurantManager {
         } else {
             SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
             String token = sharedPreferences.getString(Public.TOKEN, "TOKEN");
-            StringRequest request = new StringRequest(Request.Method.POST, sharedPreferences.getString(Public.IP, "0") + "/reservations/create", new Response.Listener<String>() {
+            StringRequest request = new StringRequest(Request.Method.POST, sharedPreferences.getString(Public.IP, "http://192.168.1.227/proj2ano/proj2ano/RMWeb/backend/web/api") + "/reservations/create", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     System.out.println("---> Reserves response: " + response.toString());

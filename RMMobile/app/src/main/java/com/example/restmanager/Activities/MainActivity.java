@@ -64,10 +64,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragment = new HomepageFragment();
             setTitle(item.getTitle());
         }
-        /*else if(item.getItemId()== R.id.navOrder){
+        else if(item.getItemId()== R.id.navOrder){
             fragment = new OrdersFragment();
             setTitle(item.getTitle());
-        }*/
+        }
         else if(item.getItemId()== R.id.navCart){
             fragment = new CartFragment();
             setTitle(item.getTitle());

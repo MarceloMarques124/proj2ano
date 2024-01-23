@@ -94,26 +94,7 @@ public class MenusAdapter extends BaseAdapter {
             }
         });
 
-        binding.addToChart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "Adding to chart", Toast.LENGTH_SHORT).show();
 
-                int qty = Integer.parseInt(binding.etQuantity.getText().toString());
-
-                orders.forEach(order1 -> {
-                    if (/*order1.getUserId() = get do id logado &&*/ order1.getStatus() == 1) {
-                        OrderedMenu ordered = SingletonRestaurantManager.getInstance(context).getOrderedMenusByOrderId(order1.getId());
-                        if (ordered == null) {
-                            orderedMenu = new OrderedMenu(0, position, order1.getId(), qty);
-                        } else {
-                            ordered.setQuantity(ordered.getQuantity() + qty);
-                        }
-                    }
-                });
-
-            }
-        });
 
 
         return convertView;

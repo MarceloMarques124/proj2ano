@@ -56,7 +56,7 @@ public class CartFragment extends Fragment implements OrdersListener {
 
     @Override
     public void onRefreshTakeAwayOrdersList(ArrayList<Order> orders) {
-        if (orders == null)
+        /*if (orders == null)
             return;
 
         // receber todos os restaurantes para enviar o nome de cada restaurante juntamente com o orderedMenu
@@ -78,9 +78,9 @@ public class CartFragment extends Fragment implements OrdersListener {
 
             // por cada um preencher o pedido para poder depois usar os dados a contruir cada item da lista
             orderOrderedMenus.forEach(orderedMenu -> orderedMenu.setOrder(order));
-        });
+        });*/
 
-        binding.lvCartRests.setAdapter(new OrdersAdapter(getContext(), orderedMenus));
+        //binding.lvCartRests.setAdapter(new OrdersAdapter(getContext(), order));
 
     }
 
