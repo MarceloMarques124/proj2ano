@@ -22,6 +22,8 @@ class OrderController extends ActiveController
      * @return string
      */
     
+
+
     public function actionIndex()
     {
         $data = Yii::$app->request->get('token');
@@ -61,7 +63,7 @@ class OrderController extends ActiveController
 
     public function actionCreateinvoice()
     {
-       // $params = json_decode(Yii::$app->request->getRawBody(), true);
+     $params = json_decode(Yii::$app->request->getRawBody(), true);
     // $params = Yii::$app->request->post();
 
 
