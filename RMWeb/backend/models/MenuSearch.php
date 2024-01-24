@@ -11,6 +11,9 @@ use common\models\Menu;
  */
 class MenuSearch extends Menu
 {
+
+    public $restaurantName;
+
     /**
      * {@inheritdoc}
      */
@@ -18,7 +21,7 @@ class MenuSearch extends Menu
     {
         return [
             [['id', 'restaurant_id'], 'integer'],
-            [['name'], 'safe'],
+            [['name', 'restaurantName'], 'safe'],
             [['price'], 'number'],
         ];
     }
@@ -41,7 +44,9 @@ class MenuSearch extends Menu
      */
     public function search($params)
     {
-        $query = Menu::find();
+        $query = Menu::find()->joinWith(['restaurant' => function ($query) {
+            $query->from(['restaurants' => 'restaurants']); // Nome real da tabela 'restaurants'
+        }]);
 
         // add conditions that should always apply here
 
@@ -49,11 +54,14 @@ class MenuSearch extends Menu
             'query' => $query,
         ]);
 
+        $dataProvider->sort->attributes['restaurantName'] = [
+            'asc' => ['restaurants.name' => SORT_ASC],
+            'desc' => ['restaurants.name' => SORT_DESC],
+        ];
+
         $this->load($params);
 
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
             return $dataProvider;
         }
 
@@ -64,7 +72,8 @@ class MenuSearch extends Menu
             'restaurant_id' => $this->restaurant_id,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'restaurants.name', $this->restaurantName]);
 
         return $dataProvider;
     }

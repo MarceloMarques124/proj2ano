@@ -30,6 +30,9 @@ class FoodItemController extends Controller
                         'delete' => ['POST'],
                     ],
                 ],
+                'access' => [
+                    'class' => AccessControl::className(),
+                ],
             ]
         );
     }

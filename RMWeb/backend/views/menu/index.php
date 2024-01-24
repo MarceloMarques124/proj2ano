@@ -38,7 +38,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     return number_format($model->price, 2, ',', ' ') . ' €';
                 },
             ],
-            'restaurant.name',
+            [
+                'attribute' => 'restaurantName',
+                'label' => 'Restaurant Name',
+                'value' => function ($model) {
+                    return $model->restaurant ? $model->restaurant->name : null;
+                },
+                'filter' => Html::activeTextInput($searchModel, 'restaurantName', ['class' => 'form-control']),
+            ],
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Menu $model, $key, $index, $column) {

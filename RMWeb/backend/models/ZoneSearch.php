@@ -11,6 +11,9 @@ use common\models\Zone;
  */
 class ZoneSearch extends Zone
 {
+
+    public $restaurantName;
+
     /**
      * {@inheritdoc}
      */
@@ -18,7 +21,7 @@ class ZoneSearch extends Zone
     {
         return [
             [['id', 'restaurant_id', 'capacity'], 'integer'],
-            [['name', 'description'], 'safe'],
+            [['name', 'description', 'restaurantName'], 'safe'],
         ];
     }
 
@@ -40,23 +43,25 @@ class ZoneSearch extends Zone
      */
     public function search($params)
     {
-        $query = Zone::find();
-
-        // add conditions that should always apply here
+        $query = Zone::find()->joinWith(['restaurant' => function ($query) {
+            $query->from(['restaurants' => 'restaurants']); // Nome real da tabela 'restaurants'
+        }]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
 
+        $dataProvider->sort->attributes['restaurantName'] = [
+            'asc' => ['restaurants.name' => SORT_ASC],
+            'desc' => ['restaurants.name' => SORT_DESC],
+        ];
+
         $this->load($params);
 
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
             return $dataProvider;
         }
 
-        // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
             'restaurant_id' => $this->restaurant_id,
@@ -64,7 +69,8 @@ class ZoneSearch extends Zone
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'description', $this->description]);
+            ->andFilterWhere(['like', 'description', $this->description])
+            ->andFilterWhere(['like', 'restaurants.name', $this->restaurantName]); // Nome real da tabela 'restaurants'
 
         return $dataProvider;
     }

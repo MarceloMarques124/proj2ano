@@ -390,7 +390,7 @@ class phpMQTT
     public function publish($topic, $content, $qos = 0, $retain = false): void
     {
         $i = 0;
-        $buffer = '';`´
+        $buffer = '';
         $buffer .= $this->strwritestring($topic, $i);
 
         if ($qos) {
@@ -419,6 +419,7 @@ class phpMQTT
         fwrite($this->socket, $head, strlen($head));
         $this->_fwrite($buffer);
     }
+
 
     /**
      * Writes a string to the socket
