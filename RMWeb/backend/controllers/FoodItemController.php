@@ -2,19 +2,16 @@
 
 namespace backend\controllers;
 
-use backend\models\FoodItemSearch;
 use common\models\FoodItem;
-use yii\data\ActiveDataProvider;
-use yii\filters\AccessControl;
+use backend\models\FoodItemSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\web\ForbiddenHttpException;
 
 /**
- * FoodItemController implements the CRUD actions for FoodItem model.
+ * FooditemController implements the CRUD actions for FoodItem model.
  */
-class FoodItemController extends Controller
+class FooditemController extends Controller
 {
     /**
      * @inheritDoc
@@ -29,9 +26,6 @@ class FoodItemController extends Controller
                     'actions' => [
                         'delete' => ['POST'],
                     ],
-                ],
-                'access' => [
-                    'class' => AccessControl::className(),
                 ],
             ]
         );
@@ -49,10 +43,6 @@ class FoodItemController extends Controller
 
         return $this->render('index', [
             'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-
-        return $this->render('index', [
             'dataProvider' => $dataProvider,
         ]);
     }
