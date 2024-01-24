@@ -2,11 +2,13 @@
 
 namespace backend\controllers;
 
-use common\models\FoodItem;
-use backend\models\FoodItemSearch;
+use Yii;
+use common\models\Menu;
 use yii\web\Controller;
-use yii\web\NotFoundHttpException;
+use common\models\FoodItem;
 use yii\filters\VerbFilter;
+use backend\models\FoodItemSearch;
+use yii\web\NotFoundHttpException;
 
 /**
  * FooditemController implements the CRUD actions for FoodItem model.
@@ -67,6 +69,16 @@ class FooditemController extends Controller
      */
     public function actionCreate()
     {
+
+        // Verifica se existem restaurantes
+        $menus = Menu::find()->all();
+
+        if (empty($menus)) {
+            // Redireciona o usuário ou exibe uma mensagem informando sobre a indisponibilidade
+            Yii::$app->session->setFlash('noRest', 'Não é possível criar um item de menu porque não há menus disponíveis.');
+            return $this->redirect(['menu/index']); // ou outra ação apropriada
+        }
+
         $model = new FoodItem();
 
         if ($this->request->isPost) {
@@ -79,6 +91,8 @@ class FooditemController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'menus' => $menus,
+
         ]);
     }
 
@@ -91,6 +105,8 @@ class FooditemController extends Controller
      */
     public function actionUpdate($id)
     {
+        // Verifica se existem menus
+        $menus = Menu::find()->all();
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
@@ -99,6 +115,7 @@ class FooditemController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'menus' => $menus
         ]);
     }
 
