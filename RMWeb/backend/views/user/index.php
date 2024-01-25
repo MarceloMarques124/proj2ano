@@ -26,13 +26,27 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            'user.username',
+            [
+                'attribute' => 'userName',
+                'label' => 'Username',
+                'value' => function ($model) {
+                    return $model->user ? $model->user->username : null;
+                },
+                'filter' => Html::activeTextInput($searchModel, 'userName', ['class' => 'form-control']),
+            ],
             'name',
             'address',
             'door_number',
             'postal_code',
             'nif',
-            'user.email',
+            [
+                'attribute' => 'userMail',
+                'label' => 'Email',
+                'value' => function ($model) {
+                    return $model->user ? $model->user->email : null;
+                },
+                'filter' => Html::activeTextInput($searchModel, 'userMail', ['class' => 'form-control']),
+            ],
             [
                 'class' => ActionColumn::className(),
                 'template' => '{view} {update}  {delete} {activate} {desactivate}',

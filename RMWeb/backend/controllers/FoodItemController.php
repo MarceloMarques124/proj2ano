@@ -2,19 +2,18 @@
 
 namespace backend\controllers;
 
-use backend\models\FoodItemSearch;
-use common\models\FoodItem;
-use yii\data\ActiveDataProvider;
-use yii\filters\AccessControl;
+use Yii;
+use common\models\Menu;
 use yii\web\Controller;
-use yii\web\NotFoundHttpException;
+use common\models\FoodItem;
 use yii\filters\VerbFilter;
-use yii\web\ForbiddenHttpException;
+use backend\models\FoodItemSearch;
+use yii\web\NotFoundHttpException;
 
 /**
- * FoodItemController implements the CRUD actions for FoodItem model.
+ * FooditemController implements the CRUD actions for FoodItem model.
  */
-class FoodItemController extends Controller
+class FooditemController extends Controller
 {
     /**
      * @inheritDoc
@@ -29,9 +28,6 @@ class FoodItemController extends Controller
                     'actions' => [
                         'delete' => ['POST'],
                     ],
-                ],
-                'access' => [
-                    'class' => AccessControl::className(),
                 ],
             ]
         );
@@ -49,10 +45,6 @@ class FoodItemController extends Controller
 
         return $this->render('index', [
             'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-
-        return $this->render('index', [
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -75,13 +67,24 @@ class FoodItemController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
-    public function actionCreate()
+    public function actionCreate($id)
     {
+
+        // Verifica se existem restaurantes
+        $menus = Menu::find()->all();
+
+        if (empty($menus)) {
+            // Redireciona o usuário ou exibe uma mensagem informando sobre a indisponibilidade
+            Yii::$app->session->setFlash('noRest', 'Não é possível criar um item de menu porque não há menus disponíveis.');
+            return $this->redirect(['menu/index']); // ou outra ação apropriada
+        }
+
         $model = new FoodItem();
+        $model->menu_id = $id;
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['menu/view', 'id' => $model->menu_id]);
             }
         } else {
             $model->loadDefaultValues();
@@ -101,14 +104,17 @@ class FoodItemController extends Controller
      */
     public function actionUpdate($id)
     {
+        // Verifica se existem menus
+        $menus = Menu::find()->all();
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['menu/view', 'id' => $model->menuId]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'menus' => $menus
         ]);
     }
 
@@ -121,9 +127,11 @@ class FoodItemController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $foodItem = $this->findModel($id);
+        $foodItem->delete();
 
-        return $this->redirect(['index']);
+        // Redirecionar para a view do Menu com base no ID do Menu
+        return $this->redirect(['menu/view', 'id' => $foodItem->menu_id]);
     }
 
     /**

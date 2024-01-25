@@ -11,6 +11,11 @@ use common\models\UserInfo;
  */
 class UserInfoSearch extends UserInfo
 {
+
+    public $userName;
+    public $userMail;
+
+
     /**
      * {@inheritdoc}
      */
@@ -18,7 +23,7 @@ class UserInfoSearch extends UserInfo
     {
         return [
             [['id', 'user_id', 'nif', 'restaurant_id'], 'integer'],
-            [['name', 'address', 'door_number', 'postal_code'], 'safe'],
+            [['name', 'address', 'door_number', 'postal_code', 'userName', 'userMail'], 'safe'],
         ];
     }
 
@@ -40,7 +45,9 @@ class UserInfoSearch extends UserInfo
      */
     public function search($params)
     {
-        $query = UserInfo::find();
+        $query = UserInfo::find()->joinWith(['user' => function ($query) {
+            $query->from(['user' => 'user']); // Nome real da tabela 'restaurants'
+        }]);
 
         // add conditions that should always apply here
 
@@ -48,6 +55,15 @@ class UserInfoSearch extends UserInfo
             'query' => $query,
         ]);
 
+        $dataProvider->sort->attributes['userName'] = [
+            'asc' => ['user.username' => SORT_ASC],
+            'desc' => ['user.username' => SORT_DESC],
+        ];
+
+        $dataProvider->sort->attributes['userMail'] = [
+            'asc' => ['user.email' => SORT_ASC],
+            'desc' => ['user.email' => SORT_DESC],
+        ];
         $this->load($params);
 
         if (!$this->validate()) {
@@ -67,7 +83,9 @@ class UserInfoSearch extends UserInfo
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'address', $this->address])
             ->andFilterWhere(['like', 'door_number', $this->door_number])
-            ->andFilterWhere(['like', 'postal_code', $this->postal_code]);
+            ->andFilterWhere(['like', 'postal_code', $this->postal_code])
+            ->andFilterWhere(['like', 'user.username', $this->userName])
+            ->andFilterWhere(['like', 'user.email', $this->userMail]);
 
         return $dataProvider;
     }

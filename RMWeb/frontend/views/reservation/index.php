@@ -24,10 +24,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
             'tables_number',
-            'user_id',
+            [
+                'attribute' => 'userName',
+                'label' => 'User Name',
+                'value' => function ($model) {
+                    return $model->user ? $model->user->username : null;
+                },
+                'filter' => Html::activeTextInput($searchModel, 'userName', ['class' => 'form-control']),
+            ],
             'date_time',
             'people_number',
             //'remarks:ntext',

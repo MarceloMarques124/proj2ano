@@ -53,13 +53,13 @@ class UserInfo extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'user_id' => 'User ID',
+            'user.name' => 'a',
             'name' => 'Name',
             'address' => 'Address',
             'door_number' => 'Door Number',
             'postal_code' => 'Postal Code',
             'nif' => 'Nif',
-            'restaurant_id' => 'Restaurant ID',
+            'restaurant.name' => 'Restaurant Name',
         ];
     }
 

@@ -25,9 +25,22 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'user_id',
-            'restaurant_id',
+            [
+                'attribute' => 'userName',
+                'label' => 'User Name',
+                'value' => function ($model) {
+                    return $model->restaurant ? $model->restaurant->name : null;
+                },
+                'filter' => Html::activeTextInput($searchModel, 'userName', ['class' => 'form-control']),
+            ],
+            [
+                'attribute' => 'restaurantName',
+                'label' => 'Restaurant Name',
+                'value' => function ($model) {
+                    return $model->restaurant ? $model->restaurant->name : null;
+                },
+                'filter' => Html::activeTextInput($searchModel, 'restaurantName', ['class' => 'form-control']),
+            ],
             'price',
             'state',
             [

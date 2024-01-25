@@ -46,7 +46,7 @@ class FoodItem extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Name',
-            'menu_id' => 'Menu ID',
+            'menu.name' => 'Menu Name',
             'price' => 'Price',
         ];
     }

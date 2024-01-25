@@ -2,10 +2,13 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
 
 /** @var yii\web\View $this */
 /** @var common\models\FoodItem $model */
 /** @var yii\widgets\ActiveForm $form */
+/** @var Menu[] $menus */
+
 ?>
 
 <div class="food-item-form">
@@ -13,8 +16,6 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'menu_id')->textInput() ?>
 
     <?= $form->field($model, 'price')->textInput(['maxlength' => true]) ?>
 

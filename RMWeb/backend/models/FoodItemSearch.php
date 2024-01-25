@@ -11,6 +11,9 @@ use common\models\FoodItem;
  */
 class FoodItemSearch extends FoodItem
 {
+
+    public $menuName;
+
     /**
      * {@inheritdoc}
      */
@@ -18,7 +21,7 @@ class FoodItemSearch extends FoodItem
     {
         return [
             [['id', 'menu_id'], 'integer'],
-            [['name'], 'safe'],
+            [['name', 'menuName'], 'safe'],
             [['price'], 'number'],
         ];
     }
@@ -41,13 +44,20 @@ class FoodItemSearch extends FoodItem
      */
     public function search($params)
     {
-        $query = FoodItem::find();
+        $query = FoodItem::find()->joinWith(['menu' => function ($query) {
+            $query->from(['menus' => 'menus']); // Nome real da tabela 'restaurants'
+        }]);
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+
+        $dataProvider->sort->attributes['menuName'] = [
+            'asc' => ['menus.name' => SORT_ASC],
+            'desc' => ['menus.name' => SORT_DESC],
+        ];
 
         $this->load($params);
 
@@ -64,7 +74,8 @@ class FoodItemSearch extends FoodItem
             'price' => $this->price,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'menus.name', $this->menuName]);
 
         return $dataProvider;
     }

@@ -1,11 +1,17 @@
 <?php
 
+use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\web\YiiAsset;
+use yii\grid\GridView;
+use yii\grid\ActionColumn;
+use common\models\FoodItem;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
 /** @var common\models\Menu $model */
+/** @var yii\data\ActiveDataProvider $foodItemsDataProvider */
+
 
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Menus', 'url' => ['index']];
@@ -41,8 +47,22 @@ YiiAsset::register($this);
             'restaurant.name',
         ],
     ]) ?>
+
+    <?= GridView::widget([
+        'dataProvider' => $foodItemsDataProvider,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+            'name',
+            'price',
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'controller' => 'fooditem', // Adicione esta linha
+                'template' => '{view} {update} {delete}',
+            ],
+        ],
+    ]); ?>
     <p>
-        
+
         <?= Html::a('Add Item', ['fooditem/create', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
     </p>
 
