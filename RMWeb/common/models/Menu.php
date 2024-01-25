@@ -49,7 +49,7 @@ class Menu extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => 'Name',
             'price' => 'Price',
-            'restaurant_id' => 'Restaurant ID',
+            'restaurant.name' => 'Restaurant Name',
         ];
     }
 

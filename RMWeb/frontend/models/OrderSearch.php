@@ -12,6 +12,9 @@ use yii\data\ActiveDataProvider;
  */
 class OrderSearch extends Order
 {
+    public $restaurantName;
+    public $userName;
+
     /**
      * {@inheritdoc}
      */
@@ -20,6 +23,7 @@ class OrderSearch extends Order
         return [
             [['id', 'user_id', 'restaurant_id', 'state'], 'integer'],
             [['price'], 'number'],
+            [['userName', 'restaurantName'], 'safe'],
         ];
     }
 
@@ -41,15 +45,31 @@ class OrderSearch extends Order
      */
     public function search($params)
     {
-        $query = Order::find();
+        //$query = Order::find();
         // Adicione uma condição para filtrar as orders do usuário logado
-        $query->andWhere(['user_id' => Yii::$app->user->id]);
-
+        //$query->andWhere(['user_id' => Yii::$app->user->id]);
+        $query = Order::find()->joinWith([
+            'restaurant' => function ($query) {
+                $query->from(['restaurants' => 'restaurants']); // Nome real da tabela 'restaurants'
+            },
+            'user' => function ($query) {
+                $query->from(['user' => 'user']); // Nome real da tabela 'restaurants'
+            }
+        ]);
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+
+        $dataProvider->sort->attributes['restaurantName'] = [
+            'asc' => ['restaurants.name' => SORT_ASC],
+            'desc' => ['restaurants.name' => SORT_DESC],
+        ];
+        $dataProvider->sort->attributes['userName'] = [
+            'asc' => ['user.username' => SORT_ASC],
+            'desc' => ['user.username' => SORT_DESC],
+        ];
 
         $this->load($params);
 
@@ -62,11 +82,12 @@ class OrderSearch extends Order
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'user_id' => $this->user_id,
-            'restaurant_id' => $this->restaurant_id,
             'price' => $this->price,
             'state' => $this->state,
-        ]);
+        ])
+            ->andFilterWhere(['like', 'restaurants.name', $this->restaurantName])
+            ->andFilterWhere(['like', 'user.username', $this->restaurantName]);
+
 
         return $dataProvider;
     }

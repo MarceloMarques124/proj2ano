@@ -49,7 +49,7 @@ class Zone extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => 'Name',
             'description' => 'Description',
-            'restaurant_id' => 'Restaurant ID',
+            'restaurant.name' => 'Restaurant Name',
             'capacity' => 'Capacity',
         ];
     }

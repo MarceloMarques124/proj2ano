@@ -45,9 +45,9 @@ class OrderedMenu extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'menu_id' => 'Menu ID',
+            'menu.name' => 'Menu Name',
             'quantity' => 'Quantity',
-            'order_id' => 'Order ID',
+            'order_id' => 'Order Number',
         ];
     }
 

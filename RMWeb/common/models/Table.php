@@ -39,7 +39,7 @@ class Table extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
+            'id' => 'Table Number',
             'description' => 'Description',
             'capacity' => 'Capacity',
         ];

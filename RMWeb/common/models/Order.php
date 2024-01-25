@@ -48,8 +48,8 @@ class Order extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'user_id' => 'User ID',
-            'restaurant_id' => 'Restaurant ID',
+            'user.name' => 'User Name',
+            'restaurant.name' => 'Restaurant Name',
             'price' => 'Price',
             'state' => 'State',
         ];
