@@ -12,11 +12,8 @@ import com.example.restmanager.Adapters.OrdersAdapter;
 import com.example.restmanager.Listeners.OrdersListener;
 import com.example.restmanager.Model.Order;
 import com.example.restmanager.Model.OrderedMenu;
-import com.example.restmanager.Model.Reviews;
-import com.example.restmanager.R;
 import com.example.restmanager.Singleton.SingletonRestaurantManager;
 import com.example.restmanager.databinding.FragmentOrdersBinding;
-import com.example.restmanager.databinding.FragmentReviewsBinding;
 
 import java.util.ArrayList;
 
@@ -37,7 +34,12 @@ public class OrdersFragment extends Fragment implements OrdersListener {
         View view = binding.getRoot();
 
         SingletonRestaurantManager.getInstance(getContext()).setOrdersListener(this);
-        SingletonRestaurantManager.getInstance(getContext()).getTakeAwayOrdersAPI(getContext());
+        /*SingletonRestaurantManager.getInstance(getContext()).getOrdersAPI(getContext(), new Response.Listener() {
+            @Override
+            public void onResponse(Object response) {
+                Order order = SingletonRestaurantManager.getInstance(getApplicationContext()).getOrder(idRest, userid, status);
+            }
+        });*/
 
         // Inflate the layout for this fragment
         return view;

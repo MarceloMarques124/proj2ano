@@ -48,10 +48,10 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Revi
         String name = getIntent().getStringExtra(ID_RESTAURANT);
         restaurant = SingletonRestaurantManager.getInstance(getApplicationContext()).getRestaurantByName(name);
       //  binding.imgCover.setImageResource(restaurant.getCover());
-        binding.tvEmail.setText(restaurant.getEmail());
-        binding.tvRestName.setText(restaurant.getName());
-        binding.tvLocal.setText(restaurant.getAddress());
-        binding.tvPhone.setText(restaurant.getMobileNumber());
+        binding.tvEmail.setText(restaurant.getEmail().toString());
+        binding.tvRestName.setText(restaurant.getName().toString());
+        binding.tvLocal.setText(restaurant.getAddress().toString());
+        binding.tvPhone.setText(restaurant.getMobileNumber().toString());
 
 
         // Chame diretamente o método getReviewsByRest com o ID do restaurant

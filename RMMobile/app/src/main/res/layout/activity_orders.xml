@@ -21,6 +21,17 @@
 
     </LinearLayout>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddCart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/green"
+        android:contentDescription="@string/strEmpty"
+        android:focusable="true"
+        android:src="@drawable/ic_cart"/>
+
     <!--<com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id ="@+id/fabFinish"
         android:layout_width="wrap_content"

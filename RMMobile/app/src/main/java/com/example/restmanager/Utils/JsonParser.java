@@ -304,6 +304,32 @@ public class JsonParser {
         }
         return orderedMenus;
     }
+    
+    public static OrderedMenu jsonOrderedMenuParser(String response){
+            /*OrderedMenu orderedMenu = null;
+
+            try {
+                JSONObject login = new JSONObject(response);
+
+                int id = login.getInt("id");
+                //  int user_id = login.getInt("user_id");
+                String name = login.getString("name");
+                String email = login.getString("email");
+                String username = login.getString("username");
+                String address = login.getString("address");
+                String door_number = login.getString("door_number");
+                String postal_code = login.getString("postal_code");
+                int nif = login.getInt("nif");
+                String token = login.getString("token");
+
+
+                user = new User(id, username, name, email, address, door_number, postal_code, nif, token);
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+            return orderedMenu;*/
+        return null;
+    }
 
     public static String formatDateAndTime(String date, String time) {
         try {

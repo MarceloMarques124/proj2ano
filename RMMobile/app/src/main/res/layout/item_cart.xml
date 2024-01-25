@@ -91,7 +91,7 @@
                 android:layout_weight="1"
                 android:backgroundTint="@color/green"
                 android:focusable="false"
-                android:text="@string/btnRemoveFromCart"
+                android:text="@string/btnCheckout"
                 android:textColor="@color/white"
                 android:textColorHighlight="@color/white"
                 android:textColorHint="@color/white"

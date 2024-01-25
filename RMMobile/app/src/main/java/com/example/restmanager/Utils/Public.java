@@ -4,5 +4,5 @@ public class Public {
 
     public static final String TOKEN = "TOKEN";
     public static final String DATAUSER = "DataUser";
-    public static final String IP = "http://192.168.1.227/proj2ano/proj2ano/RMWeb/backend/web/api";
+    public static final String IP = "http://172.22.21.221/api";
 }

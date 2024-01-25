@@ -55,4 +55,5 @@
     <string name="no_internet">no internet</string>
     <string name="btnSelect">Select Zone</string>
     <string name="txtRemark">Remarks</string>
+    <string name="btnCheckout">Checkout</string>
 </resources>

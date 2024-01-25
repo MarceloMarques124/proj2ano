@@ -185,6 +185,49 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
         return "DROP TABLE IF EXISTS " + TABLE_ORDER;
     }
 
+
+
+    public ArrayList<Order> getAllOrders() {
+        ArrayList<Order> orders = new ArrayList<>();
+        String[] columns = new String[]{ID, USER_ID, REST_ID, PRICE, STATUS};
+
+        Cursor cursor = this.db.query(TABLE_ORDER, columns, null,
+                null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+
+                Order order = new Order(
+                        cursor.getInt(0),
+                        cursor.getInt(1),
+                        cursor.getInt(2),
+                        cursor.getFloat(3),
+                        cursor.getInt(4)
+                );
+
+                orders.add(order);
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+        return orders;
+    }
+
+    public void addOrderDB(Order order) {
+        ContentValues values = new ContentValues();
+
+        values.put(USER_ID, order.getUserId());
+        values.put(REST_ID, order.getRestId());
+        values.put(PRICE, order.getPrice());
+        values.put(STATUS, order.getStatus());
+
+        this.db.insert(TABLE_ORDER, null, values);
+    }
+
+    public void removeAllOrders() {
+        this.db.delete(TABLE_ORDER, null, null);
+    }
+
     //endregion
 
     //region # ORDERED_MENU DB METHODS #
@@ -510,60 +553,6 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
     //endregion
 
     //#region # ORDER DB METHODS #
-
-    /**
-     * Receber todas os pedidos da base de dados
-     *
-     * @return Todos os pedidos
-     */
-    public ArrayList<Order> getAllOrders() {
-        ArrayList<Order> orders = new ArrayList<>();
-        String[] columns = new String[]{ID, USER_ID, REST_ID, PRICE, STATUS};
-
-        Cursor cursor = this.db.query(TABLE_ORDER, columns, null,
-                null, null, null, null);
-
-        if (cursor.moveToFirst()) {
-            do {
-
-                Order order = new Order(
-                        cursor.getInt(0),
-                        cursor.getInt(1),
-                        cursor.getInt(2),
-                        cursor.getFloat(3),
-                        cursor.getInt(4)
-                );
-
-                orders.add(order);
-            } while (cursor.moveToNext());
-
-            cursor.close();
-        }
-        return orders;
-    }
-
-    /**
-     * Adicionar pedido à base de dados
-     *
-     * @param order Pedido a Adicionar
-     */
-    public void addOrderDB(Order order) {
-        ContentValues values = new ContentValues();
-
-        values.put(USER_ID, order.getUserId());
-        values.put(REST_ID, order.getRestId());
-        values.put(PRICE, order.getPrice());
-        values.put(STATUS, order.getStatus());
-
-        this.db.insert(TABLE_ORDER, null, values);
-    }
-
-    /**
-     * Apagar todos os pedidos da base de dados
-     */
-    public void removeAllOrders() {
-        this.db.delete(TABLE_ORDER, null, null);
-    }
 
     public ArrayList<OrderedMenu> getAllOrderedMenus() {
         ArrayList<OrderedMenu> orderedMenus = new ArrayList<>();

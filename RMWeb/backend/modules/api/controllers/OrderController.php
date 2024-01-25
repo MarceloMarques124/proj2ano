@@ -22,6 +22,10 @@ class OrderController extends ActiveController
      * @return string
      */
     
+    public function actions(){
+        $actions = parent::actions();         //sem utilização
+        unset($actions['index']);
+    }
 
 
     public function actionIndex()
@@ -64,49 +68,50 @@ class OrderController extends ActiveController
     public function actionCreateinvoice()
     {
      $params = json_decode(Yii::$app->request->getRawBody(), true);
-    // $params = Yii::$app->request->post();
+    /* $params = Yii::$app->request->post();
 
 
-    //  foreach ($params as $param) {
-    //      $ordered = new OrderedMenu();
-    //      $ordered->id = $param['id'];
-    //      $ordered->menu_id = $param['menu_id'];
-    //      $ordered->quantity = $param['quantity'];
-    //      $ordered->order_id = $param['order_id'];
-         
-         
-    //      if ($ordered->save()) {
-    //          $order = Order::findOne(['id' => $ordered->order_id]);
-    //          $menu = Menu::findOne(['id' => $ordered->menu_id]);
+      foreach ($params as $param) {
+          $ordered = new OrderedMenu();
+          $ordered->id = $param['id'];
+          $ordered->menu_id = $param['menu_id'];
+          $ordered->quantity = $param['quantity'];
+          $ordered->order_id = $param['order_id'];
+       
+       
+          if ($ordered->save()) {
+              $order = Order::findOne(['id' => $ordered->order_id]);
+              $menu = Menu::findOne(['id' => $ordered->menu_id]);
 
-    //          $order->price += ($ordered->quantity*$menu->price); 
-    //          $order->save();
+              $order->price += ($ordered->quantity*$menu->price); 
+              $order->save();
 
-    //          return "Was Created";
-    //      } else {
-    //          return "Failed to create invoice";
-    //      }
-    //  }
+              return "Was Created";
+          } else {
+              return "Failed to create invoice";
+          }
+      }*/
     $params = Yii::$app->request->post();
 
     foreach ($params as $param) {
-        $ordered = new OrderedMenu();
-        $ordered->id = $param['id'];
-        $ordered->menu_id = $param['menu_id'];
-        $ordered->quantity = $param['quantity'];
-        $ordered->order_id = $param['order_id'];
+        $order = new OrderedMenu();
+        $order->restaurant_id = $param['restaurant_id'];
+        $order->price = $param['price'];
+        $order->user_id = $param['user_id'];
+        $order->state = $param['state'];
 
-        if (!$ordered->save()) {
+        if (!$order->save()) {
             return "Failed to create invoice";
         }
-
-        $order = Order::findOne(['id' => $ordered->order_id]);
-        $menu = Menu::findOne(['id' => $ordered->menu_id]);
-
-        $order->price += ($ordered->quantity * $menu->price);
         $order->save();
     }
 
     return "All invoices were created successfully";
+    }
+
+    public function actionCart(){
+        $params = Yii::$app->request->post();
+
+        
     }
 }

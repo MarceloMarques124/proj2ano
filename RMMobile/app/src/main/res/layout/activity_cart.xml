@@ -21,5 +21,6 @@
         android:backgroundTint="@color/green"
         android:contentDescription="@string/strEmpty"
         android:focusable="true"
-        android:src="@drawable/ic_check"/>
+        android:src="@drawable/ic_cart"/>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

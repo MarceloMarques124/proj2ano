@@ -101,6 +101,7 @@ return [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/order',
                     'extraPatterns' => [
+                        'GET index' => 'index',
                         'POST createinvoice' => 'createinvoice'
                     ],
                 ],

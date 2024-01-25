@@ -8,17 +8,14 @@ import android.widget.AdapterView;
 
 import androidx.fragment.app.Fragment;
 
-import com.example.restmanager.Adapters.OrdersAdapter;
-import com.example.restmanager.Listeners.OrderedMenusListener;
+import com.android.volley.Response;
 import com.example.restmanager.Listeners.OrdersListener;
 import com.example.restmanager.Model.Order;
 import com.example.restmanager.Model.OrderedMenu;
-import com.example.restmanager.Model.Restaurant;
 import com.example.restmanager.Singleton.SingletonRestaurantManager;
 import com.example.restmanager.databinding.FragmentCartBinding;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 public class CartFragment extends Fragment implements OrdersListener {
     private FragmentCartBinding binding;
@@ -49,7 +46,12 @@ public class CartFragment extends Fragment implements OrdersListener {
 
         SingletonRestaurantManager.getInstance(getContext()).setOrdersListener(this);
         SingletonRestaurantManager.getInstance(getContext()).getOrderedMenusAPI(getContext());
-        SingletonRestaurantManager.getInstance(getContext()).getTakeAwayOrdersAPI(getContext());
+        SingletonRestaurantManager.getInstance(getContext()).getOrdersAPI(getContext(), new Response.Listener() {
+            @Override
+            public void onResponse(Object response) {
+                //Order order = SingletonRestaurantManager.getInstance(getApplicationContext()).getOrder(idRest, userid, status);
+            }
+        });
 
         return view;
     }
