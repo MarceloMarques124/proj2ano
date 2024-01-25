@@ -67,7 +67,7 @@ class FooditemController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
-    public function actionCreate()
+    public function actionCreate($id)
     {
 
         // Verifica se existem restaurantes
@@ -80,10 +80,11 @@ class FooditemController extends Controller
         }
 
         $model = new FoodItem();
+        $model->menu_id = $id;
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['menu/view', 'id' => $model->menu_id]);
             }
         } else {
             $model->loadDefaultValues();
@@ -91,8 +92,6 @@ class FooditemController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'menus' => $menus,
-
         ]);
     }
 
@@ -110,7 +109,7 @@ class FooditemController extends Controller
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['menu/view', 'id' => $model->menuId]);
         }
 
         return $this->render('update', [
@@ -128,9 +127,11 @@ class FooditemController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $foodItem = $this->findModel($id);
+        $foodItem->delete();
 
-        return $this->redirect(['index']);
+        // Redirecionar para a view do Menu com base no ID do Menu
+        return $this->redirect(['menu/view', 'id' => $foodItem->menu_id]);
     }
 
     /**

@@ -72,7 +72,6 @@ if (!Yii::$app->user->isGuest) {
                         [
                             'label' => 'Items', 'icon' => 'fa-solid fa-utensils',
                             'items' => [
-                                ['label' => 'Create', 'url' => ['fooditem/create'], 'iconStyle' => 'far'],
                                 ['label' => 'View all', 'url' => ['fooditem/index'], 'iconStyle' => 'far'],
                             ]
                         ],

@@ -104,7 +104,7 @@ class Menu extends \yii\db\ActiveRecord
             $this->FazPublishNoMosquitto("UPDATE", $myJSON);
     }*/
 
-    public function afterDelete()
+/*     public function afterDelete()
     {
         parent::afterDelete();
         $prod_id = $this->id;
@@ -112,7 +112,7 @@ class Menu extends \yii\db\ActiveRecord
         $myObj->id = $prod_id;
         $myJSON = json_encode($myObj);
         $this->FazPublishNoMosquitto("DELETE", $myJSON);
-    }
+    } */
 
     // public function FazPublishNoMosquitto($canal, $msg)
     // {

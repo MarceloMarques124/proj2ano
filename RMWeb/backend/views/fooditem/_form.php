@@ -17,10 +17,6 @@ use yii\helpers\ArrayHelper;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'menu_id')->dropDownList(ArrayHelper::map($menus, 'id', 'name'),
-        ['prompt' => 'Select Menu'] // Optional prompt
-    )->label('Select Menu'); ?>
-
     <?= $form->field($model, 'price')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">

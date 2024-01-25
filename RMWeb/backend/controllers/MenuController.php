@@ -7,10 +7,12 @@ use yii\helpers\Url;
 use yii\web\Response;
 use common\models\Menu;
 use yii\web\Controller;
+use common\models\FoodItem;
 use yii\filters\VerbFilter;
 use common\models\Restaurant;
 use backend\models\MenuSearch;
 use yii\filters\AccessControl;
+use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
 use yii\web\ForbiddenHttpException;
 
@@ -74,8 +76,14 @@ class MenuController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $foodItemsDataProvider = new ActiveDataProvider([
+            'query' => FoodItem::find()->where(['menu_id' => $model->id]),
+        ]);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'foodItemsDataProvider' => $foodItemsDataProvider,
         ]);
     }
 
