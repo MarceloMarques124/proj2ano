@@ -30,6 +30,15 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
             'name',
             [
+                'attribute' => 'menuName',
+                'label' => 'Menu Name',
+                'value' => function ($model) {
+                    return $model->menu ? $model->menu->name : null;
+                },
+                'filter' => Html::activeTextInput($searchModel, 'menuName', ['class' => 'form-control']),
+            ],
+            'price',
+            [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, FoodItem $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);

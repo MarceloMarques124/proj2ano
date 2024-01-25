@@ -56,12 +56,12 @@ class Reservation extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'tables_number' => 'Tables Number',
-            'user_id' => 'User ID',
+            'user.name' => 'User Name',
             'date_time' => 'Date Time',
             'people_number' => 'People Number',
             'remarks' => 'Remarks',
-            'restaurant_id' => 'Restaurant ID',
-            'zone_id' => 'Zone',
+            'restaurant.name' => 'Restaurant Name',
+            'zone.name' => 'Zone Name',
         ];
     }
 

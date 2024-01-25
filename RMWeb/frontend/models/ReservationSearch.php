@@ -12,6 +12,9 @@ use yii\data\ActiveDataProvider;
  */
 class ReservationSearch extends Reservation
 {
+
+    public $userName;
+
     /**
      * {@inheritdoc}
      */
@@ -19,7 +22,7 @@ class ReservationSearch extends Reservation
     {
         return [
             [['id', 'tables_number', 'user_id', 'people_number', 'restaurant_id'], 'integer'],
-            [['date_time', 'remarks'], 'safe'],
+            [['date_time', 'remarks', 'userName'], 'safe'],
         ];
     }
 
@@ -41,10 +44,12 @@ class ReservationSearch extends Reservation
      */
     public function search($params)
     {
-        $query = Reservation::find();
+        //$query = Reservation::find();
         // Adicione uma condição para filtrar as orders do usuário logado
-        $query->andWhere(['user_id' => Yii::$app->user->id]);
-
+        //$query->andWhere(['user_id' => Yii::$app->user->id]);
+        $query = Reservation::find()->joinWith(['user' => function ($query) {
+            $query->from(['user' => 'user']); // Nome real da tabela 'restaurants'
+        }]);
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -52,6 +57,11 @@ class ReservationSearch extends Reservation
         ]);
 
         $this->load($params);
+
+        $dataProvider->sort->attributes['userName'] = [
+            'asc' => ['user.name' => SORT_ASC],
+            'desc' => ['user.name' => SORT_DESC],
+        ];
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
@@ -69,7 +79,9 @@ class ReservationSearch extends Reservation
             'restaurant_id' => $this->restaurant_id,
         ]);
 
-        $query->andFilterWhere(['like', 'remarks', $this->remarks]);
+        $query->andFilterWhere(['like', 'remarks', $this->remarks])
+            ->andFilterWhere(['like', 'user.name', $this->userName]);
+
 
         return $dataProvider;
     }
