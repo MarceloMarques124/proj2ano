@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.android.volley.Response;
 import com.example.restmanager.Adapters.MenusAdapter;
 import com.example.restmanager.Listeners.MenusListener;
+import com.example.restmanager.Model.Login;
 import com.example.restmanager.Model.Menu;
 import com.example.restmanager.Model.Order;
 import com.example.restmanager.Model.OrderedMenu;
@@ -91,6 +92,11 @@ public class OrdersActivity extends AppCompatActivity implements MenusListener {
                 processCart(selectedMenuIds, selectedQuantities);
 
                 Toast.makeText(OrdersActivity.this, "---> Items added to cart", Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
+                finish();
+
             }
         });
     }
@@ -101,46 +107,43 @@ public class OrdersActivity extends AppCompatActivity implements MenusListener {
         int userid = SingletonRestaurantManager.getInstance(getApplicationContext()).getUserBD(token).getId();
         int status = 1;
 
-        SingletonRestaurantManager.getInstance(getApplicationContext()).getOrdersAPI(getApplicationContext(), new Response.Listener() {
-            @Override
-            public void onResponse(Object response) {
-                System.out.println("---> response: " + response);
-                Order order = SingletonRestaurantManager.getInstance(getApplicationContext()).getOrder(idRest, userid, status);
-                System.out.println("---> Order: " + order);
-                if (order != null){
+        SingletonRestaurantManager.getInstance(getApplicationContext()).getOrdersAPI(getApplicationContext(), response -> {
+            System.out.println("---> response: " + response);
+            Order order = SingletonRestaurantManager.getInstance(getApplicationContext()).getOrder(idRest, userid, status);
+            System.out.println("---> Order: " + order);
+            float price;
+            if (order != null){
+                for (int i = 0; i < selectedMenuIds.size(); i++) {
+                    Integer menuId = selectedMenuIds.get(i);
+                    Integer quantity = selectedQuantities.get(i);
+
+                    // Check if the OrderedMenu already exists for this menu in the order
+                    OrderedMenu orderedMenu = SingletonRestaurantManager.getInstance(getApplicationContext()).getOrderedMenu(order.getId(), menuId);
+
+                    if (orderedMenu == null) {
+                        orderedMenu = new OrderedMenu(0, menuId, order.getId(), quantity);
+                        SingletonRestaurantManager.getInstance(getApplicationContext()).addOrderedMenuAPI(getApplicationContext(), orderedMenu);
+                    }else{
+                        orderedMenu.setQuantity(orderedMenu.getQuantity()+quantity);
+                    }
+                    price = (float) (orderedMenu.getMenu().getPrice()*orderedMenu.getQuantity());
+                    SingletonRestaurantManager.getInstance(getApplicationContext()).updateOrderPrice(getApplicationContext(), price, order.getId());
+                }
+            }else{
+                System.out.println("---> Entri aqui");
+                order = new Order(0, userid, idRest, 0, status);
+                SingletonRestaurantManager.getInstance(getApplicationContext()).addOrderAPI(getApplicationContext(), order, response1 -> {
+                    Order o = SingletonRestaurantManager.getInstance(getApplicationContext()).getOrder(idRest, userid, status);
+
                     for (int i = 0; i < selectedMenuIds.size(); i++) {
+                        OrderedMenu orderedMenu =new OrderedMenu();
                         Integer menuId = selectedMenuIds.get(i);
                         Integer quantity = selectedQuantities.get(i);
+                        orderedMenu = new OrderedMenu(0, menuId, o.getId(), quantity);
+                        SingletonRestaurantManager.getInstance(getApplicationContext()).addOrderedMenuAPI(getApplicationContext(), orderedMenu);
 
-                        // Check if the OrderedMenu already exists for this menu in the order
-                        OrderedMenu orderedMenu = SingletonRestaurantManager.getInstance(getApplicationContext()).getOrderedMenu(order.getId(), menuId);
-
-                        if (orderedMenu == null) {
-                            orderedMenu = new OrderedMenu(0, menuId, order.getId(), quantity);
-                            SingletonRestaurantManager.getInstance(getApplicationContext()).addOrderedMenuAPI(getApplicationContext(), orderedMenu);
-                        }else{
-                            orderedMenu.setQuantity(orderedMenu.getQuantity()+quantity);
-                        }
                     }
-                }else{
-                    System.out.println("---> Entri aqui");
-                    order = new Order(0, userid, idRest, 0, status);
-                    SingletonRestaurantManager.getInstance(getApplicationContext()).addOrderAPI(getApplicationContext(), order, new Response.Listener() {
-                        @Override
-                        public void onResponse(Object response) {
-                            Order o = SingletonRestaurantManager.getInstance(getApplicationContext()).getOrder(idRest, userid, status);
-
-                            for (int i = 0; i < selectedMenuIds.size(); i++) {
-                                OrderedMenu orderedMenu =new OrderedMenu();
-                                Integer menuId = selectedMenuIds.get(i);
-                                Integer quantity = selectedQuantities.get(i);
-                                orderedMenu = new OrderedMenu(0, menuId, o.getId(), quantity);
-                                SingletonRestaurantManager.getInstance(getApplicationContext()).addOrderedMenuAPI(getApplicationContext(), orderedMenu);
-
-                            }
-                        }
-                    });
-                }
+                });
             }
         });
 

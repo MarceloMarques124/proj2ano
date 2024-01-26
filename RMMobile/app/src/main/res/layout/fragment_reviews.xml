@@ -6,8 +6,15 @@
     android:layout_marginLeft="15dp"
     tools:context=".Fragments.ReviewsFragment">
 
-    <ListView
-        android:id="@+id/lvUserReviews"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:id="@+id/swipeLayout">
+
+        <ListView
+            android:id="@+id/lvUserReviews"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>

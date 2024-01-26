@@ -224,6 +224,17 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
         this.db.insert(TABLE_ORDER, null, values);
     }
 
+    public boolean updateOrderDB(Order order){
+        ContentValues values = new ContentValues();
+
+        values.put(USER_ID, order.getUserId());
+        values.put(REST_ID, order.getRestId());
+        values.put(PRICE, order.getPrice());
+        values.put(STATUS, order.getStatus());
+
+        return this.db.update(TABLE_ORDER, values, ID + "= ?",  new String[]{"" + order.getId()}) > 0;
+    }
+
     public void removeAllOrders() {
         this.db.delete(TABLE_ORDER, null, null);
     }

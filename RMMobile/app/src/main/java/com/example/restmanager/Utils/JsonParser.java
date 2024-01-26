@@ -349,4 +349,25 @@ public class JsonParser {
             return ""; // Tratamento de erro, você pode ajustar conforme necessário
         }
     }
+
+    public static Order jsonOrderParser(String response) {
+        Order auxOrder;
+
+        try {
+            JSONObject order = new JSONObject(response);
+
+            int idOrder = order.getInt("id");
+            int userIdOrder = order.getInt("user_id");
+            int restaurantIdOrder = order.getInt("restaurant_id");
+            int statusOrder = order.getInt("status");
+            double priceOrder = order.getDouble("price");
+
+            auxOrder = new Order(idOrder, userIdOrder, restaurantIdOrder, (float) priceOrder, statusOrder);
+
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        return auxOrder;
+    }
 }

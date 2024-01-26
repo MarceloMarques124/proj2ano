@@ -48,7 +48,7 @@ public class OrdersAdapter extends BaseAdapter {
             inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
         if(convertView == null){
-            convertView=inflater.inflate(R.layout.item_done_orders_list, null);
+            convertView=inflater.inflate(R.layout.item_cart, null);
         }
         OrdersAdapter.ViewHolderList viewHolderList = (ViewHolderList) convertView.getTag();
         if(viewHolderList == null){
@@ -63,18 +63,15 @@ public class OrdersAdapter extends BaseAdapter {
     class ViewHolderList {
         private final TextView tvRestName;
         private final TextView tvPrice;
-        private final EditText etQuantity;
-        private final ImageView imgCover;
 
         public ViewHolderList(View view) {
             tvRestName = view.findViewById(R.id.order);
-            imgCover = view.findViewById(R.id.imgCover);
             tvPrice = view.findViewById(R.id.tvPrice);
-            etQuantity = view.findViewById(R.id.etQuantity);
         }
 
         public void update(Order order) {
             tvRestName.setText(order.getId());
+            tvPrice.setText(tvPrice + " €");
         }
     }
 }

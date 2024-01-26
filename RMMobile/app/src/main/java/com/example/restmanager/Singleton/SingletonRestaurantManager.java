@@ -16,6 +16,8 @@ import com.example.restmanager.Activities.MainActivity;
 import com.example.restmanager.Activities.RestaurantDetailsActivity;
 import com.example.restmanager.DBHelper.RestManagerDBHelper;
 import com.example.restmanager.Listeners.MenusListener;
+import com.example.restmanager.Listeners.OrderedMenuListener;
+import com.example.restmanager.Listeners.OrderedMenusListener;
 import com.example.restmanager.Listeners.OrdersListener;
 import com.example.restmanager.Listeners.ReserveListener;
 import com.example.restmanager.Listeners.ReservesListener;
@@ -92,6 +94,8 @@ public class SingletonRestaurantManager {
     //#endregion # Orders Variables #
 
     private ArrayList<OrderedMenu> orderedMenus;
+    private OrderedMenusListener orderedMenusListener;
+    private OrderedMenuListener orderedMenuListener;
 
     public static synchronized SingletonRestaurantManager getInstance(Context context) {
         if (instance == null) {
@@ -104,6 +108,14 @@ public class SingletonRestaurantManager {
     //region # Listeners Setters #
     public void setReserveListener(ReserveListener reserveListener){
         this.reserveListener = reserveListener;
+    }
+
+    private void setOrderedMenusListener(OrderedMenusListener orderedMenusListener){
+        this.orderedMenusListener = orderedMenusListener;
+    }
+
+    private void setOrderedMenuListener(OrderedMenuListener orderedMenuListener){
+        this.orderedMenuListener = orderedMenuListener;
     }
 
     public void setZonesListener(ZonesListener zonesListener) {
@@ -150,6 +162,7 @@ public class SingletonRestaurantManager {
 
         restaurants = new ArrayList<>();
         menus = new ArrayList<>();
+        orders = new ArrayList<>();
         orderedMenus = new ArrayList<>();
         reviews = new ArrayList<>();
         zones = new ArrayList<>();
@@ -529,26 +542,31 @@ public class SingletonRestaurantManager {
 
     public void getOrdersAPI(final Context context, Response.Listener listener) {
 
-        if (!JsonParser.isConnectionInternet(context) && ordersListener != null) {
-            ordersListener.onRefreshTakeAwayOrdersList(restManagerDBHelper.getAllOrders());
-            orders = restManagerDBHelper.getAllOrders();
+        if (!JsonParser.isConnectionInternet(context)) {
+            Toast.makeText(context, R.string.no_internet, Toast.LENGTH_SHORT).show();
 
-            ordersListener.onRefreshOrderedMenusList(orderedMenus);
+            if (ordersListener != null)
+                ordersListener.onRefreshOrderedMenusList(orderedMenus);
         }
-
         SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
         String token = sharedPreferences.getString(Public.TOKEN, "token");
 
+        JsonArrayRequest requestOrders = new JsonArrayRequest(Request.Method.GET, sharedPreferences.getString(Public.IP, "http://172.22.21.221/api") + "/order/?token=" + token, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                orders = JsonParser.jsonOrdersParser(response);
+                addOrdersDB(JsonParser.jsonOrdersParser(response));
 
-        JsonArrayRequest requestOrders = new JsonArrayRequest(Request.Method.GET, sharedPreferences.getString(Public.IP, "http://172.22.21.221/api")  + "/order/?token=" + token, null,
-                response -> {
-                    orders = JsonParser.jsonOrdersParser(response);
-
-                    addOrdersDB(orders);
-                    onRequestsCompleted();
-                    listener.onResponse(response);
-                },
-                error -> System.out.println("--> Restaurants error: " + error));
+                if (ordersListener == null){
+                    ordersListener.onRefreshTakeAwayOrdersList(JsonParser.jsonOrdersParser(response));
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("---> Error getting Orders fri«om API");
+            }
+        });
 
         volleyQueue.add(requestOrders);
     }
@@ -569,18 +587,19 @@ public class SingletonRestaurantManager {
 
     public void addOrderAPI(Context context, Order order, Response.Listener listener) {
         if (!JsonParser.isConnectionInternet(context) && ordersListener != null) {
-            Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.no_internet, Toast.LENGTH_SHORT).show();
         } else {
             System.out.println("---> I'm here");
             SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
-            StringRequest request = new StringRequest(Request.Method.POST, sharedPreferences.getString(Public.IP, "0") + "order/create", new Response.Listener<String>() {
+            StringRequest request = new StringRequest(Request.Method.POST, sharedPreferences.getString(Public.IP, "0") + "/order/create", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     System.out.println("---> OrderAddAPI: " + response);
-                    addOrderDB(order);
+                    addOrderDB(JsonParser.jsonOrderParser(response));
                     if (ordersListener == null) {
                         ordersListener.onRefreshTakeAwayOrdersList(orders);
                     }
+                    listener.onResponse(response);
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -589,16 +608,44 @@ public class SingletonRestaurantManager {
                 }
             }) {
             protected Map<String, String> getParams() {
-                System.out.println("---> getParams");
                 Map<String, String> params = new HashMap<>();
-                params.put("order_id", order.getUserId()+"");
+                params.put("user_id", order.getUserId()+"");
                 params.put("restaurant_id", order.getRestId()+"");
                 params.put("price", order.getPrice()+"");
                 params.put("state", order.getStatus()+"");
+                System.out.println("---> getParams: " + params);
                 return params;
             }
             };
+            System.out.println("---> Request: " + request.toString());
             volleyQueue.add(request);
+        }
+    }
+
+    public void updateOrderPrice(Context context, float price, int orderId){
+        if (!JsonParser.isConnectionInternet(context)){
+            Toast.makeText(context, R.string.no_internet, Toast.LENGTH_SHORT).show();
+        }else{
+            SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
+            StringRequest request = new StringRequest(Request.Method.PUT, sharedPreferences.getString(Public.IP, "") + "order/updateprice/?id=" + orderId, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Order order = JsonParser.jsonOrderParser(response);
+                    updateOrderPriceDB(order);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    System.out.println("---> Error updating ");
+                }
+            }){
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("price", price + "");
+                    System.out.println("---> getParams: " + params);
+                    return params;
+                }
+            };
         }
     }
     public Order getOrder(int restaurant, int user, int status){
@@ -629,6 +676,11 @@ public class SingletonRestaurantManager {
 
     public ArrayList<Order> getOrdersDB() {
         return new ArrayList<>(orders);
+    }
+
+    public void updateOrderPriceDB(Order order){
+        if (order != null)
+            restManagerDBHelper.updateOrderDB(order);
     }
 
     //endregion # Orders #
@@ -690,8 +742,8 @@ public class SingletonRestaurantManager {
                 @Override
                 public void onResponse(String response) {
                     addOrderedMenuDB(orderedMenu);
-                    if (reviewListener != null) {
-                        reviewListener.onRefreshReviewDetails(CartActivity.ADD);
+                    if (orderedMenuListener != null) {
+                        orderedMenuListener.onRefreshOrderedMenu(CartActivity.ADD);
                     }
                 }
             }, new Response.ErrorListener() {

@@ -5,10 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.Response;
+import com.example.restmanager.Adapters.OrdersAdapter;
 import com.example.restmanager.Listeners.OrdersListener;
 import com.example.restmanager.Model.Order;
 import com.example.restmanager.Model.OrderedMenu;
@@ -41,11 +43,11 @@ public class CartFragment extends Fragment implements OrdersListener {
         binding.lvCartRests.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getContext(), "teste " + id, Toast.LENGTH_SHORT).show();
             }
         });
 
         SingletonRestaurantManager.getInstance(getContext()).setOrdersListener(this);
-        SingletonRestaurantManager.getInstance(getContext()).getOrderedMenusAPI(getContext());
         SingletonRestaurantManager.getInstance(getContext()).getOrdersAPI(getContext(), new Response.Listener() {
             @Override
             public void onResponse(Object response) {
@@ -58,8 +60,17 @@ public class CartFragment extends Fragment implements OrdersListener {
 
     @Override
     public void onRefreshTakeAwayOrdersList(ArrayList<Order> orders) {
-        /*if (orders == null)
-            return;
+        if (orders != null) {
+            ArrayList<Order> auxOrders = new ArrayList<>();
+
+            orders.forEach(order -> {
+                if (order.getStatus() == 1)
+                    auxOrders.add(order);
+            });
+            binding.lvCartRests.setAdapter(new OrdersAdapter(getContext(), orders));
+        }
+
+         /*   return;
 
         // receber todos os restaurantes para enviar o nome de cada restaurante juntamente com o orderedMenu
         ArrayList<Restaurant> restaurants = SingletonRestaurantManager.getInstance(getContext()).getRestaurantsDB();
@@ -82,7 +93,6 @@ public class CartFragment extends Fragment implements OrdersListener {
             orderOrderedMenus.forEach(orderedMenu -> orderedMenu.setOrder(order));
         });*/
 
-        //binding.lvCartRests.setAdapter(new OrdersAdapter(getContext(), order));
 
     }
 
