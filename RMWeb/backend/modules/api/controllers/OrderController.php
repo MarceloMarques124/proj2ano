@@ -40,10 +40,11 @@ class OrderController extends ActiveController
 
             foreach ($orders as $order) {
                 $result[] = [
-                    'order_id' => $order->id,
+                    'id' => $order->id,
                     'user' => $user->username, 
                     'restaurant' => $order->restaurant->name,
-                    'price' => $order->price
+                    'price' => $order->price,
+                    'state' => $order->state
                 ];
             }
 
@@ -108,9 +109,17 @@ class OrderController extends ActiveController
     return $order;
     }
 
-    public function actionCart(){
-        $params = Yii::$app->request->post();
+    public function actionUpdateprice($id){
+        $params = Yii::$app->getRequest()->getBodyParams();
+        $order = Order::Find($id)->one();
 
-        
+        $order->price += $params['price'];
+
+        if (!$order->save()) {
+            return "Failed to create invoice";
+        }
+        $order->save();
+
+        return $order;
     }
 }

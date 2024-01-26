@@ -102,7 +102,11 @@ return [
                     'controller' => 'api/order',
                     'extraPatterns' => [
                         'GET index' => 'index',
-                        'POST create' => 'create'
+                        'POST create' => 'create',
+                        'PUT updateprice/{id}' => 'updateprice'
+                    ],
+                    'tokens' =>[
+                        '{id}' => '<id:\\d+>'
                     ],
                 ],
                 [
