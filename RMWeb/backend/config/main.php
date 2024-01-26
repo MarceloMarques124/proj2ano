@@ -102,7 +102,7 @@ return [
                     'controller' => 'api/order',
                     'extraPatterns' => [
                         'GET index' => 'index',
-                        'POST createinvoice' => 'createinvoice'
+                        'POST create' => 'create'
                     ],
                 ],
                 [

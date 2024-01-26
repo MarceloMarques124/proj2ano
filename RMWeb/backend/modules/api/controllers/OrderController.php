@@ -65,9 +65,10 @@ class OrderController extends ActiveController
         }
     }
 
-    public function actionCreateinvoice()
+    public function actionCreate()
     {
-     $params = json_decode(Yii::$app->request->getRawBody(), true);
+     //$params = json_decode(Yii::$app->request->getRawBody(), true);
+     $params = Yii::$app->getRequest()->getBodyParams();
     /* $params = Yii::$app->request->post();
 
 
@@ -94,7 +95,7 @@ class OrderController extends ActiveController
     $params = Yii::$app->request->post();
 
     foreach ($params as $param) {
-        $order = new OrderedMenu();
+        $order = new Order();
         $order->restaurant_id = $param['restaurant_id'];
         $order->price = $param['price'];
         $order->user_id = $param['user_id'];
