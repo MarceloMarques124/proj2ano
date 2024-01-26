@@ -123,6 +123,7 @@ public class OrdersActivity extends AppCompatActivity implements MenusListener {
                         }
                     }
                 }else{
+                    System.out.println("---> Entri aqui");
                     order = new Order(0, userid, idRest, 0, status);
                     SingletonRestaurantManager.getInstance(getApplicationContext()).addOrderAPI(getApplicationContext(), order, new Response.Listener() {
                         @Override

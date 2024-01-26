@@ -571,11 +571,12 @@ public class SingletonRestaurantManager {
         if (!JsonParser.isConnectionInternet(context) && ordersListener != null) {
             Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show();
         } else {
-
+            System.out.println("---> I'm here");
             SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
-            StringRequest request = new StringRequest(Request.Method.POST, sharedPreferences.getString(Public.TOKEN, "0") + "orders/create", new Response.Listener<String>() {
+            StringRequest request = new StringRequest(Request.Method.POST, sharedPreferences.getString(Public.IP, "0") + "order/create", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
+                    System.out.println("---> OrderAddAPI: " + response);
                     addOrderDB(order);
                     if (ordersListener == null) {
                         ordersListener.onRefreshTakeAwayOrdersList(orders);
@@ -588,6 +589,7 @@ public class SingletonRestaurantManager {
                 }
             }) {
             protected Map<String, String> getParams() {
+                System.out.println("---> getParams");
                 Map<String, String> params = new HashMap<>();
                 params.put("order_id", order.getUserId()+"");
                 params.put("restaurant_id", order.getRestId()+"");
@@ -596,6 +598,7 @@ public class SingletonRestaurantManager {
                 return params;
             }
             };
+            volleyQueue.add(request);
         }
     }
     public Order getOrder(int restaurant, int user, int status){
@@ -605,6 +608,7 @@ public class SingletonRestaurantManager {
                 return order;
             }
         }
+        System.out.println("---> não deu");
         return null;
     }
 
@@ -852,7 +856,6 @@ public class SingletonRestaurantManager {
         ArrayList<User> users = restManagerDBHelper.getAllUsers();
         for (User u : users) {
             if (u != null)
-                System.out.println("---> TOKEN (From u): " + u.getId());
 
             if (Objects.equals(u.getToken(), token))
                 return u;
