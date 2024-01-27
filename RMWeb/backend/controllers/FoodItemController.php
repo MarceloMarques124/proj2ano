@@ -82,8 +82,13 @@ class FooditemController extends Controller
         $model = new FoodItem();
         $model->menu_id = $id;
 
+        $menu = Menu::findOne(['id' => $id]);
+
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
+                $menu->price = 0;
+                $menu->price += $model->price;
+                $menu->save();
                 return $this->redirect(['menu/view', 'id' => $model->menu_id]);
             }
         } else {
@@ -108,7 +113,11 @@ class FooditemController extends Controller
         $menus = Menu::find()->all();
         $model = $this->findModel($id);
 
+        $menu = Menu::findOne(['id' => $model->menu_id = $id]);
+
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            $menu->price += $model->price;
+            $menu->save();
             return $this->redirect(['menu/view', 'id' => $model->menuId]);
         }
 
@@ -128,8 +137,11 @@ class FooditemController extends Controller
     public function actionDelete($id)
     {
         $foodItem = $this->findModel($id);
-        $foodItem->delete();
-
+        $menu = Menu::findOne(['id' => $foodItem->menu_id]);
+        $menu->price -= $foodItem->price;
+        $menu->save();
+        if($menu->save())
+            $foodItem->delete();
         // Redirecionar para a view do Menu com base no ID do Menu
         return $this->redirect(['menu/view', 'id' => $foodItem->menu_id]);
     }
