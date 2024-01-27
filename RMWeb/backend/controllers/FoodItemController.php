@@ -113,12 +113,15 @@ class FooditemController extends Controller
         $menus = Menu::find()->all();
         $model = $this->findModel($id);
 
-        $menu = Menu::findOne(['id' => $model->menu_id = $id]);
+        $menu = Menu::findOne(['id' => $model->menu_id]);
+        $foodItem = Fooditem::findOne(['id' => $model->id]);
+
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            $menu->price -= $foodItem->price;
             $menu->price += $model->price;
             $menu->save();
-            return $this->redirect(['menu/view', 'id' => $model->menuId]);
+            return $this->redirect(['menu/view', 'id' => $model->menu_id]);
         }
 
         return $this->render('update', [
