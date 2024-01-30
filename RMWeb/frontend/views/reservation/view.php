@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var common\models\Reservation $model */
 
-$this->title = $model->id;
+$this->title = "Reservation:";
 $this->params['breadcrumbs'][] = ['label' => 'Reservations', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -29,9 +29,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
             'tables_number',
-            'user.name',
+            'user.username',
             'date_time',
             'people_number',
             'remarks:ntext',

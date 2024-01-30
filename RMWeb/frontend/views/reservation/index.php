@@ -20,31 +20,39 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-            'tables_number',
-            [
-                'attribute' => 'userName',
-                'label' => 'User Name',
-                'value' => function ($model) {
-                    return $model->user ? $model->user->username : null;
-                },
-                'filter' => Html::activeTextInput($searchModel, 'userName', ['class' => 'form-control']),
-            ],
-            'date_time',
-            'people_number',
-            //'remarks:ntext',
-            //'restaurant_id',
-            [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Reservation $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
-            ],
+    'dataProvider' => $dataProvider,
+    'filterModel' => $searchModel,
+    'options' => ['class' => 'grid-view-container'], // Adiciona uma classe CSS personalizada
+    'columns' => [
+        ['class' => 'yii\grid\SerialColumn'],
+        'tables_number',
+        [
+            'attribute' => 'userName',
+            'label' => 'User Name',
+            'value' => function ($model) {
+                return $model->user ? $model->user->username : null;
+            },
+            'filter' => Html::activeTextInput($searchModel, 'userName', ['class' => 'form-control']),
         ],
-    ]); ?>
-
+        'date_time',
+        'people_number',
+        [
+            'class' => ActionColumn::className(),
+            'urlCreator' => function ($action, Reservation $model, $key, $index, $column) {
+                return Url::toRoute([$action, 'id' => $model->id]);
+            }
+        ],
+    ],
+]); ?>
 
 </div>
+
+<style>
+    .grid-view-container {
+        background-color: #28a745; /* Verde - bg-success */
+        color: #fff; /* Branco - text-white */
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+</style>

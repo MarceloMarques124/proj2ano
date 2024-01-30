@@ -4,10 +4,12 @@ namespace frontend\controllers;
 
 use yii\web\Controller;
 use common\models\Order;
+use common\models\OrderedMenu;
+use common\models\UserInfo;
 use yii\filters\VerbFilter;
 use common\models\Prestacao;
-use common\models\UserInfo;
 use frontend\models\OrderSearch;
+use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -57,9 +59,17 @@ class OrderController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
+        $model = $this->findModel($id);
+        
+        $orderedMenusDataProvider = new ActiveDataProvider([
+            'query' => OrderedMenu::find()->where(['order_id' => $model->id]),
         ]);
+        
+        return $this->render('view', [
+            'model' => $model,
+            'orderedMenusDataProvider' => $orderedMenusDataProvider
+        ]);
+
     }
 
     /**
