@@ -202,7 +202,7 @@ public class RestManagerDBHelper extends SQLiteOpenHelper {
                         cursor.getInt(1),
                         cursor.getInt(2),
                         cursor.getFloat(3),
-                        cursor.getInt(4)
+                        cursor.getString(4)
                 );
 
                 orders.add(order);

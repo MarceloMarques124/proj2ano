@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.restmanager.Fragments.ReviewsFragment;
 import com.example.restmanager.Listeners.RestaurantListener;
+import com.example.restmanager.Listeners.ReviewListener;
 import com.example.restmanager.Listeners.ReviewsListener;
 import com.example.restmanager.Model.Restaurant;
 import com.example.restmanager.Model.Review;
@@ -26,7 +27,7 @@ import com.example.restmanager.databinding.ActivityReviewDetailsBinding;
 
 import java.sql.SQLOutput;
 
-public class ReviewDetailsActivity extends AppCompatActivity implements RestaurantListener {
+public class ReviewDetailsActivity extends AppCompatActivity implements ReviewListener {
     public static final int ADD = 10;
     public static final int EDIT = 20;
     public static final int DELETE = 30;
@@ -105,6 +106,7 @@ public class ReviewDetailsActivity extends AppCompatActivity implements Restaura
                     Toast.makeText(ReviewDetailsActivity.this, "AddApi", Toast.LENGTH_SHORT).show();
 
                     Review review = new Review(0,userId, restId, (int)stars, description);
+
                     SingletonRestaurantManager.getInstance(getApplicationContext()).addReviewApi(review, getApplicationContext(), token);
                     Intent intent = new Intent();
                     setResult(RESULT_OK, intent);
@@ -112,10 +114,9 @@ public class ReviewDetailsActivity extends AppCompatActivity implements Restaura
                 }
             }
         });
-
     }
 
-    public void onClickSaveReview(View view){
+    /*public void onClickSaveReview(View view){
 
         int id = getIntent().getIntExtra(String.valueOf(ID_REST), 0);
         restaurant = SingletonRestaurantManager.getInstance(getApplicationContext()).getRestaurant(id);
@@ -138,10 +139,13 @@ public class ReviewDetailsActivity extends AppCompatActivity implements Restaura
         Intent intent = new Intent();
         setResult(RESULT_OK, intent);
         finish();
-    }
+    }*/
 
     @Override
-    public void onRefreshRestaurantDetails(int operation) {
-
+    public void onRefreshReviewDetails(int operation) {
+        Intent intent = new Intent();
+        intent.putExtra(String.valueOf(ReviewsFragment.OP_CODE), operation);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }

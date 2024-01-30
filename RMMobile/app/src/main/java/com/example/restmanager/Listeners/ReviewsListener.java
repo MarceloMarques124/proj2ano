@@ -6,5 +6,7 @@ import java.util.ArrayList;
 
 public interface ReviewsListener {
 
+    void onRefresh();
+
     void onRefreshReviewsList(ArrayList<Review> reviews);
 }

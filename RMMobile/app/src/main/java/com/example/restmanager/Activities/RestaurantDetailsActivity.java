@@ -86,9 +86,10 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Revi
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == ReviewDetailsActivity.ADD || requestCode == ReviewDetailsActivity.EDIT) {
-                SingletonRestaurantManager.getInstance(getApplicationContext()).getReviewsByRest(restaurant.getName());
                 switch (requestCode) {
                     case ReviewDetailsActivity.ADD:
+                        SingletonRestaurantManager.getInstance(getApplicationContext()).setReviewsListener(this);
+                        SingletonRestaurantManager.getInstance(getApplicationContext()).getReviewsAPI(getApplicationContext());
                         // Snackbar.make(get(), "livro add com succ", Snackbar.LENGTH_SHORT).show();
                         Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
                         break;
@@ -102,6 +103,11 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Revi
                 }
             }
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        SingletonRestaurantManager.getInstance(getApplicationContext()).getReviewsAPI(getApplicationContext());
     }
 
     @Override

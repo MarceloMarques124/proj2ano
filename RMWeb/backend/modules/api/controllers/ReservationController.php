@@ -59,9 +59,10 @@ class ReservationController extends ActiveController
     public function actionCreate()
     {
         $request = Yii::$app->getRequest()->getBodyParams();
-
+        var_dump($request);
+        die();
         $dateTimeString = $request['date'] . ' ' . $request['time'];
-
+        
         // Create a DateTime object
         $dateTime = DateTime::createFromFormat('Y-m-d H:i:s', $dateTimeString);
 
@@ -76,9 +77,9 @@ class ReservationController extends ActiveController
         $reserve->zone_id = $request['zone_id'];
 
         if ($reserve->validate() && $reserve->save()) {
-            return ['status' => 'success', 'message' => 'Review updated successfully.'];
+            return ['status' => 'success', 'message' => 'Reserve updated successfully.'];
         } else {
-            return ['status' => 'error', 'message' => 'Failed to update review.', 'errors' => $reserve->errors];
+            return ['status' => 'error', 'message' => 'Failed to Create reservation.', 'errors' => $reserve->errors];
         }
     }
 }

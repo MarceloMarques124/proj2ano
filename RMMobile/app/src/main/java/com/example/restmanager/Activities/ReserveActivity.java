@@ -66,7 +66,7 @@ public class ReserveActivity extends AppCompatActivity implements ZonesListener{
                 picker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
                     @Override
                     public void onPositiveButtonClick(Object selection) {
-                        binding.pickDate.setText(new SimpleDateFormat("dd/MM/yyyy").format(picker.getSelection()));
+                        binding.pickDate.setText(new SimpleDateFormat("yyyy-MM-dd").format(picker.getSelection()));
                         picker.dismiss();
                     }});
             }
