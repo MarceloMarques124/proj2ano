@@ -74,7 +74,7 @@ return [
                     'controller' => 'api/review',
                     'extraPatterns' => [
                         'POST create' => 'create',
-                        'POST edit/{id}' => 'edit'
+                        'PUT edit/{id}' => 'edit'
                     ],
                     'tokens' =>[
                         '{id}' => '<id:\\d+>'
@@ -111,7 +111,14 @@ return [
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'api/orderedmenu'
+                    'controller' => 'api/orderedmenu',
+                    'extraPatterns' => [
+                        'GET index' => 'index',
+                        'POST create' => 'create'
+                    ],
+                    'tokens' =>[
+                        '{id}' => '<id:\\d+>'
+                    ],
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',
