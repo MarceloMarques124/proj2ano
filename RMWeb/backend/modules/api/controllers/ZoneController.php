@@ -27,6 +27,5 @@ class ZoneController extends ActiveController
      public function actionZonesbyrest($id)
      {
         return Zone::find()->where(['restaurant_id' => $id, ])->all();
-
     }
 }

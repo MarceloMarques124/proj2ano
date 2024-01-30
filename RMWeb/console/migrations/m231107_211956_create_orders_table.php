@@ -22,7 +22,7 @@ class m231107_211956_create_orders_table extends Migration
             'user_id' => $this->integer()->notNull(),
             'restaurant_id' => $this->integer()->notNull(),
             'price' => $this->decimal(4, 2)->notNull(),
-            'state' => $this->integer()->notNull(),
+            'state' => $this->getDb()->getSchema()->createColumnSchemaBuilder("ENUM('payment', 'paid', 'completed')")->notNull(),
         ],'ENGINE=InnoDB');
 
         // creates index for column `user_id`

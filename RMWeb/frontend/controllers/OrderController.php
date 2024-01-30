@@ -6,6 +6,7 @@ use yii\web\Controller;
 use common\models\Order;
 use yii\filters\VerbFilter;
 use common\models\Prestacao;
+use common\models\UserInfo;
 use frontend\models\OrderSearch;
 use yii\web\NotFoundHttpException;
 
@@ -93,10 +94,37 @@ class OrderController extends Controller
 
     public function actionPay($id)
     {
-        $order = Order::findOne(['id' => $id]);
+        $order = $this->findModel($id);
+        $user = UserInfo::findOne(['id' => $order->user_id]);
+        // Check order status
+        if($order->state == 'payment'){
+            // Redirect to payment page
+            return $this->render('pay', [
+                'orderPrice' => $order->price,
+                'orderId' => $order->id,
+                'user' => $user
+            ]);
+        }
+        /* $order = Order::findOne(['id' => $id]);
         $order->state = 2;
         $order->save();
-        return $this->redirect(['index']);
+        return $this->redirect(['index']); */
+    }
+
+    public function actionPayorder($id)
+    {
+        $order = $this->findModel($id);
+        // Check order status
+        if($order){
+            $order->state = "paid";
+            $order->save();
+            // Redirect to payment page
+            return $this->redirect(['order/index']);
+        }
+        /* $order = Order::findOne(['id' => $id]);
+        $order->state = 2;
+        $order->save();
+        return $this->redirect(['index']); */
     }
 
     public function actionTimes($id)

@@ -39,8 +39,7 @@ class TableController extends Controller
                             'denyCallback' => function ($rule, $action) {
                                 throw new ForbiddenHttpException('You are not allowed to perform this action.');
                             },
-                        ],
-                        
+                        ],     
                     ],
                 ],
             ]

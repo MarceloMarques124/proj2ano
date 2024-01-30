@@ -47,8 +47,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Order $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                 },
+                 'template' => '{view} {delete}',
+                 'visibleButtons' => [
+                     'delete' => function ($model) {
+                         return $model->state === 'payment';
+                     },
+                 ],
             ],
+
+
         ],
     ]); ?>
 

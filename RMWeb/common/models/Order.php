@@ -11,7 +11,7 @@ use Yii;
  * @property int $user_id
  * @property int $restaurant_id
  * @property float $price
- * @property int $state
+ * @property string $state
  *
  * @property OrderedMenu[] $orderedMenus
  * @property Restaurant $restaurant
@@ -34,8 +34,9 @@ class Order extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'restaurant_id', 'price', 'state'], 'required'],
-            [['user_id', 'restaurant_id', 'state'], 'integer'],
+            [['user_id', 'restaurant_id'], 'integer'],
             [['price'], 'number'],
+            [['state'], 'string'],
             [['restaurant_id'], 'exist', 'skipOnError' => true, 'targetClass' => Restaurant::class, 'targetAttribute' => ['restaurant_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];

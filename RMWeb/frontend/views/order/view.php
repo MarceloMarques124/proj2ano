@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var common\models\Order $model */
 
-$this->title = $model->id;
+$this->title = 'Order';
 $this->params['breadcrumbs'][] = ['label' => 'Orders', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -16,13 +16,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?php if($model->state == 1){?>
+        <?php if($model->state == 'payment'){?>
         <?= Html::a('Pay', ['pay', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('3 times pay', ['prestacao/create', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?php }?>
-        <?php if($model->state == 1){?>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?php }?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -30,12 +25,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
+        <?php }?>
+
     </p>
 
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
             'user_id',
             'restaurant_id',
             'price',
