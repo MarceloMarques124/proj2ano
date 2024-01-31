@@ -56,17 +56,19 @@ AppAsset::register($this);
 <body class="d-flex flex-column h-100">
     <?php $this->beginBody() ?>
 
+
     <header>
-        <div class="container-fluid fixed-top px-0 wow fadeIn" data-wow-delay="0.1s">
-            <nav class="navbar navbar-expand-lg navbar-light py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
-                <a href="index.php" class="navbar-brand ms-4 ms-lg-0">
-                    <img src="images/png/mainlogo.png" width="180" height="61,74">
-                </a>
-                <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarCollapse">
-                    <div class="navbar-nav ms-auto p-4 p-lg-0">
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark"> <!-- Defina a cor de fundo para bg-dark -->
+        <div class="container">
+            <a class="navbar-brand text-success" href="<?= Yii::$app->homeUrl ?>" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);"> <!-- Adicione text-shadow para criar contraste -->
+                <img src="images/png/mainlogo.png" alt="Logo" width="180" height="61.74">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav ml-auto">
                         <?php
                         if (Yii::$app->user->isGuest) {
                             echo Html::a('Login', ['site/login'], ['data-method' => 'post', 'class' => 'nav-item nav-link']);
@@ -74,29 +76,28 @@ AppAsset::register($this);
                             echo Html::a('Home', ['site/index'], ['data-method' => 'post', 'class' => 'nav-item nav-link']);
                             echo Html::a('Reserves', ['reservation/index'], ['data-method' => 'post', 'class' => 'nav-item nav-link']); //este ve so as realizadas
                             echo Html::a('Orders', ['order/index'], ['data-method' => 'post', 'class' => 'nav-item nav-link']); //este ve so as concluidas
-                            echo Html::a('Home', ['site/index'], ['data-method' => 'post', 'class' => 'nav-item nav-link']);
                             echo Html::a('Logout', ['site/logout'], ['data-method' => 'post', 'class' => 'nav-item nav-link']);
                         }
                         ?>
                         <?php
-                        echo Nav::widget([
-                            'options' => ['class' => 'navbar-nav navbar-right'],
-                            'items' => [
-                                ['label' => 'Reserves', 'items' => [
-                                    ['label' => 'My reserves', 'url' => '#'],
-                                    ['label' => 'Make reserves', 'url' => '#'],
-                                ]],
+                       echo Nav::widget([
+                        'options' => ['class' => 'navbar-nav navbar-right'],
+                        'items' => [
+                            ['label' => 'Reserves', 'items' => [
+                                ['label' => 'My reserves', 'url' => '#'],
+                                ['label' => 'Make reserves', 'url' => '#'],
+                            ]],
 
-                            ],
+                        ],
 
-                        ]);
-                        ?>
-                    </div>
-
-                </div>
-            </nav>
+                    ]);
+                    ?>
+                </ul>
+            </div>
         </div>
-    </header>
+    </nav>
+    <!-- Navbar End -->
+</header>
 
     <main role="main" class="flex-shrink-0">
         <!-- Carousel Start -->
