@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use common\models\Menu;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
@@ -12,11 +13,13 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'menu_id')->textInput() ?>
+    <?php $menu = Menu::findOne(['id' =>  $model->menu_id]); ?>
+    <?= $form->field($model, 'menu_id')->textInput(['value' => $menu->name, 'disabled' => true])
+          ->label('Menu Name') ?>
 
     <?= $form->field($model, 'quantity')->textInput() ?>
 
-    <?= $form->field($model, 'order_id')->textInput() ?>
+    <?= $form->field($model, 'order_id')->textInput(['disabled' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

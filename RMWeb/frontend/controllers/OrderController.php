@@ -60,6 +60,8 @@ class OrderController extends Controller
     public function actionView($id)
     {
         $model = $this->findModel($id);
+        if(!$model)
+            $model->delete();
         
         $orderedMenusDataProvider = new ActiveDataProvider([
             'query' => OrderedMenu::find()->where(['order_id' => $model->id]),

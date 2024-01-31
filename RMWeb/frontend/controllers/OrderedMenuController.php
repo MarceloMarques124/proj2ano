@@ -2,11 +2,13 @@
 
 namespace frontend\controllers;
 
-use common\models\OrderedMenu;
-use frontend\models\OrderedMenuSearch;
+use common\models\Menu;
+use common\models\Order;
 use yii\web\Controller;
-use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use common\models\OrderedMenu;
+use yii\web\NotFoundHttpException;
+use frontend\models\OrderedMenuSearch;
 
 /**
  * OrderedMenuController implements the CRUD actions for OrderedMenu model.
@@ -94,8 +96,27 @@ class OrderedmenuController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $menu = Menu::findOne(['id' => $model->menu_id]);
+        $order = Order::findOne(['id' => $model->order_id]);
+
+        $quantityBeforeUpdate = $model->quantity;
+
+        
+
+            if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+                if ($model->quantity >= 0) {
+                $quantityAfterUpdate = $model->quantity;
+                if ($quantityAfterUpdate > $quantityBeforeUpdate) {
+                    $quantityDifference = $quantityAfterUpdate - $quantityBeforeUpdate;
+                    $order->price += $menu->price * $quantityDifference;
+                    $order->save();
+                } else {
+                    $quantityDifference = $quantityBeforeUpdate - $quantityAfterUpdate;
+                    $order->price -= $menu->price * $quantityDifference;
+                    $order->save();
+                }
+                return $this->redirect(['order/view', 'id' => $model->order_id]);
+            }
         }
 
         return $this->render('update', [

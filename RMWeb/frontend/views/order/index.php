@@ -63,6 +63,9 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ],
 ]); ?>
+
+
+
 <style>
     .grid-view-container {
         background-color: #28a745; /* Verde - bg-success */
@@ -72,7 +75,5 @@ $this->params['breadcrumbs'][] = $this->title;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     }
 </style>
-
-
 
 </div>
