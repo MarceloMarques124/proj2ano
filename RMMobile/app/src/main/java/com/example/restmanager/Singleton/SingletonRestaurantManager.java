@@ -15,6 +15,7 @@ import com.example.restmanager.Activities.CartActivity;
 import com.example.restmanager.Activities.MainActivity;
 import com.example.restmanager.Activities.RestaurantDetailsActivity;
 import com.example.restmanager.DBHelper.RestManagerDBHelper;
+import com.example.restmanager.Fragments.ReviewsFragment;
 import com.example.restmanager.Listeners.MenusListener;
 import com.example.restmanager.Listeners.OrderedMenuListener;
 import com.example.restmanager.Listeners.OrderedMenusListener;
@@ -452,32 +453,35 @@ public class SingletonRestaurantManager {
         } else {
 
             SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
-            StringRequest req = new StringRequest(Request.Method.PUT, sharedPreferences.getString(Public.IP, "http://172.22.21.221/api") + "/review/edit/" + review.getId(), new Response.Listener<String>() {
+            StringRequest req = new StringRequest(Request.Method.PUT, sharedPreferences.getString(Public.IP, "http://172.22.21.221/api") + "/reviews/edit/" + review.getId(), new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    editReviewDB(JsonParser.parserJsonReview(response));
+                    System.out.println("---> Response Edit Rview: " + response);
+                    editReviewDB(review);
                     if (reviewListener != null) {
-                        reviewListener.onRefreshReviewDetails(RestaurantDetailsActivity.ADD);
+                        reviewListener.onRefreshReviewDetails(ReviewsFragment.EDIT);
                     }
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    System.out.println("---> error add api " + error.getMessage());
+                    System.out.println("---> Error Editing Review:  " + error.getMessage());
                 }
             }) {
                 protected Map<String, String> getParams() {
                     Restaurant rest = SingletonRestaurantManager.getInstance(context).getRestaurantByName(review.getRestId());
                     User u = SingletonRestaurantManager.getInstance(context).getUserBD(sharedPreferences.getString(Public.TOKEN, "0"));
-                    Map<String, String> params = new HashMap<String, String>();
+                    Map<String, String> params = new HashMap<>();
                     System.out.println("---> Review: " + u.getId() + "|" + review.getStars() + "|" + review.getDescription() + "|" + rest.getId());
                     params.put("user_id", "" + u.getId());
                     params.put("stars", "" + review.getStars());
                     params.put("description", "" + review.getDescription());
                     params.put("restaurant_id", "" + rest.getId());
+                    System.out.println("---> Params: " + params);
                     return params;
                 }
             };
+            System.out.println("---> Request: " + req);
             volleyQueue.add(req);
         }
     }
@@ -648,9 +652,9 @@ public class SingletonRestaurantManager {
             };
         }
     }
-    public Order getOrder(int restaurant, int user, int status){
+    public Order getOrder(int restaurant, int user, String status){
         for (Order order : orders) {
-            if (order.getUserId() == user && order.getRestId() == restaurant && order.getStatus() == status) {
+            if (order.getUserId() == user && order.getRestId() == restaurant && Objects.equals(order.getStatus(), status)) {
                 System.out.println("---> Order exists: " + order.getId());
                 return order;
             }
@@ -970,7 +974,6 @@ public class SingletonRestaurantManager {
     }
 
     public void addReserveAPI(final Reserve reserve, Context context){
-        System.out.println("---> Entrei aqui");
         System.out.println("---> Reserve: " + reserve.getId() + " | " + reserve.getDate() + " | " + reserve.getTime() + " | " + reserve.getTablesNumber() + " | " +
                 reserve.getUserId() + " | " + reserve.getZone() + " | " + reserve.getRestId() + " | " + reserve.getRemarks() + " | " + reserve.getPeopleNumber());
         if (!JsonParser.isConnectionInternet(context)) {
@@ -980,7 +983,7 @@ public class SingletonRestaurantManager {
         } else {
             SharedPreferences sharedPreferences = context.getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
             String token = sharedPreferences.getString(Public.TOKEN, "TOKEN");
-            StringRequest request = new StringRequest(Request.Method.POST, sharedPreferences.getString(Public.IP, "http://172.22.21.221/api") + "/reservations/create", new Response.Listener<String>() {
+            StringRequest request = new StringRequest(Request.Method.POST, sharedPreferences.getString(Public.IP, "http://172.22.21.221:8080/api") + "/reservations/create", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     System.out.println("---> Reserves response: " + response.toString());
@@ -1000,9 +1003,9 @@ public class SingletonRestaurantManager {
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<>();
             //        Zone z = SingletonRestaurantManager.instance.getZone();
-                    reserve.setTablesNumber((int)Math.round((double)reserve.getPeopleNumber()/4));
+                    reserve.setTablesNumber((int)Math.ceil((double)reserve.getPeopleNumber()/4));
                     params.put("tables_number", reserve.getTablesNumber());
-                    params.put("date_time", JsonParser.formatDateAndTime(reserve.getDate(), reserve.getTime()));
+                    params.put("date_time", reserve.getDate().toString() + " " + reserve.getTime().toString());
                     params.put("people_number", reserve.getPeopleNumber()+"");
                     params.put("remarks", reserve.getRemarks());
                     params.put("user_id", reserve.getUserId());

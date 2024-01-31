@@ -105,7 +105,7 @@ public class OrdersActivity extends AppCompatActivity implements MenusListener {
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(Public.DATAUSER, Context.MODE_PRIVATE);
         String token = sharedPreferences.getString(Public.TOKEN, "0");
         int userid = SingletonRestaurantManager.getInstance(getApplicationContext()).getUserBD(token).getId();
-        int status = 1;
+        String status = "payment";
 
         SingletonRestaurantManager.getInstance(getApplicationContext()).getOrdersAPI(getApplicationContext(), response -> {
             System.out.println("---> response: " + response);

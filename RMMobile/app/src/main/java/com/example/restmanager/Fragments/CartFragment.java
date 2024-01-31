@@ -18,6 +18,7 @@ import com.example.restmanager.Singleton.SingletonRestaurantManager;
 import com.example.restmanager.databinding.FragmentCartBinding;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class CartFragment extends Fragment implements OrdersListener {
     private FragmentCartBinding binding;
@@ -64,7 +65,7 @@ public class CartFragment extends Fragment implements OrdersListener {
             ArrayList<Order> auxOrders = new ArrayList<>();
 
             orders.forEach(order -> {
-                if (order.getStatus() == 1)
+                if (Objects.equals(order.getStatus(), "payment"))
                     auxOrders.add(order);
             });
             binding.lvCartRests.setAdapter(new OrdersAdapter(getContext(), orders));

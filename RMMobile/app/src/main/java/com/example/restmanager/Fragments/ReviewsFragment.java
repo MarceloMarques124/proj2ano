@@ -1,9 +1,7 @@
 package com.example.restmanager.Fragments;
 
 import static android.app.Activity.RESULT_OK;
-import static android.content.Intent.getIntent;
 
-import static com.example.restmanager.Activities.ReviewDetailsActivity.ID_REST;
 import static com.example.restmanager.Activities.ReviewDetailsActivity.ID_REVIEW;
 
 import android.content.Context;
@@ -18,8 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
-import com.android.volley.Response;
-import com.example.restmanager.Activities.RestaurantDetailsActivity;
 import com.example.restmanager.Activities.ReviewDetailsActivity;
 import com.example.restmanager.Adapters.ReviewsAdapter;
 import com.example.restmanager.Listeners.ReviewsListener;
@@ -35,6 +31,8 @@ import java.util.Objects;
 
 public class ReviewsFragment extends Fragment implements ReviewsListener {
 
+    public static final int EDIT = 20;
+    public static final int OP_CODE = 0;
     private FragmentReviewsBinding binding;
     private ArrayList<Review> reviews;
     private ArrayList<Review> userReviews;
@@ -61,10 +59,10 @@ public class ReviewsFragment extends Fragment implements ReviewsListener {
                 Intent intent = new Intent(getContext(), ReviewDetailsActivity.class);
                 intent.putExtra(ID_REVIEW, (int) id);
                 startActivityForResult(intent, ReviewDetailsActivity.EDIT);
-
-
             }
         });
+
+        binding.swipeLayout.setOnRefreshListener(this::onRefresh);
 
 
 
@@ -76,8 +74,14 @@ public class ReviewsFragment extends Fragment implements ReviewsListener {
 
         if (requestCode == ReviewDetailsActivity.EDIT && resultCode == RESULT_OK) {
             // Atualize a lista de revisões aqui
-            SingletonRestaurantManager.getInstance(getContext()).getReviewsAPI(getContext());
+            onRefresh();
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        SingletonRestaurantManager.getInstance(getContext()).getReviewsAPI(getContext());
+        binding.swipeLayout.setRefreshing(false);
     }
 
     @Override

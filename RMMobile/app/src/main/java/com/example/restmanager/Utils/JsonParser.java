@@ -102,7 +102,7 @@ public class JsonParser {
     }
 
     public static Review parserJsonReview(String response) {
-        Review auxReview = null;
+        Review auxReview = new Review();
         try {
             JSONObject review = new JSONObject(response);
             int idReview = review.getInt("id");
@@ -176,8 +176,6 @@ public class JsonParser {
         try {
             for (int i = 0; i < response.length(); i++) {
                 JSONObject zone = (JSONObject) response.get(i);
-
-                System.out.println("---> Zone (JsonZonesParser - antes do add): " + zone);
 
                 int idZone = zone.getInt("id");
                 String name = zone.getString("name");
@@ -265,7 +263,7 @@ public class JsonParser {
                 int userId = orderObject.getInt("user_id");
                 int restaurantId = orderObject.getInt("restaurant_id");
                 float price = (float) orderObject.getDouble("price");
-                int state = orderObject.getInt("state");
+                String state = orderObject.getString("state");
 
                 Order order = new Order(id, userId, restaurantId, price, state);
 
@@ -340,8 +338,9 @@ public class JsonParser {
             Date dateObject = inputFormat.parse(date + " " + time);
 
             // Novo formato desejado: "y-mm-dd hh-MM-ss"
-            SimpleDateFormat outputFormat = new SimpleDateFormat("y-MM-dd HH:mm:ss", Locale.getDefault());
+            SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 
+            System.out.println("---> DateTime: " + outputFormat.format(dateObject));
             // Formatando a data e a hora no novo estilo
             return outputFormat.format(dateObject);
         } catch (Exception e) {
@@ -359,7 +358,7 @@ public class JsonParser {
             int idOrder = order.getInt("id");
             int userIdOrder = order.getInt("user_id");
             int restaurantIdOrder = order.getInt("restaurant_id");
-            int statusOrder = order.getInt("status");
+            String statusOrder = order.getString("status");
             double priceOrder = order.getDouble("price");
 
             auxOrder = new Order(idOrder, userIdOrder, restaurantIdOrder, (float) priceOrder, statusOrder);
