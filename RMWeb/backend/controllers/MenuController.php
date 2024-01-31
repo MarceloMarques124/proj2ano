@@ -125,8 +125,6 @@ class MenuController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                // Chamada para a API para enviar a mensagem MQTT
-                $this->enviarMensagemMQTTViaAPI($model->id);
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
@@ -137,30 +135,6 @@ class MenuController extends Controller
             'model' => $model,
             'restaurants' => $restaurants,
         ]);
-    }
-
-    /**
-     * Envia uma mensagem MQTT via API.
-     * @param int $menuId ID do menu criado
-     */
-    private function enviarMensagemMQTTViaAPI($menuId)
-    {
-        // Construa a URL da API que corresponde ao método 'actionCreateSomething'
-        $url = Url::to(['api/menu/create-something'], true);
-        // Faça uma chamada HTTP para a API
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, ['menuId' => $menuId]);
-
-        $resposta = curl_exec($ch);
-        // Verifica por erros
-        if (curl_errno($ch)) {
-            // Lidar com o erro aqui
-            Yii::error('Erro na chamada HTTP para a API: ' . curl_error($ch));
-        }
-        // Fecha a sessão cURL
-        curl_close($ch);
     }
 
     /**

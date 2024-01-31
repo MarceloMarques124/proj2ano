@@ -15,11 +15,11 @@ if (!Yii::$app->user->isGuest)  {
         <li class="nav-item">
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
-
+       <?php if(Yii::$app->user->can('UserManagement')){?>
         <li class="nav-item d-none d-sm-inline-block">
             <a href="<?= Url::to(['/user/index']) ?>" class="nav-link">User Management</a>
         </li>
-
+    <?php }?>
         <li class="nav-item dropdown">
             <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">API</a>
             <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
