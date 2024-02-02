@@ -223,15 +223,15 @@ public class JsonParser {
     }
 
     public static Reserve jsonReserveParser(String response) {
-        Reserve r = null;
+        Reserve r = new Reserve();
 
         try {
             JSONObject reserve = new JSONObject(response);
 
             int id = reserve.getInt("id");
             String userId = reserve.getString("user_id");
-            String date = reserve.getString("date");
-            String time = reserve.getString("time");
+            String date = reserve.getString("date_time");
+            String time = date.split(" ")[1];
             String zone = reserve.getString("zone_id");
             String remarks = reserve.getString("remarks");
             String restId = reserve.getString("restaurant_id");
@@ -260,8 +260,8 @@ public class JsonParser {
                 JSONObject orderObject = (JSONObject) response.get(i);
 
                 int id = orderObject.getInt("id");
-                int userId = orderObject.getInt("user_id");
-                int restaurantId = orderObject.getInt("restaurant_id");
+                String userId = orderObject.getString("user");
+                String restaurantId = orderObject.getString("restaurant");
                 float price = (float) orderObject.getDouble("price");
                 String state = orderObject.getString("state");
 
@@ -329,26 +329,6 @@ public class JsonParser {
         return null;
     }
 
-    public static String formatDateAndTime(String date, String time) {
-        try {
-            // Formato original: "y-mm-dd hh-MM-ss"
-            SimpleDateFormat inputFormat = new SimpleDateFormat("y-MM-dd HH:mm:ss", Locale.getDefault());
-
-            // Convertendo a data e a hora para um objeto Date
-            Date dateObject = inputFormat.parse(date + " " + time);
-
-            // Novo formato desejado: "y-mm-dd hh-MM-ss"
-            SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-
-            System.out.println("---> DateTime: " + outputFormat.format(dateObject));
-            // Formatando a data e a hora no novo estilo
-            return outputFormat.format(dateObject);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ""; // Tratamento de erro, você pode ajustar conforme necessário
-        }
-    }
-
     public static Order jsonOrderParser(String response) {
         Order auxOrder;
 
@@ -356,8 +336,8 @@ public class JsonParser {
             JSONObject order = new JSONObject(response);
 
             int idOrder = order.getInt("id");
-            int userIdOrder = order.getInt("user_id");
-            int restaurantIdOrder = order.getInt("restaurant_id");
+            String userIdOrder = order.getString("user");
+            String restaurantIdOrder = order.getString("restaurant");
             String statusOrder = order.getString("status");
             double priceOrder = order.getDouble("price");
 

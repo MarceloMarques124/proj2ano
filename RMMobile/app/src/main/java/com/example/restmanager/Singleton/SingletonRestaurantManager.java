@@ -559,11 +559,12 @@ public class SingletonRestaurantManager {
             @Override
             public void onResponse(JSONArray response) {
                 orders = JsonParser.jsonOrdersParser(response);
-                addOrdersDB(JsonParser.jsonOrdersParser(response));
+                addOrdersDB(orders);
 
                 if (ordersListener == null){
-                    ordersListener.onRefreshTakeAwayOrdersList(JsonParser.jsonOrdersParser(response));
+                    ordersListener.onRefreshTakeAwayOrdersList(orders);
                 }
+                listener.onResponse(response);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -653,8 +654,10 @@ public class SingletonRestaurantManager {
         }
     }
     public Order getOrder(int restaurant, int user, String status){
+        User u = SingletonRestaurantManager.instance.getUserById(user);
+        Restaurant r = SingletonRestaurantManager.instance.getRestaurant(restaurant);
         for (Order order : orders) {
-            if (order.getUserId() == user && order.getRestId() == restaurant && Objects.equals(order.getStatus(), status)) {
+            if (order.getUserId() == u.getName() && order.getRestId() == r.getName() && Objects.equals(order.getStatus(), status)) {
                 System.out.println("---> Order exists: " + order.getId());
                 return order;
             }
@@ -906,6 +909,16 @@ public class SingletonRestaurantManager {
         }
     }
 
+    public User getUserById(int id) {
+        ArrayList<User> users = restManagerDBHelper.getAllUsers();
+        for (User u : users) {
+            if (u != null)
+                if (u.getId() == id)
+                    return u;
+        }
+        return null;
+    }
+
     public User getUserBD(final String token) {
 
 
@@ -973,7 +986,7 @@ public class SingletonRestaurantManager {
         }
     }
 
-    public void addReserveAPI(final Reserve reserve, Context context){
+    public void addReserveAPI(final Reserve reserve, Context context, Response.Listener listener){
         System.out.println("---> Reserve: " + reserve.getId() + " | " + reserve.getDate() + " | " + reserve.getTime() + " | " + reserve.getTablesNumber() + " | " +
                 reserve.getUserId() + " | " + reserve.getZone() + " | " + reserve.getRestId() + " | " + reserve.getRemarks() + " | " + reserve.getPeopleNumber());
         if (!JsonParser.isConnectionInternet(context)) {
@@ -993,6 +1006,7 @@ public class SingletonRestaurantManager {
                     if (reserveListener != null) {
                         reserveListener.onRefreshReviewDetails(MainActivity.ADD);
                     }
+                    listener.onResponse(response);
                 }
             }, new Response.ErrorListener() {
                 @Override

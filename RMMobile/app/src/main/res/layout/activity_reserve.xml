@@ -53,6 +53,7 @@
         <!-- Seção de Data -->
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/pickDate"
+            android:focusableInTouchMode="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/tvDate"
@@ -67,6 +68,7 @@
             android:id="@+id/pickTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:focusableInTouchMode="true"
             android:ems="10"
             android:hint="@string/tvTime"
             android:inputType="time"

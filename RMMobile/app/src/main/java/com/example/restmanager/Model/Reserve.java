@@ -11,7 +11,7 @@ public class Reserve {
     private int peopleNumber;
     private int tablesNumber;
 
-    public Reserve(int id, String name, String date, String time, String remark, int idzone, int peopleNumber) {
+    public Reserve() {
     }
 
     public Reserve(int id, String userId, String date, String time, String remarks, int zone, String restId, int peopleNumber) {

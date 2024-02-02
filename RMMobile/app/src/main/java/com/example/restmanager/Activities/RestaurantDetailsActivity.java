@@ -42,12 +42,15 @@ public class RestaurantDetailsActivity extends AppCompatActivity implements Revi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_details);
 
-
         binding = ActivityRestaurantDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        String name = getIntent().getStringExtra(ID_RESTAURANT);
-        restaurant = SingletonRestaurantManager.getInstance(getApplicationContext()).getRestaurantByName(name);
-      //  binding.imgCover.setImageResource(restaurant.getCover());
+
+        if (restaurant == null){
+            String name = getIntent().getStringExtra(ID_RESTAURANT);
+            restaurant = SingletonRestaurantManager.getInstance(getApplicationContext()).getRestaurantByName(name);
+        }
+
+      //  binding.imgCover.setImageResource(restaurant.getCover());º
         binding.tvEmail.setText(restaurant.getEmail()+"");
         binding.tvRestName.setText(restaurant.getName()+"");
         binding.tvLocal.setText(restaurant.getAddress()+"");

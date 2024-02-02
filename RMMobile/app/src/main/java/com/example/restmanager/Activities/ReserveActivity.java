@@ -1,5 +1,7 @@
 package com.example.restmanager.Activities;
 
+import static com.example.restmanager.Activities.RestaurantDetailsActivity.ID_RESTAURANT;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -13,6 +15,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.android.volley.Response;
 import com.example.restmanager.Listeners.ZonesListener;
 import com.example.restmanager.Model.Reserve;
 import com.example.restmanager.Model.Restaurant;
@@ -132,9 +135,16 @@ public class ReserveActivity extends AppCompatActivity implements ZonesListener{
 
                 System.out.println("---> Reserve: " + r.getId() + " | " + r.getDate() + " | " + r.getTime() + " | " + r.getTablesNumber() + " | " +
                         r.getUserId() + " | " + r.getZone() + " | " + r.getRestId() + " | " + r.getRemarks() + " | " + r.getPeopleNumber());
-                SingletonRestaurantManager.getInstance(getApplicationContext()).addReserveAPI(r, getApplicationContext());
+                SingletonRestaurantManager.getInstance(getApplicationContext()).addReserveAPI(r, getApplicationContext(), new Response.Listener() {
+                    @Override
+                    public void onResponse(Object response) {
+                        Intent intent = new Intent(getApplicationContext(), RestaurantDetailsActivity.class); //Details de Restaurant
+                        System.out.println("---> Restaurant: " + rest.getName());
+                        intent.putExtra(ID_RESTAURANT, rest.getName());
+                        startActivity(intent);
 
-                startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                    }
+                });
             }
         });
     }

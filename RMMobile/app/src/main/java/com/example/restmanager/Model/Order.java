@@ -2,13 +2,13 @@ package com.example.restmanager.Model;
 
 public class Order {
     private int id;
-    private int userId;
-    private int restId;
+    private String userId;
+    private String restId;
     private float price;
     private String status;
 
 
-    public Order(int id, int userId, int restId, float price, String status) {
+    public Order(int id, String userId, String restId, float price, String status) {
         this.id = id;
         this.userId = userId;
         this.restId = restId;
@@ -23,19 +23,19 @@ public class Order {
         return id;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
-    public int getRestId() {
+    public String getRestId() {
         return restId;
     }
 
-    public void setRestId(int restId) {
+    public void setRestId(String restId) {
         this.restId = restId;
     }
 
