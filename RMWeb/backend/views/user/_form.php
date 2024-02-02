@@ -60,7 +60,7 @@ use yii\bootstrap5\ActiveForm;
         if ($userInfo) {
             echo $form->field($userForm, 'restaurant_id')->dropDownList(
                 [$userInfo->restaurant_id => $userInfo->restaurant_id],
-                ['disabled' => true] // Opção desabilitada para que o valor não possa ser alterado
+                ['options' => [$userInfo->restaurant_id => ['selected' => true]]]
             )->label('Restaurant ID');
         }
     } ?>

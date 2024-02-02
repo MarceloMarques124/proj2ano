@@ -62,7 +62,6 @@ YiiAsset::register($this);
         ],
     ]); ?>
     <p>
-
         <?= Html::a('Add Item', ['fooditem/create', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
     </p>
 

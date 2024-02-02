@@ -117,7 +117,7 @@ class SiteController extends Controller
             //pedidos pendentes
             $ordersPending = Order::find()
                 ->where(['restaurant_id' => $userRestaurantId,])
-                ->andWhere(['state' => 1])
+                ->andWhere(['state' => 'payment'])
                 ->count();
 
             //quantidade de review ao restaurant

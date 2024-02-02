@@ -43,6 +43,7 @@ if (!Yii::$app->user->isGuest) {
                         ['label' => 'Debug', 'icon' => 'bug', 'url' => ['/debug'], 'target' => '_blank'],
                         [
                             'label' => 'Restaurants',
+                            'visible' => Yii::$app->user->can('RestaurantManagement'),
                             'items' => [
                                 ['label' => 'Create', 'url' => ['restaurant/create'], 'iconStyle' => 'far'],
                                 ['label' => 'View all', 'url' => ['restaurant/index'], 'iconStyle' => 'far'],
@@ -50,6 +51,7 @@ if (!Yii::$app->user->isGuest) {
                         ],
                         [
                             'label' => 'Zones',
+                            'visible' => Yii::$app->user->can('ZoneManagement'),
                             'items' => [
                                 ['label' => 'Create', 'url' => ['zone/create'], 'iconStyle' => 'far'],
                                 ['label' => 'View all', 'url' => ['zone/index'], 'iconStyle' => 'far'],
@@ -57,6 +59,7 @@ if (!Yii::$app->user->isGuest) {
                         ],
                         [
                             'label' => 'Tables',
+                            'visible' => Yii::$app->user->can('TablesManagement'),
                             'items' => [
                                 ['label' => 'Create', 'url' => ['table/create'], 'iconStyle' => 'far'],
                                 ['label' => 'View all', 'url' => ['table/index'], 'iconStyle' => 'far'],
@@ -64,6 +67,7 @@ if (!Yii::$app->user->isGuest) {
                         ],
                         [
                             'label' => 'Menus', 'icon' => 'fa-solid fa-utensils',
+                            'visible' => Yii::$app->user->can('MenuManagement'),
                             'items' => [
                                 ['label' => 'Create', 'url' => ['menu/create'], 'iconStyle' => 'far'],
                                 ['label' => 'View all', 'url' => ['menu/index'], 'iconStyle' => 'far'],

@@ -32,7 +32,7 @@ $this->params['breadcrumbs'] = [['label' => $this->title]];
         <div class="col-lg-4 col-md-6 col-sm-6 col-12">
             <?= \hail812\adminlte\widgets\SmallBox::widget([
                 'title' => $reviewNumbers,
-                'text' => 'Pending orders',
+                'text' => 'Total reviews my restaurant',
                 'icon' => 'fas fa-shopping-cart',
             ]) ?>
         </div>
@@ -40,7 +40,7 @@ $this->params['breadcrumbs'] = [['label' => $this->title]];
         <div class="col-lg-4 col-md-6 col-sm-6 col-12">
             <?= \hail812\adminlte\widgets\SmallBox::widget([
                 'title' => $review4Stars,
-                'text' => 'Pending orders',
+                'text' => 'Total reviews 4 stars my restaurant',
                 'icon' => 'fas fa-shopping-cart',
             ]) ?>
         </div>
