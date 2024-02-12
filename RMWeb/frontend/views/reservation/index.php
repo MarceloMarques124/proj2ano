@@ -24,7 +24,6 @@ $this->params['breadcrumbs'][] = $this->title;
     'filterModel' => $searchModel,
     'options' => ['class' => 'grid-view-container'], // Adiciona uma classe CSS personalizada
     'columns' => [
-        ['class' => 'yii\grid\SerialColumn'],
         'tables_number',
         [
             'attribute' => 'userName',

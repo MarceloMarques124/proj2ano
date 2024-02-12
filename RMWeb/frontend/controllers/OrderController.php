@@ -4,13 +4,15 @@ namespace frontend\controllers;
 
 use yii\web\Controller;
 use common\models\Order;
-use common\models\OrderedMenu;
 use common\models\UserInfo;
 use yii\filters\VerbFilter;
 use common\models\Prestacao;
+use common\models\OrderedMenu;
+use yii\filters\AccessControl;
 use frontend\models\OrderSearch;
 use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
+use yii\web\ForbiddenHttpException;
 
 /**
  * OrderController implements the CRUD actions for Order model.
@@ -29,6 +31,19 @@ class OrderController extends Controller
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
+                    ],
+                ],
+                'access' => [
+                    'class' => AccessControl::className(),
+                    'rules' => [
+                        [
+                            'actions' => ['index', 'view', 'delete', 'pay', 'payorder'],
+                            'allow' => true,
+                            'roles' => ['FrontEndOrderAccess'],
+                            'denyCallback' => function ($rule, $action) {
+                                throw new ForbiddenHttpException('You are not allowed to perform this action.');
+                            },
+                        ],
                     ],
                 ],
             ]

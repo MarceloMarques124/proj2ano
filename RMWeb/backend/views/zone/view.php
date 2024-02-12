@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'name',
             'description',
-            'restaurant_id',
+            'restaurant.name',
             'capacity',
         ],
     ]) ?>

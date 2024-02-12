@@ -9,7 +9,9 @@ use common\models\Table;
 use yii\filters\VerbFilter;
 use common\models\LoginForm;
 use common\models\Reservation;
+use yii\filters\AccessControl;
 use yii\web\NotFoundHttpException;
+use yii\web\ForbiddenHttpException;
 use frontend\models\ReservationSearch;
 
 /**
@@ -29,6 +31,19 @@ class ReservationController extends Controller
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
+                    ],
+                ],
+                'access' => [
+                    'class' => AccessControl::className(),
+                    'rules' => [
+                        [
+                            'actions' => ['index', 'view', 'create', 'delete'],
+                            'allow' => true,
+                            'roles' => ['FrontEndReservationsAccess'],
+                            'denyCallback' => function ($rule, $action) {
+                                throw new ForbiddenHttpException('You are not allowed to perform this action.');
+                            },
+                        ],
                     ],
                 ],
             ]

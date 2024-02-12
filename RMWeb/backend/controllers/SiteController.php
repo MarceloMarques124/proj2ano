@@ -14,6 +14,7 @@ use common\models\LoginForm;
 use common\models\Restaurant;
 use common\models\Reservation;
 use yii\filters\AccessControl;
+use yii\data\ActiveDataProvider;
 use yii\web\ForbiddenHttpException;
 
 /**
@@ -84,6 +85,7 @@ class SiteController extends Controller
     {
         $auth = Yii::$app->authManager;
         $userId = Yii::$app->user->id;  // Obter o ID do usuário atual
+
         // Obter o papel (role) e o restaurante do usuário
         $roles = $auth->getRolesByUser($userId);
         $user = UserInfo::findOne($userId);
@@ -91,6 +93,15 @@ class SiteController extends Controller
             $userRole = $role->name;  // Nome da função
         }
         $userRestaurantId = $user->restaurant_id;
+
+
+        // Modificar a consulta para mostrar apenas as reservas de hoje
+        $orderDataProvider = new ActiveDataProvider([
+            'query' => Reservation::find()->where([
+                'restaurant_id' => $userRestaurantId,
+            ])->andWhere(['>=', 'date_time', date('Y-m-d 00:00:00')])
+                ->andWhere(['<=', 'date_time', date('Y-m-d 23:59:59')]),
+        ]);
 
         // Inicializar a variável que armazenará o número de reservas
         $reservasNumber = 0;
@@ -128,11 +139,12 @@ class SiteController extends Controller
             //quantidade review de 4 estrelas ou mais
             $review4Stars = Review::find()
                 ->where(['restaurant_id' => $userRestaurantId,])
-                ->andWhere(['>=' , 'stars', 4])
+                ->andWhere(['>=', 'stars', 4])
                 ->count();
         }
 
         return $this->render('index', [
+            'orderDataProvider' => $orderDataProvider,
             'ordersNumber' => $ordersNumber,
             'ordersPending' => $ordersPending,
             'reservasNumber' => $reservasNumber,
@@ -140,7 +152,7 @@ class SiteController extends Controller
             'review4Stars' => $review4Stars,
         ]);
     }
-    
+
     /**
      * Login action.
      *

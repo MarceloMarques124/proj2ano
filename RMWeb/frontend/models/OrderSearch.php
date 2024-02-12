@@ -86,7 +86,7 @@ class OrderSearch extends Order
             'state' => $this->state,
         ])
             ->andFilterWhere(['like', 'restaurants.name', $this->restaurantName])
-            ->andFilterWhere(['like', 'user.username', $this->restaurantName]);
+            ->andFilterWhere(['like', 'user.username', $this->userName]);
 
 
         return $dataProvider;

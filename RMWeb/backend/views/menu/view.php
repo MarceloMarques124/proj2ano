@@ -36,7 +36,6 @@ YiiAsset::register($this);
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
             'name',
             [
                 'attribute' => 'price',
@@ -51,9 +50,13 @@ YiiAsset::register($this);
     <?= GridView::widget([
         'dataProvider' => $foodItemsDataProvider,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
             'name',
-            'price',
+            [
+                'attribute' => 'price',
+                'value' => function ($model) {
+                    return number_format($model->price, 2, ',', ' ') . ' €';
+                },
+            ],
             [
                 'class' => 'yii\grid\ActionColumn',
                 'controller' => 'fooditem', // Adicione esta linha

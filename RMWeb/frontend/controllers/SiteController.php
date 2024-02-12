@@ -34,19 +34,30 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['logout', 'signup'],
+
                 'rules' => [
                     [
-                        'actions' => ['signup'],
+                        'actions' => ['login', 'error'],
                         'allow' => true,
-                        'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['logout', 'index'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
+                    [
+                        'actions' => ['index'],
+                        'allow' => false,
+                        'roles' => ['client', '?'],
+                    ]
                 ],
+                'denyCallback' => function ($rule, $action) {
+                    if (Yii::$app->user->getIsGuest()) {
+                        Yii::$app->user->loginRequired();
+                    } else {
+                        Yii::$app->response->redirect(Yii::$app->request->referrer);
+                    }
+                },
             ],
             'verbs' => [
                 'class' => VerbFilter::class,
@@ -81,7 +92,7 @@ class SiteController extends Controller
     public function actionIndex()
     {
         $restaurants = Restaurant::find()->all();
-        return $this->render('index',[
+        return $this->render('index', [
             'restaurants' => $restaurants,
         ]);
     }

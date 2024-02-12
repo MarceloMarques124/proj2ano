@@ -35,12 +35,7 @@ if (!Yii::$app->user->isGuest) {
                 <?php
                 echo Menu::widget([
                     'items' => [
-
-                        ['label' => 'Simple Link', 'icon' => 'th', 'badge' => '<span class="right badge badge-danger">New</span>'],
-                        ['label' => 'Yii2 PROVIDED', 'header' => true],
                         ['label' => 'Login', 'url' => ['site/login'], 'icon' => 'sign-in-auth_assignmentalt', 'visible' => Yii::$app->user->isGuest],
-                        ['label' => 'Gii', 'icon' => 'file-code', 'url' => ['/gii'], 'target' => '_blank'],
-                        ['label' => 'Debug', 'icon' => 'bug', 'url' => ['/debug'], 'target' => '_blank'],
                         [
                             'label' => 'Restaurants',
                             'visible' => Yii::$app->user->can('RestaurantManagement'),
@@ -79,8 +74,21 @@ if (!Yii::$app->user->isGuest) {
                                 ['label' => 'View all', 'url' => ['fooditem/index'], 'iconStyle' => 'far'],
                             ]
                         ],
+                        [
+                            'label' => 'Orders', 'icon' => 'fa-solid fa-utensils',
+                            'visible' => Yii::$app->user->can('employee'),
+                            'items' => [
+                                ['label' => 'View all', 'url' => ['order/index'], 'iconStyle' => 'far'],
+                            ]
+                        ],
+                        [
+                            'label' => 'Reserves', 'icon' => 'fa-solid fa-utensils',
+                            'visible' => Yii::$app->user->can('employee'),
+                            'items' => [
+                                ['label' => 'View all', 'url' => ['reservation/index'], 'iconStyle' => 'far'],
+                            ]
+                        ],
                     ],
-
                 ]);
 
                 ?>

@@ -31,7 +31,12 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'name',
             'menu.name',
-            'price',
+            [
+                'attribute' => 'price',
+                'value' => function ($model) {
+                    return number_format($model->price, 2, ',', ' ') . ' €';
+                },
+            ],
         ],
     ]) ?>
 

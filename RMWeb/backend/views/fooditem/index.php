@@ -27,7 +27,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
             'name',
             [
                 'attribute' => 'menuName',
@@ -37,7 +36,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'filter' => Html::activeTextInput($searchModel, 'menuName', ['class' => 'form-control']),
             ],
-            'price',
+            [
+                'attribute' => 'price',
+                'value' => function ($model) {
+                    return number_format($model->price, 2, ',', ' ') . ' €';
+                },
+            ],
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, FoodItem $model, $key, $index, $column) {

@@ -50,7 +50,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'dataProvider' => $orderedMenusDataProvider,
             //'filterModel' => $orderedMenuSearch,
             'columns' => [
-                ['class' => 'yii\grid\SerialColumn'],
                 'menu.name',
                 'quantity',
                 [

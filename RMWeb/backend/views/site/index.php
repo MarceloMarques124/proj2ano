@@ -1,4 +1,10 @@
 <?php
+
+use yii\helpers\Url;
+use yii\grid\GridView;
+use common\models\Order;
+use yii\grid\ActionColumn;
+
 $this->title = 'Starter Page';
 $this->params['breadcrumbs'] = [['label' => $this->title]];
 ?>
@@ -16,7 +22,7 @@ $this->params['breadcrumbs'] = [['label' => $this->title]];
         <div class="col-lg-4 col-md-6 col-sm-6 col-12">
             <?= \hail812\adminlte\widgets\SmallBox::widget([
                 'title' => $ordersNumber,
-                'text' => 'Orders today',
+                'text' => 'Total orders',
                 'icon' => 'fas fa-shopping-cart',
             ]) ?>
         </div>
@@ -24,7 +30,7 @@ $this->params['breadcrumbs'] = [['label' => $this->title]];
         <div class="col-lg-4 col-md-6 col-sm-6 col-12">
             <?= \hail812\adminlte\widgets\SmallBox::widget([
                 'title' => $ordersPending,
-                'text' => 'Pending orders',
+                'text' => 'Payment orders',
                 'icon' => 'fas fa-shopping-cart',
             ]) ?>
         </div>
@@ -55,4 +61,24 @@ $this->params['breadcrumbs'] = [['label' => $this->title]];
             ]) ?>
         </div>
     </div>
+    <h1>Reservations today:</h1>
+    <?php if ($orderDataProvider->getTotalCount() > 0){?>
+    <?= GridView::widget([
+        'dataProvider' => $orderDataProvider,
+        'columns' => [
+            'tables_number',
+            'user.username',
+            'date_time',
+            'people_number',
+            'remarks:ntext',
+            'restaurant.name',
+            'zone.name',
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'controller' => 'reservation', // Adicione esta linha
+                'template' => '{view}',
+            ],
+        ],
+    ]); ?>
+    <?php }else{echo "No reservations for today";}?>
 </div>

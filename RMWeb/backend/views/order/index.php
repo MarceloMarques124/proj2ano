@@ -1,19 +1,19 @@
 <?php
 
-use common\models\Reservation;
+use common\models\Order;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 
 /** @var yii\web\View $this */
-/** @var backend\models\ReservationSearch $searchModel */
+/** @var backend\models\OrderSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Reservations';
+$this->title = 'Orders';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="reservation-index">
+<div class="order-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -24,7 +24,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            'tables_number',
             [
                 'attribute' => 'userName',
                 'label' => 'User Name',
@@ -33,12 +32,25 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'filter' => Html::activeTextInput($searchModel, 'userName', ['class' => 'form-control']),
             ],
-            'date_time',
-            'people_number',
+            [
+                'attribute' => 'restaurantName',
+                'label' => 'Restaurant Name',
+                'value' => function ($model) {
+                    return $model->restaurant ? $model->restaurant->name : null;
+                },
+                'filter' => Html::activeTextInput($searchModel, 'restaurantName', ['class' => 'form-control']),
+            ],
+            [
+                'attribute' => 'price',
+                'value' => function ($model) {
+                    return number_format($model->price, 2, ',', ' ') . ' €';
+                },
+            ],
+            'state',
             [
                 'class' => 'yii\grid\ActionColumn',
-                'controller' => 'reservation', // Adicione esta linha
-                'template' => '{view} {delete}',
+                'controller' => 'order', // Adicione esta linha
+                'template' => '{view}',
             ],
         ],
     ]); ?>

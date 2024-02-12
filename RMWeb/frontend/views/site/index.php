@@ -24,7 +24,7 @@ $this->title = 'My Yii Application';
                         </div>
                         <div class="card-footer">
                             <a href="<?= Url::to(['reservation/create', 'restaurant_id' => $restaurant['id']]) ?>" class="btn btn-success btn-sm">Reserve</a>
-                            <a href="<?= Url::to(['c/a', 'v' => $restaurant['id']]) ?>" class="btn btn-success btn-sm">Menus</a>
+                            <a href="<?= Url::to(['menu/index']) ?>" class="btn btn-success btn-sm">Menus</a>
                         </div>
                     </div>
                 </div>
